@@ -5,5 +5,7 @@ package com.example.user.zhtx.tools;
  */
 
 public class TEST {
-    public TEST(){}
+    public TEST(){
+        System.out.println("123");
+    }
 }
