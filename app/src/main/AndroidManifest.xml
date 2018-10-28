@@ -41,7 +41,9 @@
         <activity android:name=".activity.SeeAreaActivity" />
         <activity android:name=".activity.ChangePasswordByPwd" />
         <activity android:name=".activity.ChangePasswordByVeri" />
-        <activity android:name=".activity.CareListActivity"></activity>
+        <activity android:name=".activity.CareListActivity" />
+        <activity android:name=".activity.SelfInfoActivity" />
+        <activity android:name=".activity.ModifyInfoActivity"></activity>
     </application>
 
 </manifest>

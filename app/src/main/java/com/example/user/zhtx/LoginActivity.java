@@ -33,10 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         PerssionControl control = PerssionControl.getInstance();
         control.getPermission(LoginActivity.this,permissions);
 
-
         initView();
-
-
     }
 
     private void initView(){

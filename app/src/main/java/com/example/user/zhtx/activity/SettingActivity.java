@@ -52,6 +52,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()){
             case R.id.activity_setting_lin_selfInfo:
                 ShowToast.show(SettingActivity.this,"个人信息");
+                Intent intent1 = new Intent(SettingActivity.this,SelfInfoActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.activity_setting_lin_seeArea:
                 ShowToast.show(SettingActivity.this,"可见范围");
@@ -71,11 +73,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.activity_setting_iv_back:
                 finish();
                 break;
-            case R.id.activity_setting_iv_back:
-                Intent intent5 = new Intent(SettingActivity.this,MainPageActivity.class);
-                startActivity(intent5);
-                break;
-
         }
     }
 }
