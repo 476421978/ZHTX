@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.user.zhtx">
 
     <!-- 短信验证权限 -->
@@ -17,6 +18,30 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- 短信验证权限 -->
+
+    <!--地图验证权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    //用于进行网络定位
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    //用于访问GPS定位
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    //获取设备网络状态，禁用后无法获取网络状态
+    <uses-permission android:name="android.permission.INTERNET"/>
+    //网络权限，当禁用后，无法进行检索等相关业务
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    //读取设备硬件信息，统计数据
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    //读取系统信息，包含系统版本等信息，用作统计
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    //获取设备的网络状态，鉴权所需网络代理
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    //允许sd卡写权限，需写入地图数据，禁用后无法显示地图
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    //获取统计数据
+    <uses-permission android:name="android.permission.CAMERA" />
+    //使用步行AR导航，配置Camera权限
+    <!--地图验证权限-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -44,6 +69,9 @@
         <activity android:name=".activity.CareListActivity" />
         <activity android:name=".activity.SelfInfoActivity" />
         <activity android:name=".activity.ModifyInfoActivity"></activity>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="W5Z8FC2vApkToe4BsKIqvYtmFOGTclGd"/>
     </application>
 
 </manifest>
