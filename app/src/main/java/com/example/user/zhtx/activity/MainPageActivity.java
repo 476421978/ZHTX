@@ -49,7 +49,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
 
         fragmentArrayList = new ArrayList<>();
         fragmentArrayList.add(new Map());
-        fragmentArrayList.add(new MessagePage());
+        fragmentArrayList.add(new MessagePage(MainPageActivity.this));
         fragmentArrayList.add(new FriendsPage());
         fragmentArrayList.add(new GroupPage());
         FramentStatePageAdapter adapter = new FramentStatePageAdapter(getSupportFragmentManager(),fragmentArrayList);

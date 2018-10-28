@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:textColor="@color/back"
-            android:text="手机号:"/>
+            android:text="密码:"/>
         <EditText
             android:id="@+id/activity_login_ed_pwd"
             android:layout_width="0dp"
@@ -55,7 +55,7 @@
             android:padding="5dip"
             android:textColorHint="#AAAAAA"
             android:textSize="15dip"
-            android:hint="请输入手机号" />
+            android:hint="请输入密码" />
     </LinearLayout>
 
     <Button

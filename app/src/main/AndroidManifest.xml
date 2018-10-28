@@ -36,7 +36,9 @@
         <activity android:name=".activity.FriendInviteActivity" />
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.ResetPasswordActivity" />
-        <activity android:name=".activity.MainPageActivity"></activity>
+        <activity android:name=".activity.MainPageActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.SeeAreaActivity"></activity>
     </application>
 
 </manifest>
