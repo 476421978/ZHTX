@@ -24,19 +24,19 @@ public class FriendsPage extends Fragment {
         bean = new ArrayList<>();
         FriendAndGroupMessageBean mm = new FriendAndGroupMessageBean();
         ArrayList<String> list = new ArrayList<>();
-        list.add("垃圾邱志鹏");
-        list.add("垃圾黄俊贤");
-        list.add("都是垃圾");
-        mm.setName("垃圾");
+        list.add("邱志鹏");
+        list.add("黄俊贤");
+        list.add("都是zz");
+        mm.setName("家人");
         mm.setList(list);
         bean.add(mm);
 
         mm = new FriendAndGroupMessageBean();
         list = new ArrayList<>();
-        list.add("垃圾邱志鹏");
-        list.add("垃圾黄俊贤");
-        list.add("都是垃圾");
-        mm.setName("很垃圾");
+        list.add("邱志鹏");
+        list.add("黄俊贤");
+        list.add("123");
+        mm.setName("同事");
         mm.setList(list);
         bean.add(mm);
 

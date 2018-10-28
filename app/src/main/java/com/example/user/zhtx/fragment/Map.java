@@ -41,6 +41,11 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.WalkingRouteOverlay;
 import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
@@ -61,7 +66,7 @@ import java.util.List;
 public class Map extends Fragment implements View.OnClickListener, SensorEventListener {
     private static Bitmap BbitmapTest;
     List<MyItem> items1 = new ArrayList<MyItem>();
-
+    private boolean pressed = false;
     View mView;
     MapView mMapView = null;
     private static final int REQUEST_CODE = 0; // 请求码
@@ -87,7 +92,7 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
     private boolean isFirstLoc = true;
     private MyLocationConfiguration.LocationMode mCurrentMode;
     private BitmapDescriptor mCurrentMarker;
-
+    WalkingRouteOverlay overlay;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private float lux1;
@@ -115,7 +120,6 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
         MarkClick();
 
         PointConverge();
-
 
 
         /*View view =View.inflate(this,R.layout.layout_,null);
@@ -204,6 +208,40 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
         return v;
     }
 
+    private void PositionChange(LatLng latLng) {
+            // 创建地理编码检索实例
+            GeoCoder geoCoder = GeoCoder.newInstance();
+            //
+            OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
+                // 反地理编码查询结果回调函数
+                @Override
+                public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+                    if (result == null
+                            || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                        // 没有检测到结果
+                    }
+                    String addressText = result.getAddress();//这里的addressText就是我们要的地址
+                    Toast.makeText(getContext(),"地址："+addressText, Toast.LENGTH_SHORT).show();
+                }
+
+                // 地理编码查询结果回调函
+                @Override
+                public void onGetGeoCodeResult(GeoCodeResult result) {
+                    if (result == null
+                            || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                        // 没有检测到结果
+                    }
+                }
+            };
+            // 设置地理编码检索监听者
+            geoCoder.setOnGetGeoCodeResultListener(listener);
+            //
+            geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+            // 释放地理编码检索实例
+            // geoCoder.destroy();
+
+        }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -245,6 +283,7 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
     }
 
     private void addMarkers(double latitude, double longitude) {
+
         LatLng llA = new LatLng(latitude, longitude + 0.001);
         LatLng llB = new LatLng(latitude+0.001, longitude+0.002);
         LatLng llC = new LatLng(latitude+0.002, longitude+0.002);
@@ -252,8 +291,6 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
         LatLng llE = new LatLng(latitude-0.02, longitude+0.02);
         LatLng llF = new LatLng(latitude-0.01, longitude+0.01);
         LatLng llG = new LatLng(latitude-0.02, longitude+0.02);
-
-
 
         items1.add(new MyItem(llA));
         items1.add(new MyItem(llB));
@@ -267,7 +304,6 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
 
     public class MyItem implements ClusterItem {
         private final LatLng mPosition;
-
         public MyItem(LatLng latLng) {
             mPosition = latLng;
         }
@@ -288,7 +324,9 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn:
-                baiduMap.clear();
+                if(pressed == true){
+                    overlay.removeFromMap();
+                }
                 walkingRoutePlanOption.from(stNode);
                 walkingRoutePlanOption.to(enNode);
                 mSearch.walkingSearch(walkingRoutePlanOption);
@@ -345,12 +383,13 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
                 if (result.error == SearchResult.ERRORNO.NO_ERROR) {
 
                     // route = result.getRouteLines().get(0);
-                    WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(baiduMap);
+                    overlay = new MyWalkingRouteOverlay(baiduMap);
                     //mBaiduMap.setOnMarkerClickListener(overlay);
                     WalkingRouteOverlay routeOverlay = overlay;
                     overlay.setData(result.getRouteLines().get(0));
                     overlay.addToMap();
                     overlay.zoomToSpan();
+                    pressed= true;
                 }
 
             }
@@ -412,7 +451,9 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
             @Override
             public void onMapClick(LatLng latLng) {
                 Toast.makeText(getActivity(),"点击了地图",Toast.LENGTH_SHORT).show();
-                baiduMap.clear();
+                if(pressed == true){
+                    overlay.removeFromMap();
+                }
                 button.setVisibility(View.GONE);
                 //baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));
 
@@ -431,7 +472,9 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
             public boolean onMarkerClick(Marker marker) {
                 //bitmapTest = btv.drawBitMapText("个人信息",bitmap);
                 button.setVisibility(View.VISIBLE);
-                enNode = PlanNode.withLocation(marker.getPosition());
+                LatLng ClickMarker = marker.getPosition();
+                enNode = PlanNode.withLocation(ClickMarker);
+                PositionChange(ClickMarker);
                 return false;
             }
         });
@@ -449,7 +492,7 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
         mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>(){
             @Override
             public boolean onClusterItemClick(MyItem item) {
-                Toast.makeText(getContext(), "点击单个Item", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "点击单个Item", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -490,31 +533,11 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
             mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
             mCurrentMarker = BitmapDescriptorFactory
                     .fromResource(R.drawable.icon_geo);
-
-            //创建OverlayOptions的集合
-
-            List<OverlayOptions> options = new ArrayList<OverlayOptions>();
 //设置坐标点
 
             LatLng myLatLng = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
             stNode = PlanNode.withLocation(myLatLng);
             addMarkers(bdLocation.getLatitude(), bdLocation.getLongitude());
-
-//创建OverlayOptions属性
-
-            /*OverlayOptions option1 =  new MarkerOptions()
-                    .title("123")
-                    .position(point1)
-                    .icon(mCurrentMarker);
-            OverlayOptions option2 =  new MarkerOptions()
-                    .title("456")
-                    .position(point2)
-                    .icon(mCurrentMarker);
-//将OverlayOptions添加到list
-            options.add(option1);
-            options.add(option2);
-            //在地图上批量添加
-            baiduMap.addOverlays(options);*/
 
             // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
             MyLocationConfiguration config = new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker);
