@@ -10,6 +10,6 @@ public class FriendInviteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_invite);
+        setContentView(R.layout.listview_friend_invite);
     }
 }

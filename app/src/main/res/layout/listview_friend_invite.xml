@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.user.zhtx.activity.FriendInviteActivity"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="90dp"
     android:orientation="horizontal"
     android:background="@color/bgColor"
     android:layout_margin="15dp"
@@ -21,7 +21,7 @@
             android:id="@+id/activity_friend_invite_iv_head"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/ThemeColor"
+            android:background="@drawable/touxiang"
             android:layout_gravity="center"/>
     </LinearLayout>
 

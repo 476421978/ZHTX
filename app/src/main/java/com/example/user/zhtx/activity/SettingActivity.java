@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.tools.ShowToast;
 
@@ -59,9 +60,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.activity_setting_lin_changePassword:
                 ShowToast.show(SettingActivity.this,"修改密码");
+                Intent intent3 = new Intent(SettingActivity.this,ChangePasswordByPwd.class);
+                startActivity(intent3);
                 break;
             case R.id.activity_setting_btn_loginOut:
                 ShowToast.show(SettingActivity.this,"注销");
+                Intent intent4 = new Intent(SettingActivity.this, LoginActivity.class);
+                startActivity(intent4);
+                break;
+            case R.id.activity_setting_iv_back:
+                finish();
                 break;
             case R.id.activity_setting_iv_back:
                 Intent intent5 = new Intent(SettingActivity.this,MainPageActivity.class);

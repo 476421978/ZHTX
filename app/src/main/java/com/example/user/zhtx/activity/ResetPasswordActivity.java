@@ -43,8 +43,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 startActivity(intent);
                 break;
             case R.id.activity_reset_password_iv_back:
-                Intent intent1 = new Intent(ResetPasswordActivity.this,FindPasswordActivity.class);
-                startActivity(intent1);
+                finish();
                 break;
         }
 

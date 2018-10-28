@@ -50,8 +50,8 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.activity_find_password_iv_back:
-                Intent intent1 = new Intent(FindPasswordActivity.this, LoginActivity.class);
-                startActivity(intent1);
+                finish();
+
                 break;
         }
     }

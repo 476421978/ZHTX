@@ -133,8 +133,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.activity_register_iv_back:
-                Intent intent1 = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent1);
+                finish();
                 break;
         }
     }

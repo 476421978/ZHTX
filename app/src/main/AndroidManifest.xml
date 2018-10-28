@@ -38,7 +38,10 @@
         <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.MainPageActivity" />
         <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.SeeAreaActivity"></activity>
+        <activity android:name=".activity.SeeAreaActivity" />
+        <activity android:name=".activity.ChangePasswordByPwd" />
+        <activity android:name=".activity.ChangePasswordByVeri" />
+        <activity android:name=".activity.CareListActivity"></activity>
     </application>
 
 </manifest>
