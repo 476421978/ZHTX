@@ -16,6 +16,12 @@ android {
             repositories { maven { url "https://maven.google.com" } }
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            //说明so的路径为该libs路径，关联所有地图SDK的so文件
+        }
+    }
 }
 
 dependencies {
@@ -23,12 +29,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:27.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
     compile files('libs/gson-2.7.jar')
     compile files('libs/okhttp-3.10.0.jar')
     compile files('libs/okio-1.14.0.jar')
+    compile 'com.android.support:appcompat-v7:27.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
 }
 
 apply plugin: 'com.mob.sdk'

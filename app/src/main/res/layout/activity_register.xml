@@ -153,7 +153,7 @@
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:textColor="@color/white"
-        android:text="注册"
+        android:text="个人资料填写"
         android:textSize="15dp"
         android:layout_margin="40dp"
         android:background="@drawable/bg_btn_theme"/>
