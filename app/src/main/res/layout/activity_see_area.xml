@@ -1,52 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.user.zhtx.activity.SeeAreaActivity"
-    android:orientation="vertical">
+    android:background="@color/bg_gray">
 
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp"
+        android:background="@color/ThemeColor">
+
+        <ImageView
+            android:id="@+id/activity_see_area_iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="位置可见范围"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="6"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/bg_gray">
-
-                <RadioButton
-                    android:id="@+id/activity_see_area_rb_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="所有人可见"/>
-
-
+            android:orientation="horizontal"
+            android:gravity="left">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="所有人可见"
+                android:textColor="@color/textBack"
+                android:layout_gravity="center"
+                android:textSize="15sp"
+                android:layout_marginLeft="30dp" />
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/bg_gray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/bg_gray">
+            android:orientation="horizontal"
+            android:gravity="left">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="所有人不可见"
+                android:textColor="@color/textBack"
+                android:layout_gravity="center"
+                android:textSize="15sp"
+                android:layout_marginLeft="30dp"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/bg_gray"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="left">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我关注的人可见"
+                android:textColor="@color/textBack"
+                android:layout_gravity="center"
+                android:textSize="15sp"
+                android:layout_marginLeft="30dp" />
+
+            <Button
+                android:id="@+id/activity_see_area_btn_myCare"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="我关注的人"
+                android:textColor="@color/white"
+                android:layout_marginLeft="30dp"
+                android:background="@color/btnBlue"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_gravity="center">
+
+            <RadioButton
+                android:id="@+id/activity_see_area_rb_all"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:checked="true"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/bg_gray"/>
             <RadioButton
                 android:id="@+id/activity_see_area_rb_allNot"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="所有人不可见"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/bg_gray">
-
+                android:layout_height="50dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/bg_gray"/>
             <RadioButton
                 android:id="@+id/activity_see_area_rb_care"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我关注的人可见"/>
-        </LinearLayout>
+                android:layout_height="50dp"/>
+        </RadioGroup>
+
+
+    </LinearLayout>
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

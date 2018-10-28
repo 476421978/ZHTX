@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.tools.ShowToast;
 
 public class FindPasswordActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_findPwd,btn_getVerifiacation;
     private EditText ed_phoneName,ed_verification;
+    private ImageView iv_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,9 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
 
         ed_phoneName = (EditText)findViewById(R.id.activity_find_password_ed_phoneNumber);
         ed_verification = (EditText)findViewById(R.id.activity_find_password_ed_verification);
+
+        iv_back = (ImageView)findViewById(R.id.activity_find_password_iv_back);
+        iv_back.setOnClickListener(this);
     }
 
     @Override
@@ -43,6 +49,10 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 ShowToast.show(FindPasswordActivity.this,"获取验证码");
                 break;
 
+            case R.id.activity_find_password_iv_back:
+                Intent intent1 = new Intent(FindPasswordActivity.this, LoginActivity.class);
+                startActivity(intent1);
+                break;
         }
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 
 import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
@@ -15,6 +16,7 @@ import com.example.user.zhtx.tools.ShowToast;
 
 public class RegisterInfoActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_birthday,btn_commit;
+    private ImageView iv_back;
 
 
     @Override
@@ -30,6 +32,9 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         btn_birthday.setOnClickListener(this);
         btn_commit = (Button)findViewById(R.id.activity_registerInfo_btn_commit);
         btn_commit.setOnClickListener(this);
+
+        iv_back = (ImageView) findViewById(R.id.activity_registerInfo_iv_back);
+        iv_back.setOnClickListener(this);
     }
 
 
@@ -44,6 +49,10 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                 Intent intent = new Intent(RegisterInfoActivity.this, LoginActivity.class);
                 startActivity(intent);
                 startActivity(intent);
+                break;
+            case R.id.activity_registerInfo_iv_back:
+                Intent intent1= new Intent(RegisterInfoActivity.this,RegisterActivity.class);
+                startActivity(intent1);
                 break;
         }
     }

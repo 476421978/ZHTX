@@ -17,6 +17,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private Button btn_loginOut;
     private TextView tv_phoneNumber,tv_name;
     private ImageView iv_headPic;
+    private ImageView iv_back;
 
 
     @Override
@@ -40,6 +41,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         tv_name = (TextView)findViewById(R.id.activity_setting_tv_name);
         tv_phoneNumber = (TextView) findViewById(R.id.activity_setting_tv_phoneNumber);
+
+        iv_back = (ImageView) findViewById(R.id.activity_setting_iv_back);
+        iv_back.setOnClickListener(this);
     }
 
     @Override
@@ -58,6 +62,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.activity_setting_btn_loginOut:
                 ShowToast.show(SettingActivity.this,"注销");
+                break;
+            case R.id.activity_setting_iv_back:
+                Intent intent5 = new Intent(SettingActivity.this,MainPageActivity.class);
+                startActivity(intent5);
                 break;
 
         }

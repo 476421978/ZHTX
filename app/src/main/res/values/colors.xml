@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="ThemeColor">#6A7D8F</color>
     <color name="white">#FFFFFF</color>
     <color name="back">#000000</color>
@@ -10,4 +11,6 @@
     <color name="textBack">#222222</color>
     <color name="bg_gray">#e4e4e4</color>
     <color name="btnRed">#ff0000</color>
+    <color name="btnBlue">#4682B4</color>
+    <color name="deepTheme">#526270</color>
 </resources>

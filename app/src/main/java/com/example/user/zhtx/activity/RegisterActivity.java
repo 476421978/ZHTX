@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.tools.ShowToast;
 import com.mob.MobSDK;
@@ -30,6 +32,7 @@ import java.util.regex.Pattern;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText ed_phone,ed_pwd,ed_confirmPwd,ed_verification;
     private Button btn_getVerification,btn_register;
+    private ImageView iv_back;
 
     /*------------------验证码---------------------*/
     private TimerTask timerTask;
@@ -85,6 +88,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         btn_getVerification.setOnClickListener(this);
         btn_register.setOnClickListener(this);
+
+        iv_back = (ImageView)findViewById(R.id.activity_register_iv_back);
+        iv_back.setOnClickListener(this);
     }
 
     @Override
@@ -125,6 +131,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         ShowToast.show(RegisterActivity.this,"手机号格式错误");
                     }
                 }
+                break;
+            case R.id.activity_register_iv_back:
+                Intent intent1 = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent1);
                 break;
         }
     }

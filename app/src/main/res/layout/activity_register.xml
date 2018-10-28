@@ -5,8 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.user.zhtx.activity.RegisterActivity"
-    android:orientation="vertical"
-    android:padding="25dp">
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/ThemeColor">
+
+        <ImageView
+            android:id="@+id/activity_register_iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25dp"
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -131,6 +156,6 @@
         android:layout_margin="40dp"
         android:background="@drawable/bg_btn_theme"/>
 
-
+    </LinearLayout>
 
 </LinearLayout>

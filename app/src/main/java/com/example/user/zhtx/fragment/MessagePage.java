@@ -9,13 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.activity.SettingActivity;
 
 public class MessagePage extends Fragment implements View.OnClickListener {
-    private Button btn_setting;
     private View view;
+    private TextView tv_setting;
     private Context context;
 
     public MessagePage(Context context){
@@ -29,8 +30,8 @@ public class MessagePage extends Fragment implements View.OnClickListener {
     }
 
     private void initView(){
-        btn_setting = (Button)view.findViewById(R.id.fragment_btn_setting);
-        btn_setting.setOnClickListener(this);
+        tv_setting = (TextView) view.findViewById(R.id.fragment_tv_setting);
+        tv_setting.setOnClickListener(this);
     }
 
     @Override
