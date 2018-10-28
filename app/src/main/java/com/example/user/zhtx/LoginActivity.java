@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.user.zhtx.activity.FindPasswordActivity;
+import com.example.user.zhtx.activity.MainPageActivity;
 import com.example.user.zhtx.activity.RegisterActivity;
 import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.ShowToast;
@@ -56,13 +58,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.activity_login_btn_login:
                 ShowToast.show(LoginActivity.this,"denglu");
+                Intent intent1 = new Intent(LoginActivity.this, MainPageActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.activity_login_tv_register:
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.activity_login_tv_resetPwd:
                 ShowToast.show(LoginActivity.this,"找回密码");
+                Intent intent3 = new Intent(LoginActivity.this, FindPasswordActivity.class);
+                startActivity(intent3);
                 break;
         }
     }

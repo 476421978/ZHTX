@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_border"
+    android:padding="8dp">
+    <ImageView
+        android:id="@+id/expandable_listview_child_iv_picture"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/touxiang"/>
+    <TextView
+        android:id="@+id/expandable_listview_child_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/expandable_listview_child_iv_picture"
+        android:textSize="15sp"
+        android:text="消失的爱人"/>
+</RelativeLayout>

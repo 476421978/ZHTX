@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item><shape>
+        <!-- 边框 -->
+        <stroke android:width="0.5dp" android:color="#CDC5BF" />
+    </shape></item>
+</selector>
