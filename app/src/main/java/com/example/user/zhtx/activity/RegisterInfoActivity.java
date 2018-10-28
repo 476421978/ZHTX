@@ -51,7 +51,8 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                 startActivity(intent);
                 break;
             case R.id.activity_registerInfo_iv_back:
-                finish();
+                Intent intent1 = new Intent(RegisterInfoActivity.this,LoginActivity.class);
+                startActivity(intent1);
                 break;
         }
     }

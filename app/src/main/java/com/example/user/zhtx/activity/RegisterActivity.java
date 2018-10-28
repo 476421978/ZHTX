@@ -7,20 +7,22 @@ import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.tools.ShowToast;
+import com.example.user.zhtx.tools.SingleErrDiaog;
 import com.mob.MobSDK;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
 
 
 import java.util.Timer;
@@ -41,8 +43,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public String country="86";                     //国家区号，中国为86
 
     private static final int CODE_REPEAT = 1;       //重新发送
-    private boolean isSend = false;                 //判断是否已经发送信息
-    private boolean isRegister = false;
     private final String appkty = "286309d7a4904";
     private final String appSecret = "bae047d3b2f375d802dfe3fb1d778efa";
 
@@ -63,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         public void afterEvent(int event, int result, Object data) {
             if (result == SMSSDK.RESULT_COMPLETE) {
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                //    handleResult();
                     Log.i("test","发送答应");
                 }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){       //获取验证码成功
                     Log.i("data","获取验证码成功");
@@ -72,7 +73,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }else{//错误等在这里（包括验证失败）
                 //错误码请参照http://wiki.mob.com/android-api-错误码参考/这里我就不再继续写了
                 Log.i("data","验证码错误");
-                errDialog("错误提示","验证码错误");
+
+                SingleErrDiaog.show(RegisterActivity.this,"注册失败","验证码错误");
             }
         }
     };
@@ -98,21 +100,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String phone =  ed_phone.getText().toString().trim().replace("/s","");
         String pwd = ed_pwd.getText().toString();
         String confirmPwd = ed_confirmPwd.getText().toString();
-        String verification = ed_verification.getText().toString();
+        String verification = ed_verification.getText().toString().replaceAll("/s","");
+   //     String code = ed_registerCode.getText().toString().replaceAll("/s","");
 
         switch (view.getId()){
             case R.id.activity_register_btn_register:
-            /*    ShowToast.show(RegisterActivity.this,"注册按钮点击");
-                Log.i("text",phone+"--"+pwd+"--"+confirmPwd+"--"+verification);
+                ShowToast.show(RegisterActivity.this,"注册按钮点击");
                 if (checkPhone(phone)){
-                    Log.i("text","电话通过");
                     if (checkPwd(pwd,confirmPwd)){
-                        Log.i("text","密码通过通过");
-
+                        if (!TextUtils.isEmpty(verification)){
+                            SMSSDK.submitVerificationCode(country,ed_phone.getText().toString().trim().replace("/s",""),verification);
+                        }else {
+                            SingleErrDiaog.show(RegisterActivity.this,"注册失败","验证码不能为空");
+                        }
                     }
-                }*/
-                Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);
-                startActivity(intent);
+                }
+
                 break;
             case R.id.activity_register_btn_getVerification:
                 ShowToast.show(RegisterActivity.this,"获取验证码按钮点击");
@@ -138,25 +141,50 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private void handleResult(final String phone, final String pwd){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+
+                FormBody formBody = new FormBody.Builder()
+                        .add("phone",phone)
+                        .add("pwd",pwd)
+                        .build();
+            }
+        }).start();
+
+        Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);
+        startActivity(intent);
+    }
+
+    private boolean checkPwd(String pwd,String confirmPwd){
+        if(pwd.length()<6){
+            SingleErrDiaog.show(RegisterActivity.this,"密码错误","密码不得少于6位");
+            return false;
+        }else if(pwd.length()>16){
+            SingleErrDiaog.show(RegisterActivity.this,"密码错误","密码不得多于16位");
+            return false;
+        }else{
+            if (pwd.equals(confirmPwd)){
+                return true;
+            }else {
+                SingleErrDiaog.show(RegisterActivity.this,"注册失败","密码输入不一致");
+                return false;
+            }
+        }
+    }
+
     private boolean checkPhone(String phone){
         boolean result = false;
         if (phone.length() == 11){
-            errDialog("true",phone);
             result = true;
         }else {
-            errDialog("错误提示","请输入中国大陆11位电话号码");
+            SingleErrDiaog.show(RegisterActivity.this,"手机错误","请输入中国大陆11位电话号码");
         }
         return result;
     }
 
-
-    private void errDialog(String title,String content){
-        new AlertDialog.Builder(RegisterActivity.this)
-                .setTitle(title)
-                .setMessage(content)
-                .setPositiveButton("确定",null)
-                .show();
-    }
 
     //销毁短信注册
     @Override
@@ -183,32 +211,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void alterWarning(final String phone){
         new AlertDialog.Builder(RegisterActivity.this)
-                .setTitle("发送验证码")
-                .setMessage("将验证码发送至"+phone)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        SMSSDK.getVerificationCode(country,phone);
-                        btn_getVerification.setEnabled(false);
-                        timer = new Timer();
-                        timerTask = new TimerTask() {
-                            @Override
-                            public void run() {
-                                handler.sendEmptyMessage(TIME--);
-                            }
-                        };
-                        timer.schedule(timerTask,0,1000);
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        ShowToast.show(RegisterActivity.this,"已取消");
-                    }
-                })
-                .show();
+            .setTitle("发送验证码")
+            .setMessage("将验证码发送至"+phone)
+            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    SMSSDK.getVerificationCode(country,phone);
+                    btn_getVerification.setEnabled(false);
+                    timer = new Timer();
+                    timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            handler.sendEmptyMessage(TIME--);
+                        }
+                    };
+                    timer.schedule(timerTask,0,1000);
+                }
+            })
+            .setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    ShowToast.show(RegisterActivity.this,"已取消");
+                }
+            })
+            .show();
     }
+
+    // 获取定位
+    private void getLocation(){}
 
 }

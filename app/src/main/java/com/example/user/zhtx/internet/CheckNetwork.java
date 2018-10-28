@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.user.zhtx.tools.ShowToast;
+
 /**
  * Created by user on 2018/10/21.
  *
@@ -15,8 +17,10 @@ public class CheckNetwork {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if ((ni == null) || (!ni.isConnected())){
+            ShowToast.show(context,"无法连接到网络");
             return false;
+        }else{
+            return true;
         }
-        return true;
     }
 }
