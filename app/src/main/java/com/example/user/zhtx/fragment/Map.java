@@ -87,7 +87,7 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
     private boolean isFirstLoc = true;
     private MyLocationConfiguration.LocationMode mCurrentMode;
     private BitmapDescriptor mCurrentMarker;
-
+    WalkingRouteOverlay overlay;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private float lux1;
@@ -343,9 +343,8 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
                     return;
                 }
                 if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-
                     // route = result.getRouteLines().get(0);
-                    WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(baiduMap);
+                    overlay = new MyWalkingRouteOverlay(baiduMap);
                     //mBaiduMap.setOnMarkerClickListener(overlay);
                     WalkingRouteOverlay routeOverlay = overlay;
                     overlay.setData(result.getRouteLines().get(0));
@@ -412,7 +411,7 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
             @Override
             public void onMapClick(LatLng latLng) {
                 Toast.makeText(getActivity(),"点击了地图",Toast.LENGTH_SHORT).show();
-                baiduMap.clear();
+                overlay.removeFromMap();
                 button.setVisibility(View.GONE);
                 //baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));
 
@@ -432,6 +431,7 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
                 //bitmapTest = btv.drawBitMapText("个人信息",bitmap);
                 button.setVisibility(View.VISIBLE);
                 enNode = PlanNode.withLocation(marker.getPosition());
+                
                 return false;
             }
         });
@@ -490,31 +490,11 @@ public class Map extends Fragment implements View.OnClickListener, SensorEventLi
             mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
             mCurrentMarker = BitmapDescriptorFactory
                     .fromResource(R.drawable.icon_geo);
-
-            //创建OverlayOptions的集合
-
-            List<OverlayOptions> options = new ArrayList<OverlayOptions>();
 //设置坐标点
 
             LatLng myLatLng = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
             stNode = PlanNode.withLocation(myLatLng);
             addMarkers(bdLocation.getLatitude(), bdLocation.getLongitude());
-
-//创建OverlayOptions属性
-
-            /*OverlayOptions option1 =  new MarkerOptions()
-                    .title("123")
-                    .position(point1)
-                    .icon(mCurrentMarker);
-            OverlayOptions option2 =  new MarkerOptions()
-                    .title("456")
-                    .position(point2)
-                    .icon(mCurrentMarker);
-//将OverlayOptions添加到list
-            options.add(option1);
-            options.add(option2);
-            //在地图上批量添加
-            baiduMap.addOverlays(options);*/
 
             // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
             MyLocationConfiguration config = new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker);
