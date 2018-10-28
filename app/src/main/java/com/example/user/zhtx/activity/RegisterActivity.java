@@ -1,6 +1,7 @@
 package com.example.user.zhtx.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -39,8 +40,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private static final int CODE_REPEAT = 1;       //重新发送
     private boolean isSend = false;                 //判断是否已经发送信息
     private boolean isRegister = false;
-    private final String appkty = "2867d6ad4dd7f";
-    private final String appSecret = "3f6c4b2a2f7e43b16ce920b91261cf1c";
+    private final String appkty = "286309d7a4904";
+    private final String appSecret = "bae047d3b2f375d802dfe3fb1d778efa";
 
 
 
@@ -95,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         switch (view.getId()){
             case R.id.activity_register_btn_register:
-                ShowToast.show(RegisterActivity.this,"注册按钮点击");
+            /*    ShowToast.show(RegisterActivity.this,"注册按钮点击");
                 Log.i("text",phone+"--"+pwd+"--"+confirmPwd+"--"+verification);
                 if (checkPhone(phone)){
                     Log.i("text","电话通过");
@@ -103,7 +104,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         Log.i("text","密码通过通过");
 
                     }
-                }
+                }*/
+                Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);
+                startActivity(intent);
                 break;
             case R.id.activity_register_btn_getVerification:
                 ShowToast.show(RegisterActivity.this,"获取验证码按钮点击");
@@ -117,6 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     // 通过匹配器查找是否有该字符，不可重复调用重复调用matcher.find()
                     if (matcher.find()) {//匹配手机号是否存在
                         alterWarning(phone);
+                        //    showDialog("提示","真的要发送吗");
                     } else {
                         ShowToast.show(RegisterActivity.this,"手机号格式错误");
                     }
@@ -136,27 +140,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return result;
     }
 
-    private boolean checkPwd(String pwd , String confirmPwd){
-        boolean result = false;
-        if (pwd.length()<6){
-            errDialog("错误提示","密码不得少于6位");
-        }else if (pwd.length()>16){
-            errDialog("错误提示","密码不得多于16位");
-        }else {
-            if (pwd.equals(confirmPwd)){
-                result=true;
-            }else {
-                errDialog("错误提示","两次密码输入不一致");
-            }
-        }
-        return result;
-    }
-
-    private boolean checkVerification(){
-        boolean result = false;
-
-        return result;
-    }
 
     private void errDialog(String title,String content){
         new AlertDialog.Builder(RegisterActivity.this)

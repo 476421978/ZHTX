@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.tools.ShowToast;
 
-import java.text.SimpleDateFormat;
 
 public class RegisterInfoActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_birthday,btn_commit;
