@@ -201,7 +201,7 @@
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:textColor="@color/white"
-        android:text="完成资料填写"
+        android:text="完成注册"
         android:textSize="15dp"
         android:layout_margin="50dp"
         android:background="@drawable/bg_btn_theme"/>

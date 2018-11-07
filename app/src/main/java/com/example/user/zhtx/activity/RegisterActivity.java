@@ -64,6 +64,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             if (result == SMSSDK.RESULT_COMPLETE) {
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                 //    handleResult();
+                    Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);
+                    startActivity(intent);
                     Log.i("test","发送答应");
                 }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){       //获取验证码成功
                     Log.i("data","获取验证码成功");
@@ -142,20 +144,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void handleResult(final String phone, final String pwd){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
 
-                FormBody formBody = new FormBody.Builder()
-                        .add("phone",phone)
-                        .add("pwd",pwd)
-                        .build();
-            }
-        }).start();
 
-        Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);
-        startActivity(intent);
+
     }
 
     private boolean checkPwd(String pwd,String confirmPwd){
