@@ -15,16 +15,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
 import com.mob.MobSDK;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -37,12 +43,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private ImageView iv_back;
 
     /*------------------验证码---------------------*/
+    private Message message;
     private TimerTask timerTask;
     private Timer timer;
     private int TIME = 60;                          //倒计时时间
     public String country="86";                     //国家区号，中国为86
 
     private static final int CODE_REPEAT = 1;       //重新发送
+    private static final int CODE_ERROR = 2;        //验证码错误
+    private static final int PHONE_ERROR = 3;       //电话号码已存在
+    private static final int ERROR =4;              //未知错误
+
     private final String appkty = "286309d7a4904";
     private final String appSecret = "bae047d3b2f375d802dfe3fb1d778efa";
 
@@ -75,8 +86,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }else{//错误等在这里（包括验证失败）
                 //错误码请参照http://wiki.mob.com/android-api-错误码参考/这里我就不再继续写了
                 Log.i("data","验证码错误");
-
-                SingleErrDiaog.show(RegisterActivity.this,"注册失败","验证码错误");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        message.what = CODE_ERROR;
+                        handler.sendMessage(message);
+                    }
+                }).start();
             }
         }
     };
@@ -95,6 +111,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         iv_back = (ImageView)findViewById(R.id.activity_register_iv_back);
         iv_back.setOnClickListener(this);
+
+        message = new Message();
     }
 
     @Override
@@ -143,10 +161,48 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void handleResult(final String phone, final String pwd){
+    private void handleResult(final String phone, final String password){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+                FormBody body = new FormBody.Builder()
+                    .add("phone",phone)
+                    .build();
 
+                final Request request = new Request.Builder()
+                    .url(Address.CheckPhone)
+                    .post(body)
+                    .build();
 
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
 
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String result = response.body().string();
+                        if (!TextUtils.isEmpty(result)){
+                            if (result.equals("手机可注册")){
+                                Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);
+                                intent.putExtra("phone",phone);
+                                intent.putExtra("password",password);
+                                startActivity(intent);
+                            }else if(result.equals("用户已注册")){
+                                message.what=PHONE_ERROR;
+                                handler.sendMessage(message);
+                            }else{
+                                message.what=ERROR;
+                                handler.sendMessage(message);
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     private boolean checkPwd(String pwd,String confirmPwd){
@@ -194,6 +250,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 timerTask.cancel();
                 TIME=60;
                 btn_getVerification.setText("重新发送验证码");
+            }else if (msg.what==CODE_ERROR){
+                SingleErrDiaog.show(RegisterActivity.this,"注册失败","验证码错误");
+            }else if (msg.what==PHONE_ERROR){
+                SingleErrDiaog.show(RegisterActivity.this,"注册失败","该手机号已注册");
+            }else if (msg.what == ERROR){
+                SingleErrDiaog.show(RegisterActivity.this,"注册失败","出现未知错误");
             }else{
                 btn_getVerification.setText(TIME+" 重新发送验证码");
             }
