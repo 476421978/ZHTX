@@ -63,7 +63,7 @@ import com.example.user.zhtx.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map extends Fragment implements View.OnClickListener, SensorEventListener {
+public class MapPage extends Fragment implements View.OnClickListener, SensorEventListener {
     private static Bitmap BbitmapTest;
     List<MyItem> items1 = new ArrayList<MyItem>();
     private boolean pressed = false;

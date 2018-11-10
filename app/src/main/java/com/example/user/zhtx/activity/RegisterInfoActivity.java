@@ -252,7 +252,7 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
     DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener(){
         @Override
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-            ShowToast.show(RegisterInfoActivity.this,i+" "+(i1+1)+" "+i2);
+        //    ShowToast.show(RegisterInfoActivity.this,i+" "+(i1+1)+" "+i2);
             btn_birthday.setText(i+"年"+(i1+1)+"月"+i2+"日");
         }
     };

@@ -17,7 +17,7 @@ public class User {
     private byte login;
     private byte isBan;
     private byte isView;            // 可见范围
-    private byte[] pic;
+    private String pic;
 
 
 
@@ -27,10 +27,10 @@ public class User {
     }
 
     public User(Integer id, String name, String password, String phonenum, String address, byte gender,
-                Timestamp birthday, byte login, byte isBan, byte isView, byte[] pic) {
+                Timestamp birthday, byte login, byte isBan, byte isView, String pic) {
         super();
         this.id = id;
-        name = name;
+        this.name = name;
         this.password = password;
         this.phonenum = phonenum;
         this.address = address;
@@ -96,10 +96,10 @@ public class User {
     public void setIsBan(byte isBan) {
         this.isBan = isBan;
     }
-    public byte[] getPic() {
+    public String getPic() {
         return pic;
     }
-    public void setPic(byte[] pic) {
+    public void setPic(String pic) {
         this.pic = pic;
     }
 
