@@ -9,7 +9,7 @@ package com.example.user.zhtx.tools;
 
 
 public class Address {
-    public static  final String address = "http://172.17.144.112:8080";
+    public static  final String address = "http://172.17.146.102:8080";
 
     /*----------------------登录----------------------------*/
     public static final String longin=address+"/txzh/login";
