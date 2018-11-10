@@ -32,9 +32,6 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_main_page);
         initView();
         initMap();
-
-
-
     }
 
     private void initView(){
@@ -47,6 +44,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         imageMessage = (ImageView)findViewById(R.id.activity_main_page_iv_message);
         imageFriends = (ImageView)findViewById(R.id.activity_main_page_iv_friends);
         imageGroup = (ImageView)findViewById(R.id.activity_main_page_iv_group);
+        imageMap.setImageResource(R.drawable.map_blue);
 
 
         map.setOnClickListener(this);
@@ -60,31 +58,44 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.activity_main_page_rl_map:
-
                 initMap();
+                exchangeImageColor(1);
                 break;
             case R.id.activity_main_page_rl_message:
                 initMessage();
+                exchangeImageColor(2);
                 break;
             case R.id.activity_main_page_rl_friends:
+                exchangeImageColor(3);
                 initFriends();
                 break;
             case R.id.activity_main_page_rl_group:
+                exchangeImageColor(4);
                 initGroup();
                 break;
         }
     }
 
-    private void iconColor(int i){
-        ArrayList<ImageView> icons = new ArrayList<ImageView>();
-        icons.add(imageMap);
-        icons.add(imageMessage);
-        icons.add(imageFriends);
-        icons.add(imageGroup);
+    public void exchangeImageColor(int i){
+        imageMap.setImageResource(R.drawable.map_black);
+        imageMessage.setImageResource(R.drawable.messages_black);
+        imageFriends.setImageResource(R.drawable.person_black);
+        imageGroup.setImageResource(R.drawable.group_black);
 
-
-
-
+        switch (i){
+            case 1:
+                imageMap.setImageResource(R.drawable.map_blue);
+                break;
+            case 2:
+                imageMessage.setImageResource(R.drawable.message_blue);
+                break;
+            case 3:
+                imageFriends.setImageResource(R.drawable.person_blue);
+                break;
+            case 4:
+                imageGroup.setImageResource(R.drawable.group_blue);
+                break;
+        }
     }
 
     private void initMap(){
