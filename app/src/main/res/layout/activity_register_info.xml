@@ -43,6 +43,7 @@
             android:id="@+id/activity_registerInfo_iv_head"
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:scaleType="fitXY"
             android:background="@drawable/head2" />
 
         <Button
@@ -75,7 +76,7 @@
             android:text="性别:"/>
 
         <RadioGroup
-            android:id="@+id/activity_registerInfo_RG_sexRadio"
+            android:id="@+id/activity_registerInfo_rg_gender"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
@@ -83,14 +84,14 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/activity_registerInfo_RB_man"
+                android:id="@+id/activity_registerInfo_rb_man"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="男"/>
 
             <RadioButton
-                android:id="@+id/activity_registerInfo_RB_women"
+                android:id="@+id/activity_registerInfo_rb_women"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"

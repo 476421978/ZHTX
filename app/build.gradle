@@ -40,7 +40,7 @@ dependencies {
 apply plugin: 'com.mob.sdk'
 
 MobSDK {
-    appKey "2867d6ad4dd7f"
-    appSecret "3f6c4b2a2f7e43b16ce920b91261cf1c"
+    appKey "286309d7a4904"
+    appSecret "bae047d3b2f375d802dfe3fb1d778efa"
     SMSSDK {}
 }

@@ -57,8 +57,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private final String appkty = "286309d7a4904";
     private final String appSecret = "bae047d3b2f375d802dfe3fb1d778efa";
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,16 +66,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         SMSSDK.registerEventHandler(eh);
         initView();
     }
-
+// 13543607405
     EventHandler eh=new EventHandler(){
         @Override
         public void afterEvent(int event, int result, Object data) {
             if (result == SMSSDK.RESULT_COMPLETE) {
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                //    handleResult();
+
+                    // 后台我自己写来测试的，你们注释掉handleResut,直接Internt
+                /*    String phone =  ed_phone.getText().toString().trim().replace("/s","");
+                    String password = ed_pwd.getText().toString();
                     Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);
-                    startActivity(intent);
-                    Log.i("test","发送答应");
+                    intent.putExtra("phone",phone);
+                    intent.putExtra("password",password);*/
+
+
+                //    handleResult(ed_phone.getText().toString(),ed_pwd.getText().toString());
                 }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){       //获取验证码成功
                     Log.i("data","获取验证码成功");
                 }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){//如果你调用了获取国家区号类表会在这里回调
@@ -85,14 +89,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             }else{//错误等在这里（包括验证失败）
                 //错误码请参照http://wiki.mob.com/android-api-错误码参考/这里我就不再继续写了
-                Log.i("data","验证码错误");
-                new Thread(new Runnable() {
+
+             /*   new Thread(new Runnable() {
                     @Override
                     public void run() {
                         message.what = CODE_ERROR;
                         handler.sendMessage(message);
                     }
-                }).start();
+                }).start();*/
+
+                handleResult(ed_phone.getText().toString(),ed_pwd.getText().toString());
             }
         }
     };
@@ -185,6 +191,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
+                        Log.i("rester",result+"  返回结果---------------------------------------------");
                         if (!TextUtils.isEmpty(result)){
                             if (result.equals("手机可注册")){
                                 Intent intent = new Intent(RegisterActivity.this,RegisterInfoActivity.class);

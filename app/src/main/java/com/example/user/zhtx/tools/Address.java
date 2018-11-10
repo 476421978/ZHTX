@@ -12,5 +12,5 @@ public class Address {
     public static final String longin="http://172.17.146.23:8080/ZHTX_Test/doLogin";
     public static final String Test="http://172.17.146.163:8080/SpringMvcTest1/getUser";
     public static final String Register="http://172.17.146.23:8080/ZHTX_Test/doRegister";
-
+    public static final String CheckPhone="http://172.17.146.23:8080/ZHTX_Test/checkPhone";
 }
