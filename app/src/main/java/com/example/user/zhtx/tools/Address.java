@@ -9,8 +9,22 @@ package com.example.user.zhtx.tools;
 
 
 public class Address {
+    public static  final String address = "http://172.17.144.112:8080";
+
+    /*----------------------登录----------------------------*/
     public static final String longin="http://172.17.146.23:8080/ZHTX_Test/doLogin";
+        //得到用户信息
+    public static final String getInfo=address+"";
+
+    //测试
     public static final String Test="http://172.17.146.163:8080/SpringMvcTest1/getUser";
-    public static final String Register="http://172.17.146.23:8080/ZHTX_Test/doRegister";
-    public static final String CheckPhone="http://172.17.146.23:8080/ZHTX_Test/checkPhone";
+
+    /*----------------------注册----------------------------*/
+        //检查用户是否已注册
+    public static final String CheckPhone="http://172.17.144.47:8080/ZHTX_Test/checkPhone";
+    public static final String Register=address+"/txzh/insert";
+
+    /*----------------------找回密码----------------------------*/
+        //重置密码
+    public static final String ResetPassword = "";
 }

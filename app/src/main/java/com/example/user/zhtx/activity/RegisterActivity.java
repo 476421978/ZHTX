@@ -80,8 +80,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("phone",phone);
                     intent.putExtra("password",password);*/
 
-
-                //    handleResult(ed_phone.getText().toString(),ed_pwd.getText().toString());
+                    handleResult(ed_phone.getText().toString(),ed_pwd.getText().toString());
                 }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){       //获取验证码成功
                     Log.i("data","获取验证码成功");
                 }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){//如果你调用了获取国家区号类表会在这里回调
@@ -90,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }else{//错误等在这里（包括验证失败）
                 //错误码请参照http://wiki.mob.com/android-api-错误码参考/这里我就不再继续写了
 
-             /*   new Thread(new Runnable() {
+            /*    new Thread(new Runnable() {
                     @Override
                     public void run() {
                         message.what = CODE_ERROR;
@@ -135,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (checkPhone(phone)){
                     if (checkPwd(pwd,confirmPwd)){
                         if (!TextUtils.isEmpty(verification)){
-                            SMSSDK.submitVerificationCode(country,ed_phone.getText().toString().trim().replace("/s",""),verification);
+                            SMSSDK.submitVerificationCode(country,phone,verification);
                         }else {
                             SingleErrDiaog.show(RegisterActivity.this,"注册失败","验证码不能为空");
                         }

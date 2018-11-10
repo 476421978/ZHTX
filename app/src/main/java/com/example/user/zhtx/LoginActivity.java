@@ -2,6 +2,8 @@ package com.example.user.zhtx;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -28,10 +31,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class  LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tv_register,tv_resetPwd;
-    private EditText ed_phoneName,ed_pwd;
+    private EditText ed_phoneNum,ed_pwd;
     private Button btn_login;
+    private Message message;
+    private final static int LOGIN_SUCCESS =1;
+    private final static int LOGIN_FAIL = 2;
 
     private String[] permissions = {Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.INTERNET,
@@ -66,9 +72,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_login = (Button) findViewById(R.id.activity_login_btn_login);
         btn_login.setOnClickListener(this);
 
-        ed_phoneName = (EditText) findViewById(R.id.activity_login_ed_phoneNumber);
+        ed_phoneNum = (EditText) findViewById(R.id.activity_login_ed_phoneNumber);
         ed_pwd = (EditText) findViewById(R.id.activity_login_ed_pwd);
 
+        message = new Message();
     }
 
     @Override
@@ -93,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void check(){
         Log.i("login","已点击登陆");
-        String phone = ed_phoneName.getText().toString().trim();
+        String phone = ed_phoneNum.getText().toString().trim();
         String password = ed_pwd.getText().toString().trim();
         if ((phone.length()==0) || (phone==null)){
             SingleErrDiaog.show(LoginActivity.this,"登陆失败","电话号码不能为空");
@@ -137,9 +144,61 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
                         Log.i("login",result);
+                        if (result.equals("true")){
+                            message.what=LOGIN_SUCCESS;
+                            handler.sendMessage(message);
+                        }else{
+                            message.what=LOGIN_FAIL;
+                            message.obj = result;
+                        }
                     }
                 });
+            }
+        }).start();
+    }
 
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == LOGIN_SUCCESS){
+                Intent intent = new Intent(LoginActivity.this,MainPageActivity.class);
+                startActivity(intent);
+            }
+            else {
+                SingleErrDiaog.show(LoginActivity.this,"登录失败",message.obj+"");
+            }
+        }
+    };
+
+    private void getUserInfo(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+
+                FormBody body = new FormBody.Builder()
+                    .add("phonenum",ed_phoneNum.getText().toString())
+                    .build();
+
+                Request request = new Request.Builder()
+                    .url(Address.getInfo)
+                    .post(body)
+                    .build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String result = response.body().string();
+
+
+                    }
+                });
             }
         }).start();
     }

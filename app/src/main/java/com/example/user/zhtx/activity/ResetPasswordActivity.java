@@ -3,6 +3,7 @@ package com.example.user.zhtx.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,11 @@ import android.widget.ImageView;
 
 import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.tools.Address;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText ed_newPwd,ed_confirmPwd;
@@ -39,6 +45,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.activity_reset_password_btn_reset:
+                if (!checkPwd()){
+                    return;
+                }
+                Log.i("phone",getIntent().getStringExtra("phone"));
+
                 Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
                 startActivity(intent);
                 break;
@@ -46,6 +57,30 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 finish();
                 break;
         }
+    }
 
+    private void updatePwd(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+
+                FormBody body = new FormBody.Builder()
+                    .add("password",ed_newPwd.getText().toString())
+                    .add("phone",getIntent().getStringExtra("phone"))
+                    .build();
+
+
+
+
+            }
+        }).start();
+    }
+
+    private boolean checkPwd(){
+        if (ed_newPwd.getText().toString().equals(ed_confirmPwd.getText().toString())){
+            return true;
+        }
+        return false;
     }
 }

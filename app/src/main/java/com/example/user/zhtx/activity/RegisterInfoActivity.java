@@ -15,6 +15,7 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,9 +29,11 @@ import android.widget.Toast;
 import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.tools.Address;
+import com.example.user.zhtx.tools.ImageFormat;
 import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.ShowToast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -51,7 +54,10 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
     private Uri imageUri;
     private String photoPath;
     private Bitmap bitmap;
-    private String gender="男";
+    private String gender = "0";
+    private String birthday ;
+
+    private String pic;
 
     private final static int REGISTER_SUCCESS = 1;      //注册成功
     private final static int REGISTER_FAIL =  2;        //注册失败
@@ -182,6 +188,22 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         startActivityForResult(intent,RESULT_REQUEST_CODE);
     }
 
+    private boolean checkInfo(){
+        if (TextUtils.isEmpty(ed_name.getText().toString())){
+            ShowToast.show(RegisterInfoActivity.this,"昵称不能为空");
+            return false;
+        }
+        if (TextUtils.isEmpty(ed_address.getText().toString())){
+            ShowToast.show(RegisterInfoActivity.this,"地址不能为空");
+            return false;
+        }
+        if (btn_birthday.getText().toString().equals("请选择出生日期")){
+            ShowToast.show(RegisterInfoActivity.this,"请选择出生日期");
+            return false;
+        }
+        return true;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -196,7 +218,7 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
             setImageBitmap();
 
             iv_head.setBackground(null);
-            //            bitmapToString = BitmapStringTool.BitmapToString(bitmap);
+    //        bitmapToString = BitmapStringTool.BitmapToString(bitmap);
 
             /**已经把所选的相片变成String**/
             //         Log.i("bitmap",bitmapToString);
@@ -228,6 +250,13 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         options.inSampleSize = inSampleSize;
         options.inJustDecodeBounds = false;
         bitmap = BitmapFactory.decodeFile(photoPath, options);
+
+        ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+
+        ImageFormat format = ImageFormat.getInstance();
+        pic = format.bitmapToBase64(bitmap);
+
         iv_head.setImageBitmap(bitmap);
     }
 
@@ -238,12 +267,12 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
             switch (i){
                 case R.id.activity_registerInfo_rb_man:
-                    gender = "男";
+                    gender = "0";
                     ShowToast.show(RegisterInfoActivity.this,rb_man.getText().toString());
                     break;
                 case R.id.activity_registerInfo_rb_women:
                     ShowToast.show(RegisterInfoActivity.this,rb_women.getText().toString());
-                    gender = "女";
+                    gender = "1";
                     break;
             }
         }
@@ -253,15 +282,18 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         @Override
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         //    ShowToast.show(RegisterInfoActivity.this,i+" "+(i1+1)+" "+i2);
-            btn_birthday.setText(i+"年"+(i1+1)+"月"+i2+"日");
+            btn_birthday.setText(i+"-"+(i1+1)+"-"+i2);
+            birthday = i+"-"+(i1+1)+"-"+i2;
         }
     };
 
     private void saveInfo(){
+        if (!checkInfo()){
+            return;
+        }
         final String phone = getIntent().getStringExtra("phone");
         final String password = getIntent().getStringExtra("password");
         final String name = ed_name.getText().toString();
-        final String birthday = btn_birthday.getText().toString();
         final String address = ed_address.getText().toString();
         new Thread(new Runnable() {
             @Override
@@ -269,13 +301,17 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                 OkHttpClient client = new OkHttpClient();
 
                 FormBody body = new FormBody.Builder()
-                        .add("phone",phone)
+                        .add("phonenum",phone)
                         .add("password",password)
                         .add("name",name)
                         .add("birthday",birthday)
                         .add("address",address)
                         .add("gender",gender)
+                     //   .add("pic",pic)
+                        .add("pic","01")
                         .build();
+
+                Log.i("result",phone+" "+password+"  "+name+"  "+birthday+"  "+address+"  "+gender+"  pic");
 
                 final Request request = new Request.Builder()
                         .url(Address.Register)
@@ -292,6 +328,8 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
+
+                        Log.i("a","----------------"+result);
                         if (result.equals("注册完成")){
                             message.what = REGISTER_SUCCESS;
                             handler.sendMessage(message);

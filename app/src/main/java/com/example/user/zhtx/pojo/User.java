@@ -21,6 +21,7 @@ public class User {
 
 
 
+
     public User() {
         super();
         // TODO Auto-generated constructor stub
@@ -42,7 +43,7 @@ public class User {
         this.pic = pic;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
     public void setId(Integer id) {
