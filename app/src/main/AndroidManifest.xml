@@ -55,19 +55,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+
+        <activity android:name=".activity.MainPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.RegisterInfoActivity" />
         <activity android:name=".activity.FriendInviteActivity" />
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.ResetPasswordActivity" />
-        <activity android:name=".activity.MainPageActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.SeeAreaActivity" />
         <activity android:name=".activity.ChangePasswordByPwd" />
@@ -75,13 +77,21 @@
         <activity android:name=".activity.CareListActivity" />
         <activity android:name=".activity.SelfInfoActivity" />
         <activity android:name=".activity.ModifyInfoActivity" />
+        <activity android:name=".Map.BNaviGuideActivity" />
+
+        <service
+            android:name=".Map.LocationService"
+            android:enabled="true"
+            android:permission="com.example.user.zhtx.Map.LocationService">
+        </service>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ORyB60KnAffainhYs98pK7i1d58GBIzs" />
+            android:value="NaFnkTUNc6NOYT7gpjz1eLQ2E73toL7f" />
 
         <activity android:name=".activity.AddFriendActivity" />
-        <activity android:name=".activity.FriendInfoActivity"></activity>
+        <activity android:name=".activity.FriendInfoActivity" />
+
     </application>
 
 </manifest>

@@ -13,12 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.pojo.MessageInfo;
 import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
+import com.google.gson.Gson;
 import com.mob.MobSDK;
 
 import java.io.IOException;
@@ -41,7 +42,6 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
     private EditText ed_phone,ed_verification;
     private ImageView iv_back;
 
-    private Message message;
     private TimerTask timerTask;
     private Timer timer;
     private int TIME = 60;                          //倒计时时间
@@ -50,7 +50,6 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
     private static final int CODE_REPEAT = 1;       //重新发送
     private static final int CODE_ERROR = 2;        //验证码错误
     private static final int PHONE_ERROR = 3;       //电话号码不存在
-    private static final int ERROR =4;              //未知错误
 
     private final String appkty = "286309d7a4904";
     private final String appSecret = "bae047d3b2f375d802dfe3fb1d778efa";
@@ -78,14 +77,14 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 }
             }else{//错误等在这里（包括验证失败）
                 //错误码请参照http://wiki.mob.com/android-api-错误码参考/这里我就不再继续写了
-                new Thread(new Runnable() {
+            /*    new Thread(new Runnable() {
                     @Override
                     public void run() {
                         message.what = CODE_ERROR;
                         handler.sendMessage(message);
                     }
-                }).start();
-
+                }).start();*/
+                handleResult();
             }
         }
     };
@@ -102,7 +101,6 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
         iv_back = (ImageView)findViewById(R.id.activity_find_password_iv_back);
         iv_back.setOnClickListener(this);
 
-        message = new Message();
     }
 
     @Override
@@ -168,11 +166,11 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 OkHttpClient client = new OkHttpClient();
 
                 FormBody body = new FormBody.Builder()
-                    .add("phone",phone)
+                    .add("phonenum",phone)
                     .build();
 
                 final Request request = new Request.Builder()
-                    .url(Address.CheckPhone)
+                    .url(Address.CheckPhone2)
                     .post(body)
                     .build();
 
@@ -186,12 +184,20 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
-                        if (result.equals("手机可注册")){
+
+                        Log.i("result",result+"--------------------------------");
+
+                        Gson gson = new Gson();
+                        MessageInfo m = gson.fromJson(result,MessageInfo.class);
+
+                        if ("true".equals(m.getSuccess())){
                             Intent intent = new Intent(FindPasswordActivity.this,ResetPasswordActivity.class);
                             intent.putExtra("phone",ed_phone.getText().toString());
                             startActivity(intent);
-                        }else if ("电话不存在".equals(result)){
+                        }else if ("false".equals(m.getSuccess())){
+                            Message message = new Message();
                             message.what =  PHONE_ERROR;
+                            message.obj = m.getMessage();
                             handler.sendMessage(message);
                         }
 
@@ -202,6 +208,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
         }).start();
 
     }
+
 
     private void alterWarning(final String phone){
         new AlertDialog.Builder(FindPasswordActivity.this)
@@ -243,10 +250,17 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 TIME=60;
                 btn_getVerification.setText("重新发送验证码");
             }if (msg.what == CODE_ERROR){
-                handleResult();
+            //    handleResult();
+                SingleErrDiaog.show(FindPasswordActivity.this,"注册失败","验证码错误");
+            }if ( msg.what == PHONE_ERROR){
+                SingleErrDiaog.show(FindPasswordActivity.this,"找回密码失败",msg.obj+"");
+            }else{
+                btn_getVerification.setText(TIME+" 重新发送验证码");
             }
         }
     };
+
+
 
     //销毁短信注册
     @Override

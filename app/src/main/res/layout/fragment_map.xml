@@ -1,39 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/ThemeColor">
+        <LinearLayout
+            android:id="@+id/ll_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:orientation="vertical"
+            android:elevation="10dp"
+            android:background="@color/white">
 
-        <TextView
-            android:id="@+id/fragment_tv_setting"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="广东省佛山市南海区信息大道中18号"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/back"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="在广东轻工职业技术学院附近"
+                    android:textSize="12dp"
+                    android:textColor="@color/back"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="15dp"
+                            android:text="查看详情"
+                            android:drawableLeft="@drawable/wenhao"
+                            android:background="@drawable/bg_btn_elliptic_white"/>
+
+                        <Button
+                            android:id="@+id/route_btn"
+                            android:layout_width="0dp"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="15dp"
+                            android:text="显示路线"
+                            android:textColor="@color/white"
+                            android:drawableLeft="@drawable/route"
+                            android:background="@drawable/bg_btn_elliptic_blue"/>
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bike_guide_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="骑车导航"/>
+
+        <Button
+            android:id="@+id/walk_guide_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="步行导航"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/showgps_btn"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="50dp"
+            android:padding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="设置"
-            android:textSize="17sp"
-            android:layout_gravity="right"
-            android:textColor="@color/white"
-            android:layout_marginRight="20dp"/>
-    </android.support.v7.widget.Toolbar>
+            android:background="@drawable/bg_location"
+            android:src="@drawable/getlocation"
+            android:layout_alignParentBottom="true"
+            android:elevation="10dp"/>
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="显示路线"/>
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="返回自己位置"/>
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:clickable="true" />
 
-</LinearLayout>
+</RelativeLayout>

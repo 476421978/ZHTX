@@ -28,10 +28,13 @@ import android.widget.Toast;
 
 import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.pojo.MessageInfo;
 import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.ImageFormat;
 import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.ShowToast;
+import com.example.user.zhtx.tools.SingleErrDiaog;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -308,10 +311,8 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                         .add("address",address)
                         .add("gender",gender)
                      //   .add("pic",pic)
-                        .add("pic","01")
+                        .add("pic",pic)
                         .build();
-
-                Log.i("result",phone+" "+password+"  "+name+"  "+birthday+"  "+address+"  "+gender+"  pic");
 
                 final Request request = new Request.Builder()
                         .url(Address.Register)
@@ -329,20 +330,19 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
 
-                        Log.i("a","----------------"+result);
-                        if (result.equals("注册完成")){
+                        Gson gson = new Gson();
+                        MessageInfo m = gson.fromJson(result,MessageInfo.class);
+
+                        if ("true".equals(m.getSuccess())){
                             message.what = REGISTER_SUCCESS;
                             handler.sendMessage(message);
-                            Intent intent = new Intent(RegisterInfoActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }else if(result.equals("注册失败")){
+                        }else if("false".equals(m.getSuccess())){
                             message.what = REGISTER_FAIL;
                             handler.sendMessage(message);
-                            Log.i("result","注册失败");
                         }else{
                             message.what = REGISTER_ERROR;
+                            message.obj = m.getMessage();
                             handler.sendMessage(message);
-                            Log.i("result","出现未知错误");
                         }
 
                     }
@@ -356,11 +356,13 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
       public void handleMessage(Message msg){
           if (msg.what == REGISTER_SUCCESS){
               ShowToast.show(RegisterInfoActivity.this,"注册成功");
+              Intent intent = new Intent(RegisterInfoActivity.this, LoginActivity.class);
+              startActivity(intent);
           }else if(msg.what == REGISTER_ERROR){
               ShowToast.show(RegisterInfoActivity.this,"出现未知错误");
           }
           else if(msg.what == REGISTER_FAIL){
-              ShowToast.show(RegisterInfoActivity.this,"注册失败");
+              SingleErrDiaog.show(RegisterInfoActivity.this,"注册失败",msg.obj+"");
           }
       }
     };

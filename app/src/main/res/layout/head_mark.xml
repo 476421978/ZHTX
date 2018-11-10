@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainPageActivity"
+    android:orientation="vertical">
+
+    <com.example.user.zhtx.Map.CircleImageView
+        android:id="@+id/shape"
+        android:layout_centerHorizontal="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/abc"
+        android:elevation="20dp"/>
+
+    <ImageView
+        android:paddingTop="3dp"
+        android:layout_below="@+id/shape"
+        android:layout_centerHorizontal="true"
+        android:scaleType="center"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/popup_down"
+        android:elevation="15dp"/>
+
+</RelativeLayout>
