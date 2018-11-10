@@ -2,6 +2,7 @@ package com.example.user.zhtx;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +17,14 @@ import com.example.user.zhtx.activity.FindPasswordActivity;
 import com.example.user.zhtx.activity.MainPageActivity;
 import com.example.user.zhtx.activity.RegisterActivity;
 import com.example.user.zhtx.internet.CheckNetwork;
+import com.example.user.zhtx.pojo.MessageInfo;
+import com.example.user.zhtx.pojo.User;
 import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.PerssionControl;
+import com.example.user.zhtx.tools.SharedPreferencesControl;
 import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +40,6 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tv_register,tv_resetPwd;
     private EditText ed_phoneNum,ed_pwd;
     private Button btn_login;
-    private Message message;
     private final static int LOGIN_SUCCESS =1;
     private final static int LOGIN_FAIL = 2;
 
@@ -74,8 +78,6 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
 
         ed_phoneNum = (EditText) findViewById(R.id.activity_login_ed_phoneNumber);
         ed_pwd = (EditText) findViewById(R.id.activity_login_ed_pwd);
-
-        message = new Message();
     }
 
     @Override
@@ -109,8 +111,6 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                 SingleErrDiaog.show(LoginActivity.this,"登陆失败","密码不能为空");
             }else {
                 checkLogin(phone,password);
-                Intent intent1 = new Intent(LoginActivity.this, MainPageActivity.class);
-                startActivity(intent1);
             }
         }
     }
@@ -122,16 +122,15 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                 OkHttpClient client = new OkHttpClient();
 
                 FormBody formBody = new FormBody.Builder()
-                        .add("phone",phone)
+                        .add("phonen um",phone)
                         .add("password",password)
                         .build();
 
                 final Request request = new Request.Builder()
-                    .url(Address.Test)
+                    .url(Address.longin)
                     .post(formBody)
                     .build();
 
-                Log.i("login","已发送");
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
@@ -143,13 +142,20 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
+
+                        Gson gson = new Gson();
+                        MessageInfo m = gson.fromJson(result,MessageInfo.class);
+
                         Log.i("login",result);
-                        if (result.equals("true")){
-                            message.what=LOGIN_SUCCESS;
-                            handler.sendMessage(message);
+                        if ("true".equals(m.getSuccess())){
+                            Message message1 = new Message();
+                            message1.what=LOGIN_SUCCESS;
+                            handler.sendMessage(message1);
                         }else{
-                            message.what=LOGIN_FAIL;
-                            message.obj = result;
+                            Message message2 = new Message();
+                            message2.what=LOGIN_FAIL;
+                            message2.obj = m.getMessage();
+                            handler.sendMessage(message2);
                         }
                     }
                 });
@@ -161,11 +167,12 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == LOGIN_SUCCESS){
+                getUserInfo();
                 Intent intent = new Intent(LoginActivity.this,MainPageActivity.class);
                 startActivity(intent);
             }
             else {
-                SingleErrDiaog.show(LoginActivity.this,"登录失败",message.obj+"");
+                SingleErrDiaog.show(LoginActivity.this,"登录失败",msg.obj+"");
             }
         }
     };
@@ -181,7 +188,7 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     .build();
 
                 Request request = new Request.Builder()
-                    .url(Address.getInfo)
+                    .url(Address.getUser)
                     .post(body)
                     .build();
 
@@ -196,12 +203,15 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
 
+                        Log.i("result",result);
+                        Gson gson = new Gson();
+                //        User user = gson.fromJson(result,User.class);
+                        SharedPreferencesControl control = SharedPreferencesControl.getInstance();
+                //        control.saveUser(LoginActivity.this,user);
 
                     }
                 });
             }
         }).start();
     }
-
-
 }
