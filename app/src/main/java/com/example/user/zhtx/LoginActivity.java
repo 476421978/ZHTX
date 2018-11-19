@@ -122,7 +122,7 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                 OkHttpClient client = new OkHttpClient();
 
                 FormBody formBody = new FormBody.Builder()
-                        .add("phonen um",phone)
+                        .add("phonenum",phone)
                         .add("password",password)
                         .build();
 

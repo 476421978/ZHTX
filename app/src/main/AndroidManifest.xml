@@ -5,7 +5,7 @@
 
     <!-- 普通权限 -->
     //相机
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- 短信验证权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -55,8 +55,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".activity.MainPageActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,11 +64,11 @@
         </activity>
 
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.RegisterInfoActivity" />
+        <activity android:name=".activity.MainPageActivity" />
         <activity android:name=".activity.FriendInviteActivity" />
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.ResetPasswordActivity" />
-        <activity android:name=".LoginActivity" />
+    <activity android:name=".activity.RegisterInfoActivity"/>
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.SeeAreaActivity" />
         <activity android:name=".activity.ChangePasswordByPwd" />
@@ -82,8 +81,7 @@
         <service
             android:name=".Map.LocationService"
             android:enabled="true"
-            android:permission="com.example.user.zhtx.Map.LocationService">
-        </service>
+            android:permission="com.example.user.zhtx.Map.LocationService"></service>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -92,6 +90,18 @@
         <activity android:name=".activity.AddFriendActivity" />
         <activity android:name=".activity.FriendInfoActivity" />
 
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/filepath" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.user.zhtx.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepath" />
+        </provider>
     </application>
 
 </manifest>

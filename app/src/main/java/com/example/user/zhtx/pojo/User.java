@@ -18,7 +18,7 @@ public class User {
     private byte login;
     private byte isBan;
     private byte isView;            // 可见范围 0是所有可见 1是部分看见
-    private byte[] pic;
+    private String pic;
 
     public int getId() {
         return id;
@@ -100,11 +100,11 @@ public class User {
         this.isView = isView;
     }
 
-    public byte[] getPic() {
+    public String getPic() {
         return pic;
     }
 
-    public void setPic(byte[] pic) {
+    public void setPic(String pic) {
         this.pic = pic;
     }
 }
