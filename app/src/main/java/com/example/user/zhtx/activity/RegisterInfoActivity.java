@@ -2,14 +2,17 @@ package com.example.user.zhtx.activity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AlertDialog;
@@ -37,13 +40,17 @@ import com.example.user.zhtx.tools.SingleErrDiaog;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -65,6 +72,8 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
     private final static int REGISTER_SUCCESS = 1;      //注册成功
     private final static int REGISTER_FAIL =  2;        //注册失败
     private final static int REGISTER_ERROR = 3;        //出现未知错误
+
+    private String imagePath = "";
 
     private Message message;
 
@@ -219,14 +228,45 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
             photoPath = cursor.getString(cursor.getColumnIndex(filePathColumn[0]));
 
             setImageBitmap();
-
             iv_head.setBackground(null);
-    //        bitmapToString = BitmapStringTool.BitmapToString(bitmap);
-
-            /**已经把所选的相片变成String**/
-            //         Log.i("bitmap",bitmapToString);
-            //         Log.i("bitmap",bitmapToString.length()+"");
         }
+        if (resultCode == RESULT_OK){
+            if (Build.VERSION.SDK_INT >= 19){
+                handleImageOnKitKat(data);
+            }
+        }
+    }
+
+    private void handleImageOnKitKat(Intent data){
+        Uri uri = data.getData();
+        if(DocumentsContract.isDocumentUri(this,uri)){
+            String docId=DocumentsContract.getDocumentId(uri);
+            if("com.android.providers.media.documents".equals(uri.getAuthority())){
+                String id=docId.split(":")[1];
+                String selection=MediaStore.Images.Media._ID+"="+id;
+                imagePath=getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
+            }else if("com.android.providers.downloads.documents".equals(uri.getAuthority())){
+                Uri contentUri= ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath=getImagePath(contentUri,null);
+            }
+        }else if("content".equalsIgnoreCase(uri.getScheme())){
+            imagePath=getImagePath(uri,null);
+        }else if("file".equalsIgnoreCase(uri.getScheme())){
+            imagePath=uri.getPath();
+        }
+        Log.i("path",imagePath+"------------------------------------------");
+    }
+
+    private String getImagePath(Uri uri,String selection){
+        String Path=null;
+        Cursor cursor=getContentResolver().query(uri,null,selection,null,null);
+        if(cursor!=null){
+            if(cursor.moveToFirst()){
+                Path=cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return Path;
     }
 
     private void setImageBitmap() {
@@ -303,7 +343,9 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
             public void run() {
                 OkHttpClient client = new OkHttpClient();
 
-                FormBody body = new FormBody.Builder()
+                MediaType TYPE = MediaType.parse("image/png");
+
+        /*        FormBody body = new FormBody.Builder()
                         .add("phonenum",phone)
                         .add("password",password)
                         .add("name",name)
@@ -312,7 +354,18 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                         .add("gender",gender)
                      //   .add("pic",pic)
                         .add("pic",pic)
-                        .build();
+                        .build();*/
+
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("phonenum",phone)
+                .addFormDataPart("password",password)
+                .addFormDataPart("name",name)
+                .addFormDataPart("birthday",birthday)
+                .addFormDataPart("address",address)
+                .addFormDataPart("gender",gender)
+                .addFormDataPart("pic","pic",RequestBody.create(TYPE,new File(imagePath)))
+                .build();
 
                 final Request request = new Request.Builder()
                         .url(Address.Register)
