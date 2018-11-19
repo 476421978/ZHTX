@@ -49,8 +49,6 @@ public class MyLocationListener implements BDLocationListener {
 
     public static MyLocationListener newInstance(Context context, BaiduMap baiduMap) {
         if (myLocationListener == null) {
-
-            //4444444444
             myLocationListener = new MyLocationListener(context, baiduMap);
         }
         return myLocationListener;
