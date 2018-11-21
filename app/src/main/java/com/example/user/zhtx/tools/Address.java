@@ -33,4 +33,10 @@ public class Address {
         //普通信息
     public static final String ChangeMessage=address+"/txzh/ChangeMessage";
 
+     /*----------------------GPS----------------------------*/
+        //上传个人gps位置
+    public static final String SendSelfGPS = address+"/txzh/putGps";
+        //得到好友GPS位置
+    public static final String GetFirendsGPS = address+"/txzh/getFriendsGpsList";
+
 }

@@ -13,6 +13,8 @@ import com.example.user.zhtx.fragment.FriendsPage;
 import com.example.user.zhtx.fragment.GroupPage;
 import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
+import com.example.user.zhtx.pojo.FriendsGPS;
+import com.example.user.zhtx.tools.GetFriendsGPS;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_main_page);
         initView();
         initMap();
+
+        GetFriendsGPS getFriendsGPS = new GetFriendsGPS(MainPageActivity.this);
+        ArrayList<FriendsGPS> list =   getFriendsGPS.get();
     }
 
     private void initView(){

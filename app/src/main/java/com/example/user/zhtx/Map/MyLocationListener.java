@@ -1,15 +1,8 @@
 package com.example.user.zhtx.Map;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -25,13 +18,17 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.pojo.User;
 import com.example.user.zhtx.tools.GetLocation;
+import com.example.user.zhtx.tools.SharedPreferencesControl;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MyLocationListener implements BDLocationListener {
 
@@ -193,17 +190,5 @@ public class MyLocationListener implements BDLocationListener {
 
     public LocationClient getmLocationClient() {
         return mLocationClient;
-    }
-
-    private void sendSelfGPS(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
-
-            //    FormBody body = new FormBody.Builder()
-             //           .add("")
-            }
-        }).start();
     }
 }

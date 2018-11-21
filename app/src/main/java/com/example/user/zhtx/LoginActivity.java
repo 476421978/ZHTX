@@ -16,9 +16,12 @@ import com.example.user.zhtx.activity.FindPasswordActivity;
 import com.example.user.zhtx.activity.MainPageActivity;
 import com.example.user.zhtx.activity.RegisterActivity;
 import com.example.user.zhtx.internet.CheckNetwork;
+import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.pojo.MessageInfo;
 import com.example.user.zhtx.pojo.User;
 import com.example.user.zhtx.tools.Address;
+import com.example.user.zhtx.tools.GetFriendsGPS;
+import com.example.user.zhtx.tools.GetGPS;
 import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.SharedPreferencesControl;
 import com.example.user.zhtx.tools.ShowToast;
@@ -142,7 +145,7 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
 
-                        Log.i("result",result);
+                        Log.i("result",result+"---------------------------");
 
                         Gson gson = new Gson();
                         MessageInfo m = gson.fromJson(result,MessageInfo.class);
@@ -169,6 +172,10 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
         public void handleMessage(Message msg) {
             if (msg.what == LOGIN_SUCCESS){
                 getUserInfo();
+                // 获取好友的gps
+                GetGPS getGPS = new GetGPS(LoginActivity.this);
+                getGPS.getFriendsGps();
+
                 Intent intent = new Intent(LoginActivity.this,MainPageActivity.class);
                 startActivity(intent);
             }
@@ -208,11 +215,11 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                         User user = gson.fromJson(result,User.class);
                         SharedPreferencesControl control = new SharedPreferencesControl(LoginActivity.this);
                         control.saveUser(user);
-                        User user2 = control.getUser();
-
                     }
                 });
             }
         }).start();
     }
+
+
 }

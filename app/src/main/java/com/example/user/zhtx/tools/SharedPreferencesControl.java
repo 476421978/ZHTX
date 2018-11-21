@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.pojo.User;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,7 +25,7 @@ public class SharedPreferencesControl {
     private User user;
 
     public void saveUser( User user){
-        SharedPreferences sp = context.getSharedPreferences("user",Context.MODE_MULTI_PROCESS);
+        SharedPreferences sp = context.getSharedPreferences("user",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("id",user.getId());
         editor.putString("name",user.getName());
@@ -61,11 +63,6 @@ public class SharedPreferencesControl {
         }
     }
 
-    public String getBirthday(){
-        SharedPreferences sp = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        return sp.getString("birthday","");
-    }
-
     public void loginOut(){
         SharedPreferences sp = context.getSharedPreferences("user",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -82,4 +79,13 @@ public class SharedPreferencesControl {
         editor.remove("picPath");
         editor.commit();
     }
+
+    public void saveFriendsGPS(String data){
+        SharedPreferences sp = context.getSharedPreferences("user",context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =sp.edit();
+        String reslt = data;
+        editor.putString("friendsGPS",data);
+        editor.commit();
+    }
+
 }

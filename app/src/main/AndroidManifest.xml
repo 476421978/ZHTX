@@ -80,6 +80,11 @@
         <activity android:name=".Map.BNaviGuideActivity" />
 
         <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <service
             android:name=".Map.LocationService"
             android:enabled="true"
             android:permission="com.example.user.zhtx.Map.LocationService">
@@ -87,7 +92,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="NaFnkTUNc6NOYT7gpjz1eLQ2E73toL7f" />
+            android:value="ORyB60KnAffainhYs98pK7i1d58GBIzs" />
 
         <activity android:name=".activity.AddFriendActivity" />
         <activity android:name=".activity.FriendInfoActivity" />

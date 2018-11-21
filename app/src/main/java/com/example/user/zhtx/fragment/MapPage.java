@@ -2,8 +2,10 @@ package com.example.user.zhtx.fragment;
 
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
@@ -36,9 +38,21 @@ import com.example.user.zhtx.Map.PointConverge;
 import com.example.user.zhtx.Map.RoutePlan;
 import com.example.user.zhtx.Map.SensorManage;
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.pojo.MessageInfo;
+import com.example.user.zhtx.tools.Address;
+import com.example.user.zhtx.tools.GetLocation;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.OnMapClickListener, BaiduMap.OnMapLongClickListener, BaiduMap.OnMarkerClickListener {
     private boolean pressed = false;
@@ -115,6 +129,7 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
 //        mLocationClient.setLocOption(MyLocationListener.getLCOption());
 
 
+
         /**可用*/
 
         //地理编码检索
@@ -128,6 +143,48 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         routePlan.showRoutePlan();
 
         return v;
+    }
+
+    private void sendSelfGPS(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+
+                SharedPreferences sp = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+                FormBody body = new FormBody.Builder()
+                        .add("userid",sp.getInt("id",0)+"")
+                        .add("atitude", new GetLocation().getLatitude()+"")
+                        .add("longatitude",new GetLocation().getLongitude()+"")
+                        .build();
+
+                Log.i("gps",new GetLocation().getLatitude()+"------------------------");
+                Log.i("gps",new GetLocation().getLongitude()+"------------------------");
+
+                Request request = new Request.Builder()
+                        .url(Address.SendSelfGPS)
+                        .post(body)
+                        .build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String result = response.body().string();
+
+                        Log.i("map",result+"------------------------------");
+
+
+                    }
+                });
+
+            }
+        }).start();
     }
 
     @Override
@@ -252,6 +309,7 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         public void onServiceConnected(ComponentName name, IBinder service) {
             locationService = ((LocationService.LocationBinder)service).getService();
             locationService.initLocation(getContext(), baiduMap);
+            sendSelfGPS();
         }
 
         @Override
