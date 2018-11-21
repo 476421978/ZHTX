@@ -26,6 +26,11 @@ public class Address {
 
     /*----------------------找回密码----------------------------*/
         //重置密码
-    public static final String ResetPassword = "";
+    public static final String ResetPassword = address+"/txzh/findpassword";
     public static final String CheckPhone2=address+"/txzh/checkPhone2";
+
+    /*----------------------修改个人信息----------------------------*/
+        //普通信息
+    public static final String ChangeMessage=address+"/txzh/ChangeMessage";
+
 }

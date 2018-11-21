@@ -36,11 +36,12 @@
             android:layout_height="130dp"
             android:background="@drawable/bg_self"/>
 
-        <ImageView
-            android:id="@+id/activity_self_info_iv_head"
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/activity_self_info_siv_head"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:background="@drawable/touxiang"
+            android:scaleType="fitXY"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"/>
     </FrameLayout>

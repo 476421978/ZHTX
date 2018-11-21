@@ -2,7 +2,6 @@ package com.example.user.zhtx;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -143,6 +142,8 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
 
+                        Log.i("result",result);
+
                         Gson gson = new Gson();
                         MessageInfo m = gson.fromJson(result,MessageInfo.class);
 
@@ -203,11 +204,11 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
 
-                        Log.i("result",result);
                         Gson gson = new Gson();
-                //        User user = gson.fromJson(result,User.class);
-                        SharedPreferencesControl control = SharedPreferencesControl.getInstance();
-                //        control.saveUser(LoginActivity.this,user);
+                        User user = gson.fromJson(result,User.class);
+                        SharedPreferencesControl control = new SharedPreferencesControl(LoginActivity.this);
+                        control.saveUser(user);
+                        User user2 = control.getUser();
 
                     }
                 });

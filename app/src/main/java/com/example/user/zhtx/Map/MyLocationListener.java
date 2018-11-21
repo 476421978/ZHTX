@@ -30,6 +30,9 @@ import com.example.user.zhtx.tools.GetLocation;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+
 public class MyLocationListener implements BDLocationListener {
 
     private static MyLocationListener myLocationListener;
@@ -190,5 +193,17 @@ public class MyLocationListener implements BDLocationListener {
 
     public LocationClient getmLocationClient() {
         return mLocationClient;
+    }
+
+    private void sendSelfGPS(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
+
+            //    FormBody body = new FormBody.Builder()
+             //           .add("")
+            }
+        }).start();
     }
 }

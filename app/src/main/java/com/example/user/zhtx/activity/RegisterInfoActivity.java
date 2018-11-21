@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
@@ -32,7 +31,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.user.zhtx.BuildConfig;
 import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.pojo.MessageInfo;
@@ -69,7 +67,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
     private RadioButton rb_man,rb_women;
     private int which;
     private File PhotoSavefile;
-
     private Uri imageUri,CamarePhotoUri,outputUri;
     private String photoPath;
     private Bitmap bitmap;
@@ -81,8 +78,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
     private final static int REGISTER_SUCCESS = 1;      //注册成功
     private final static int REGISTER_FAIL =  2;        //注册失败
     private final static int REGISTER_ERROR = 3;        //出现未知错误
-    private static final int REQUEST_CAMERA = 4;//相机
-    private static final int PICTURE_CUT =5 ;//相片截图
 
     private String imagePath = "";
 
@@ -91,11 +86,11 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
     //相册
     public static final int IMAGE_REQUEST_CODE = 101;
     //手机
-    public static final int RESULT_REQUEST_CODE = 102;
+    private static final int REQUEST_CAMERA = 102;//相机
+    private static final int PICTURE_CUT =103 ;//相片截图
 
     private String[] perssions ={   Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                     Manifest.permission.CAMERA};
-
 
 
     @Override
@@ -246,8 +241,7 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-     //   super.onActivityResult(requestCode, resultCode, data);
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST_CODE) {//相册
             imageUri = data.getData();
             //获取照片路径
@@ -258,36 +252,38 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
 
             setImageBitmap();
             iv_head.setBackground(null);
-
+            if (resultCode == RESULT_OK){
+                if (Build.VERSION.SDK_INT >= 19){
+                    handleImageOnKitKat(data);
+                    cropPhoto(imageUri);
+                }
+            }
         }
+
+
         if (requestCode == REQUEST_CAMERA) {
             if(resultCode == RESULT_OK) {
+
                 cropPhoto(CamarePhotoUri);//裁剪图片
             }
         }
 
-        if (requestCode == PICTURE_CUT){ //裁剪完成
+        if (requestCode == PICTURE_CUT) { //裁剪完成
             isClickCamera = true;
-        Bitmap bitmap = null;
-        try {
-            if (isClickCamera) {
+            Bitmap bitmap = null;
+            try {
+                if (isClickCamera) {
 
-                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(CamarePhotoUri));
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
 
-                iv_head.setImageBitmap(bitmap);
-
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-            if (resultCode == RESULT_OK){
-                if (Build.VERSION.SDK_INT >= 19){
-
-                    handleImageOnKitKat(data);
+                    iv_head.setImageBitmap(bitmap);
 
                 }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-    }
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -354,7 +350,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         ImageFormat format = ImageFormat.getInstance();
         pic = format.bitmapToBase64(bitmap);
 
-        iv_head.setImageBitmap(bitmap);
     }
 
     // 性别选择
@@ -398,17 +393,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                 OkHttpClient client = new OkHttpClient();
 
                 MediaType TYPE = MediaType.parse("image/png");
-
-        /*        FormBody body = new FormBody.Builder()
-                        .add("phonenum",phone)
-                        .add("password",password)
-                        .add("name",name)
-                        .add("birthday",birthday)
-                        .add("address",address)
-                        .add("gender",gender)
-                     //   .add("pic",pic)
-                        .add("pic",pic)
-                        .build();*/
 
         RequestBody body = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -473,13 +457,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
           }
       }
     };
-//    @Override    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//
-//            default:
-//                break;
-//        }
-//    }
     private void cropPhoto(Uri uri) {
         // 创建File对象，用于存储裁剪后的图片，避免更改原图
         File file = new File(getExternalCacheDir(), "crop_image.jpg");
@@ -503,8 +480,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         intent.putExtra("aspectY", 1);
         intent.putExtra("crop", "true");//可裁剪
         // 裁剪后输出图片的尺寸大小
-        //intent.putExtra("outputX", 400);
-        //intent.putExtra("outputY", 200);
         intent.putExtra("scale", true);//支持缩放
         intent.putExtra("return-data", false);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
