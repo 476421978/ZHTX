@@ -57,4 +57,11 @@ public class ChangePasswordByPwd extends AppCompatActivity implements View.OnCli
 
         }
     }
+
+    private void checkPwd(){
+        String newPwd = ed_newPwd.getText().toString();
+        String comfirePwd = ed_confirmPwd.getText().toString();
+
+        
+    }
 }

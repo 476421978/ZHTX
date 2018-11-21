@@ -4,20 +4,33 @@ package com.example.user.zhtx.pojo;
  * Created by user on 2018/11/4.
  */
 
-import java.util.Date;
-import java.sql.Timestamp;
-
 public class User {
+
+
+    /**
+     * id : 30
+     * name : lck
+     * password : 123
+     * phonenum : 13692824048
+     * address : 123
+     * gender : 1
+     * birthday : 1541865600000
+     * login : 0
+     * isban : 0
+     * isview : 0
+     * pic : 13692824048
+     */
+
     private int id;
     private String name;
     private String password;
     private String phonenum;
     private String address;
-    private byte gender;
-    private Date birthday;
-    private byte login;
-    private byte isBan;
-    private byte isView;            // 可见范围 0是所有可见 1是部分看见
+    private int gender;
+    private long birthday;
+    private int login;
+    private int isban;
+    private int isview;
     private String pic;
 
     public int getId() {
@@ -60,44 +73,44 @@ public class User {
         this.address = address;
     }
 
-    public byte getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(byte gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
-    public Date getBirthday() {
+    public long getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(long birthday) {
         this.birthday = birthday;
     }
 
-    public byte getLogin() {
+    public int getLogin() {
         return login;
     }
 
-    public void setLogin(byte login) {
+    public void setLogin(int login) {
         this.login = login;
     }
 
-    public byte getIsBan() {
-        return isBan;
+    public int getIsban() {
+        return isban;
     }
 
-    public void setIsBan(byte isBan) {
-        this.isBan = isBan;
+    public void setIsban(int isban) {
+        this.isban = isban;
     }
 
-    public byte getIsView() {
-        return isView;
+    public int getIsview() {
+        return isview;
     }
 
-    public void setIsView(byte isView) {
-        this.isView = isView;
+    public void setIsview(int isview) {
+        this.isview = isview;
     }
 
     public String getPic() {

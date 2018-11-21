@@ -62,7 +62,6 @@
                     android:id="@+id/activity_modify_info_rb_man"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="男"/>
 
                 <RadioButton
