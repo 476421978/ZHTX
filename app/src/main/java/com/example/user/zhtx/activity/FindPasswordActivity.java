@@ -110,7 +110,6 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
 
         switch (view.getId()){
             case R.id.activity_find_password_btn_findPwd:
-                ShowToast.show(FindPasswordActivity.this,"找回密码");
                 if (checkInfo()){
                     if (!TextUtils.isEmpty(ed_verification.getText().toString())){
                         SMSSDK.submitVerificationCode(country,phone,verification);
@@ -118,8 +117,6 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                         SingleErrDiaog.show(FindPasswordActivity.this,"注册失败","验证码不能为空");
                     }
                 }
-            //    Intent intent = new Intent(FindPasswordActivity.this,ResetPasswordActivity.class);
-           //     startActivity(intent);
                 break;
             case R.id.activity_find_password_btn_getVerification:
                 ShowToast.show(FindPasswordActivity.this,"获取验证码");

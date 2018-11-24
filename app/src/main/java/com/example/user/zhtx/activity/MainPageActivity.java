@@ -1,8 +1,6 @@
 package com.example.user.zhtx.activity;
 
 import android.os.Bundle;
-import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.fragment.FriendsPage;
-import com.example.user.zhtx.fragment.GroupPage;
+import com.example.user.zhtx.fragment.SettingPage;
 import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
 import com.example.user.zhtx.pojo.FriendsGPS;
@@ -25,7 +23,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     private MapPage mapPage;
     private FriendsPage friendsPage;
     private MessagePage messagePage;
-    private GroupPage groupPage;
+    private SettingPage settingPage;
 
 
     @Override
@@ -36,7 +34,8 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         initMap();
 
         GetFriendsGPS getFriendsGPS = new GetFriendsGPS(MainPageActivity.this);
-        ArrayList<FriendsGPS> list =   getFriendsGPS.get();
+        ArrayList<FriendsGPS> list =  getFriendsGPS.get();
+
     }
 
     private void initView(){
@@ -146,12 +145,12 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     private void initGroup(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragment(transaction);
-        if (groupPage == null){
-            groupPage = new GroupPage();
-            transaction.add(R.id.activity_main_page_fragment,groupPage);
-            transaction.show(groupPage);
+        if (settingPage == null){
+            settingPage = new SettingPage();
+            transaction.add(R.id.activity_main_page_fragment, settingPage);
+            transaction.show(settingPage);
         }else {
-            transaction.show(groupPage);
+            transaction.show(settingPage);
         }
 
         transaction.commit();
@@ -168,8 +167,8 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         if (friendsPage != null){
             transaction.hide(friendsPage);
         }
-        if (groupPage != null){
-            transaction.hide(groupPage);
+        if (settingPage != null){
+            transaction.hide(settingPage);
         }
     }
 

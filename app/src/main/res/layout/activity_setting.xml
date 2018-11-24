@@ -10,17 +10,11 @@
         android:layout_height="50dp"
         android:background="@color/ThemeColor">
 
-        <ImageView
-            android:id="@+id/activity_setting_iv_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/back"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="设置"
-            android:textSize="17sp"
+            android:textSize="19sp"
             android:layout_gravity="center"
             android:textColor="@color/white"/>
     </android.support.v7.widget.Toolbar>

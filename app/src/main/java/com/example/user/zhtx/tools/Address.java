@@ -10,6 +10,7 @@ package com.example.user.zhtx.tools;
 
 public class Address {
     public static  final String address = "http://172.17.146.102:8080";
+    public static  final String title="http://172.17.146.102:8080/txzh/pic/";
 
     /*----------------------登录----------------------------*/
     public static final String longin=address+"/txzh/login";
@@ -28,6 +29,9 @@ public class Address {
         //重置密码
     public static final String ResetPassword = address+"/txzh/findpassword";
     public static final String CheckPhone2=address+"/txzh/checkPhone2";
+
+    /*----------------------修改密码----------------------------*/
+    public static final String ChangePasswordByPwd = address+"/txzh/changepassword";
 
     /*----------------------修改个人信息----------------------------*/
         //普通信息
