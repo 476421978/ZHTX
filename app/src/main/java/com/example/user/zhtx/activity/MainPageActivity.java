@@ -3,6 +3,7 @@ package com.example.user.zhtx.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,7 +36,6 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
 
         GetFriendsGPS getFriendsGPS = new GetFriendsGPS(MainPageActivity.this);
         ArrayList<FriendsGPS> list =  getFriendsGPS.get();
-
     }
 
     private void initView(){

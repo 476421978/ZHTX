@@ -62,35 +62,17 @@ public class GetGPS {
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
                         if (result.length()>0){
-                            Message message = new Message();
-                            message.what = GPS_SUCCESS;
-                            message.obj = result;
-                            handler.sendMessage(message);
+                            SharedPreferencesControl control = new SharedPreferencesControl(context);
+                            control.saveFriendsGPS(result);
                         }else {
                             ShowToast.show(context,"请求好友GPS出错");
                             return;
                         }
                     }
                 });
-
-
-
             }
         }).start();
     }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg){
-            if (msg.what==GPS_SUCCESS){
-                result = msg.obj+"";
-                SharedPreferencesControl control = new SharedPreferencesControl(context);
-                control.saveFriendsGPS(result);
-            }
-        }
-    };
-
-
 }
 
 
