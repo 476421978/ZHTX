@@ -152,6 +152,9 @@ public class ChangePasswordByPwd extends AppCompatActivity implements View.OnCli
         public void handleMessage(Message msg){
             if (msg.what==SUCCESS){
                 ShowToast.show(ChangePasswordByPwd.this,msg.obj+"");
+                SharedPreferences  sp = getSharedPreferences("user",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("password",ed_newPwd.getText().toString());
                 Intent intent = new Intent(ChangePasswordByPwd.this,MainPageActivity.class);
                 startActivity(intent);
             }else if (msg.what==FAIL){

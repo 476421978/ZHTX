@@ -31,6 +31,7 @@ public class Address {
     public static final String CheckPhone2=address+"/txzh/checkPhone2";
 
     /*----------------------修改密码----------------------------*/
+        //使用旧密码修改  使用验证码更改跟找回密码一致
     public static final String ChangePasswordByPwd = address+"/txzh/changepassword";
 
     /*----------------------修改个人信息----------------------------*/
@@ -43,4 +44,7 @@ public class Address {
         //得到好友GPS位置
     public static final String GetFirendsGPS = address+"/txzh/getFriendsGpsList";
 
+    /*---------------------好友信息----------------------------*/
+        //得到所有好友信息
+    public static final String GetFriends = address+"/txzh/getFriendsList";
 }

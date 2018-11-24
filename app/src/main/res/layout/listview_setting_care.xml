@@ -12,11 +12,10 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/listview_setting_care_iv_head"
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/listview_setting_care_siv_head"
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/touxiang"/>
+            android:layout_height="60dp" />
 
     </LinearLayout>
 

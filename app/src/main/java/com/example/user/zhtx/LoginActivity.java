@@ -16,11 +16,10 @@ import com.example.user.zhtx.activity.FindPasswordActivity;
 import com.example.user.zhtx.activity.MainPageActivity;
 import com.example.user.zhtx.activity.RegisterActivity;
 import com.example.user.zhtx.internet.CheckNetwork;
-import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.pojo.MessageInfo;
 import com.example.user.zhtx.pojo.User;
 import com.example.user.zhtx.tools.Address;
-import com.example.user.zhtx.tools.GetFriendsGPS;
+import com.example.user.zhtx.tools.GetFriends;
 import com.example.user.zhtx.tools.GetGPS;
 import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.SharedPreferencesControl;
@@ -29,7 +28,6 @@ import com.example.user.zhtx.tools.SingleErrDiaog;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -175,6 +173,8 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                 // 获取好友的gps
                 GetGPS getGPS = new GetGPS(LoginActivity.this);
                 getGPS.getFriendsGps();
+                GetFriends friends = new GetFriends(LoginActivity.this);
+                friends.get();
 
                 Intent intent = new Intent(LoginActivity.this,MainPageActivity.class);
                 startActivity(intent);

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.activity.ChangePasswordByPwd;
+import com.example.user.zhtx.activity.FriendsManagementActivity;
 import com.example.user.zhtx.activity.SeeAreaActivity;
 import com.example.user.zhtx.activity.SelfInfoActivity;
 import com.example.user.zhtx.tools.SharedPreferencesControl;
@@ -25,7 +26,7 @@ import com.example.user.zhtx.tools.ShowToast;
 import com.loopj.android.image.SmartImageView;
 
 public class SettingPage extends Fragment implements View.OnClickListener {
-    private LinearLayout lin_changePassword,lin_seeArea,lin_selfInfo;
+    private LinearLayout lin_changePassword,lin_seeArea,lin_selfInfo,lin_friendsManagement;
     private Button btn_loginOut;
     private TextView tv_phoneNumber,tv_name;
     private SmartImageView siv_head;
@@ -47,6 +48,8 @@ public class SettingPage extends Fragment implements View.OnClickListener {
         lin_seeArea.setOnClickListener(this);
         lin_changePassword = (LinearLayout)v.findViewById(R.id.activity_setting_lin_changePassword);
         lin_changePassword.setOnClickListener(this);
+        lin_friendsManagement = (LinearLayout)v.findViewById(R.id.activity_setting_lin_friendsManage);
+        lin_friendsManagement.setOnClickListener(this);
 
         btn_loginOut= (Button)v.findViewById(R.id.activity_setting_btn_loginOut);
         btn_loginOut.setOnClickListener(this);
@@ -89,6 +92,11 @@ public class SettingPage extends Fragment implements View.OnClickListener {
                 Intent intent4 = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent4);
                 break;
+            case R.id.activity_setting_lin_friendsManage:
+                Intent intent5 = new Intent(getActivity(), FriendsManagementActivity.class);
+                startActivity(intent5);
+                break;
+
         }
     }
 }

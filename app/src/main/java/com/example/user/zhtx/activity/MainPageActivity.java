@@ -3,7 +3,6 @@ package com.example.user.zhtx.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,8 +11,10 @@ import com.example.user.zhtx.fragment.FriendsPage;
 import com.example.user.zhtx.fragment.SettingPage;
 import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
+import com.example.user.zhtx.pojo.Friend;
 import com.example.user.zhtx.pojo.FriendsGPS;
-import com.example.user.zhtx.tools.GetFriendsGPS;
+import com.example.user.zhtx.tools.FriendsGPSList;
+import com.example.user.zhtx.tools.FriendsList;
 
 import java.util.ArrayList;
 
@@ -34,8 +35,14 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         initView();
         initMap();
 
-        GetFriendsGPS getFriendsGPS = new GetFriendsGPS(MainPageActivity.this);
+        // 拿到GPS信息与好友信息的例子
+        /*
+        FriendsGPSList getFriendsGPS = new FriendsGPSList(MainPageActivity.this);
         ArrayList<FriendsGPS> list =  getFriendsGPS.get();
+        FriendsList friendsList = new FriendsList(MainPageActivity.this);
+        ArrayList<Friend> list1 = friendsList.get();
+        */
+
     }
 
     private void initView(){

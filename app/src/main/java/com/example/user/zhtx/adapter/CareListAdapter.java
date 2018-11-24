@@ -12,23 +12,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.pojo.Friend;
+import com.example.user.zhtx.pojo.FriendsGPS;
+import com.example.user.zhtx.tools.Address;
+import com.loopj.android.image.SmartImageView;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 2018/11/3.
  */
 public class CareListAdapter extends BaseAdapter {
     private Context context;
-    private int[] pic;
-    private String[] names;
-    private boolean isCare = true;
-    public CareListAdapter(Context context,int[] pic,String[] names){
+    private ArrayList<FriendsGPS> list;
+    public CareListAdapter(Context context,ArrayList<FriendsGPS> list){
         this.context=context;
-        this.pic=pic;
-        this.names=names;
+        this.list = list;
     }
     @Override
     public int getCount() {
-        return pic.length;
+        return list.size();
     }
 
     @Override
@@ -44,29 +47,13 @@ public class CareListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(context,R.layout.listview_setting_care,null);
-        ImageView imageView = (ImageView)v.findViewById(R.id.listview_setting_care_iv_head);
-        imageView.setBackgroundResource(pic[i]);
-        final TextView textView = (TextView)v.findViewById(R.id.listview_setting_care_tv_name);
-        textView.setText(names[i]);
-        final Button button = (Button)v.findViewById(R.id.listview_setting_care_btn_quxiao);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isCare){
-                    Toast.makeText(context,textView.getText(),Toast.LENGTH_SHORT).show();
-                    button.setBackgroundColor(Color.parseColor("#40E0D0"));
-                    button.setText("未关注");
-                    Log.i("aa",textView.getText()+"已不再关注");
-                    isCare = !isCare;
-                }else {
-                    Toast.makeText(context,textView.getText(),Toast.LENGTH_SHORT).show();
-                    button.setBackgroundColor(Color.parseColor("#ff0000"));
-                    button.setText("已关注");
-                    Log.i("aa",textView.getText()+"已关注");
-                    isCare = !isCare;
-                }
-            }
-        });
+        SmartImageView siv = (SmartImageView)v.findViewById(R.id.listview_setting_care_siv_head);
+        siv.setImageUrl(Address.title+list.get(i).getPhonenum()+".jpeg");
+
+
+        TextView textView = (TextView)v.findViewById(R.id.listview_setting_care_tv_name);
+        textView.setText(list.get(i).getName());
+        Button button = (Button)v.findViewById(R.id.listview_setting_care_btn_quxiao);
 
         return v;
     }

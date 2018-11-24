@@ -3,6 +3,7 @@ package com.example.user.zhtx.tools;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.pojo.User;
@@ -85,6 +86,15 @@ public class SharedPreferencesControl {
         SharedPreferences.Editor editor =sp.edit();
         String reslt = data;
         editor.putString("friendsGPS",data);
+        editor.commit();
+    }
+
+    public void saveFriends(String data){
+        SharedPreferences sp = context.getSharedPreferences("user",context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("friends",data);
+        String aa = data;
+        String data1 = sp.getString("friends","aaa");
         editor.commit();
     }
 

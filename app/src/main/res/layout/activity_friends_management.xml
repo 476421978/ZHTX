@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    tools:context="com.example.user.zhtx.activity.FriendsManagementActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/activity_care_list_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/ThemeColor"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/activity_friends_management_iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="好友管理"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"/>
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:layout_below="@+id/activity_care_list_toolbar"
+        android:id="@+id/activity_friends_management_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_gray">
+
+    </ListView>
+</RelativeLayout>

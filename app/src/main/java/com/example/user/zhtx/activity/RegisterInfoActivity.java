@@ -142,11 +142,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.activity_registerInfo_btn_commit:
                 saveInfo();
-            //     后台我自己写来测试的，注释掉savaInfo，直接Internt
-            /*
-                Intent intent = new Intent(RegisterInfoActivity.this, LoginActivity.class);
-                startActivity(intent);
-            */
                 break;
             case R.id.activity_registerInfo_iv_back:
                 Intent intent1 = new Intent(RegisterInfoActivity.this,LoginActivity.class);
