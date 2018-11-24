@@ -16,10 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.pojo.MessageInfo;
+import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
+import com.google.gson.Gson;
 import com.mob.MobSDK;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -27,6 +31,12 @@ import java.util.regex.Pattern;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class ChangePasswordByVeri extends AppCompatActivity implements View.OnClickListener {
     private EditText ed_pwd,ed_confirmPwd,ed_verification;
@@ -42,6 +52,7 @@ public class ChangePasswordByVeri extends AppCompatActivity implements View.OnCl
     private static final int CODE_REPEAT = 1;       //重新发送
     private static final int CODE_ERROR = 2;        //验证码错误
     private static final int PHONE_ERROR = 3;       //电话号码不存在
+    private static final int SUCCESS = 4;
 
     private final String appkty = "286309d7a4904";
     private final String appSecret = "bae047d3b2f375d802dfe3fb1d778efa";
@@ -190,13 +201,83 @@ public class ChangePasswordByVeri extends AppCompatActivity implements View.OnCl
     }
 
     private void handleResult(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient();
 
+                SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+
+                String phone = sp.getString("phonenum","a");
+
+                FormBody body = new FormBody.Builder()
+                        .add("phonenum",sp.getString("phonenum",""))
+                        .build();
+
+                Request request = new Request.Builder()
+                        .url(Address.CheckPhone2)
+                        .post(body)
+                        .build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String result = response.body().string();
+
+                        Log.i("result",result+"--------------------------------");
+
+                        Gson gson = new Gson();
+                        MessageInfo m = gson.fromJson(result,MessageInfo.class);
+
+                        if ("true".equals(m.getSuccess())){
+                            Message message1 = new Message();
+                            message1.what=SUCCESS;
+                            message1.obj = m.getMessage();
+                            handler.sendMessage(message1);
+                        }else if ("false".equals(m.getSuccess())){
+                            Message message = new Message();
+                            message.what =  PHONE_ERROR;
+                            message.obj = m.getMessage();
+                            handler.sendMessage(message);
+                        }
+
+                    }
+                });
+            }
+        }).start();
     }
 
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg){
-
+            if (msg.what == CODE_REPEAT){
+                btn_getVerification.setEnabled(true);
+                timer.cancel();
+                timerTask.cancel();
+                TIME=60;
+                btn_getVerification.setText("重新发送验证码");
+            }else if (msg.what == CODE_ERROR){
+                SingleErrDiaog.show(ChangePasswordByVeri.this,"注册失败","验证码错误");
+            }else if ( msg.what == PHONE_ERROR){
+                SingleErrDiaog.show(ChangePasswordByVeri.this,"找回密码失败",msg.obj+"");
+            }else if(msg.what == SUCCESS){
+                ShowToast.show(ChangePasswordByVeri.this,"成功修改密码");
+                SharedPreferences  sp = getSharedPreferences("user",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("password",ed_pwd.getText().toString());
+                Intent intent = new Intent(ChangePasswordByVeri.this,MainPageActivity.class);
+                startActivity(intent);
+            }else {
+                btn_getVerification.setText(TIME+" 重新发送验证码");
+            }
         }
     };
+
+
 }
