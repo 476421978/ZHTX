@@ -48,4 +48,10 @@ public class DemoModel {
         UserDao dao = new UserDao(context);
         dao.saveContact(user);
     }
+    public boolean isMsgRoaming() {
+        return PreferenceManager.getInstance().isMsgRoaming();
+    }
+    public boolean isShowMsgTyping() {
+        return PreferenceManager.getInstance().isShowMsgTyping();
+    }
 }

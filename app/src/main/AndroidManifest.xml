@@ -139,6 +139,8 @@
         <activity android:name="com.UI.EaseUI.ChatActivity" />
         <activity android:name="com.UI.change.GroupDetailsActivity" />
         <activity android:name="com.UI.change.UserProfileActivity"></activity>
+        <activity android:name=".activity.FriendsManagementActivity"></activity>
+
     </application>
 
 </manifest>

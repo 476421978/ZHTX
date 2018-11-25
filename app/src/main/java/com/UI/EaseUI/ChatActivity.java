@@ -22,7 +22,7 @@ public class ChatActivity extends BaseActivity {
         //get user id or group id
         toChatUsername = getIntent().getExtras().getString("userId");
         //use EaseChatFratFragment
-        chatFragment = new EaseChatFragment();
+        chatFragment = new ChatFragment();
         //pass parameters to chat fragment
         chatFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();

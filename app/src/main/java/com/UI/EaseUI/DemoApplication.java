@@ -77,6 +77,7 @@ public class DemoApplication extends Application {
      public void reSet(){
         //重置头像 昵称
            /* setEaseUIProviders();*/
+           System.out.println("进来设置头像");
         //用户
         Thread th_own = new MyThread();
         th_own.start();
@@ -131,7 +132,6 @@ public class DemoApplication extends Application {
 
     /*设置昵称和头像的方法*/
     private void setEaseUIProviders() {
-        System.out.println("进来了case2");
         // set profile provider if you want easeUI to handle avatar and nickname
         easeUI.setUserProfileProvider(new EaseUI.EaseUserProfileProvider() {
             public EaseUser getUser(String username) {
@@ -144,7 +144,6 @@ public class DemoApplication extends Application {
     //设置头像
     private EaseUser getUserInfo(String username){
         EaseUser user = null;
-
         System.out.println("进来设置界面");
         //如果用户是本人，就设置自己的头像
         if(username.equals(EMClient.getInstance().getCurrentUser())){
@@ -220,7 +219,7 @@ public class DemoApplication extends Application {
             //登陆用户ID
             SharedPreferences user= applicationContext.getSharedPreferences("user", 0);
             String phone = user.getString("phonenum","");
-            System.out.println(phone+"/////");
+
 
             //获取用户自己的信息
             String url = "http://172.17.146.102:8080/txzh/getUser";
@@ -247,7 +246,7 @@ public class DemoApplication extends Application {
                 public void onResponse(Call call, Response response) throws IOException {
 
                     Gson gson = new Gson();
-                  User own = gson.fromJson(response.body().string(),User.class);
+                    User own = gson.fromJson(response.body().string(),User.class);
                     own_name = own.getName();
                     String pic = own.getPic();
                     own_avater = "http://172.17.146.102:8080/txzh/pic/"+ pic + ".jpeg";
@@ -272,7 +271,7 @@ public class DemoApplication extends Application {
             //登陆用户ID
             SharedPreferences user= applicationContext.getSharedPreferences("user", 0);
             int id = user.getInt("id",0);
-            System.out.println(id);
+
 
             //3, 发起新的请求,获取返回信息
             RequestBody body = new FormBody.Builder()
