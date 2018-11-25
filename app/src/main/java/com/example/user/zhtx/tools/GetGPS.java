@@ -28,7 +28,7 @@ public class GetGPS {
     private String result;
     private ArrayList<FriendsGPS> list;
     public static final int GPS_SUCCESS = 1;
-    public static final int GPS_FAIL = 1;
+    public static final int GPS_FAIL = 2;
 
     public GetGPS(Context context){
         this.context=context;
@@ -61,6 +61,8 @@ public class GetGPS {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
+                        Log.i("service",result);
+
                         if (result.length()>0){
                             SharedPreferencesControl control = new SharedPreferencesControl(context);
                             control.saveFriendsGPS(result);

@@ -88,6 +88,9 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
 
         ed_phoneNum = (EditText) findViewById(R.id.activity_login_ed_phoneNumber);
         ed_pwd = (EditText) findViewById(R.id.activity_login_ed_pwd);
+
+        ed_phoneNum.setEnabled(true);
+        ed_pwd.setEnabled(true);
     }
 
     @Override

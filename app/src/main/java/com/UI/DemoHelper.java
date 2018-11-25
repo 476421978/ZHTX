@@ -70,4 +70,8 @@ public class DemoHelper {
         contactList.put(user.getUsername(), user);
         demoModel.saveContact(user);
     }
+
+    public DemoModel getModel(){
+        return (DemoModel) demoModel;
+    }
 }

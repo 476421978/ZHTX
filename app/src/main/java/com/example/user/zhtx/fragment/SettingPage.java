@@ -90,10 +90,7 @@ public class SettingPage extends Fragment implements View.OnClickListener {
             case R.id.activity_setting_btn_loginOut:
                 ShowToast.show(getActivity(),"注销");
                 signOut();
-                SharedPreferencesControl control = new SharedPreferencesControl(getActivity());
-                control.loginOut();
-                Intent intent4 = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent4);
+
                 break;
             case R.id.activity_setting_lin_friendsManage:
                 Intent intent5 = new Intent(getActivity(), FriendsManagementActivity.class);
@@ -111,7 +108,11 @@ public class SettingPage extends Fragment implements View.OnClickListener {
         EMClient.getInstance().logout(false, new EMCallBack() {
             @Override public void onSuccess() {
                 Log.i("用户退出", "logout success");
-                // 调用退出成功，结束app
+                // 调用退出成功
+                SharedPreferencesControl control = new SharedPreferencesControl(getActivity());
+                control.loginOut();
+                Intent intent4 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent4);
             }
 
             @Override public void onError(int i, String s) {

@@ -49,7 +49,6 @@ public class FriendsList {
         GetFriends getFriends = new GetFriends(context);
         getFriends.get();
         return getAll();
-
     }
 
 }

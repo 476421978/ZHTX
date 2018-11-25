@@ -255,7 +255,7 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
             if (resultCode == RESULT_OK){
                 if (Build.VERSION.SDK_INT >= 19){
                     handleImageOnKitKat(data);
-                    cropPhoto(imageUri);
+
                 }
             }
         }
@@ -274,7 +274,7 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
             try {
                 if (isClickCamera) {
 
-                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(outputUri));
 
                     iv_head.setImageBitmap(bitmap);
 
@@ -305,6 +305,7 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
             imagePath=uri.getPath();
         }
         Log.i("path",imagePath+"------------------------------------------");
+        cropPhoto(uri);
     }
 
     private String getImagePath(Uri uri,String selection){
@@ -470,6 +471,7 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         }
 
         outputUri = Uri.fromFile(file);
+        imagePath = file.getPath();
         Intent intent = new Intent("com.android.camera.action.CROP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

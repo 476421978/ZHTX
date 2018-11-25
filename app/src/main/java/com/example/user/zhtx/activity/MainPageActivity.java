@@ -1,5 +1,6 @@
 package com.example.user.zhtx.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
 import com.example.user.zhtx.pojo.Friend;
 import com.example.user.zhtx.pojo.FriendsGPS;
+import com.example.user.zhtx.service.UpdateGpsService;
 import com.example.user.zhtx.tools.FriendsGPSList;
 import com.example.user.zhtx.tools.FriendsList;
 
@@ -42,6 +44,8 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         FriendsList friendsList = new FriendsList(MainPageActivity.this);
         ArrayList<Friend> list1 = friendsList.get();
         */
+        Intent intent = new Intent(MainPageActivity.this, UpdateGpsService.class);
+        startService(intent);
 
     }
 

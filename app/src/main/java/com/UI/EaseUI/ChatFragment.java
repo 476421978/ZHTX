@@ -71,13 +71,13 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState,
+
                 true);
     }
 
     @Override
     protected boolean turnOnTyping() {
-        /*return DemoHelper.getInstance().getModel().isShowMsgTyping();*/
-        return true;
+        return false;
     }
 
     @Override
@@ -95,13 +95,13 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
             @Override
             public void onClick(View v) {
                 if (EasyUtils.isSingleActivity(getActivity())) {
-                    /*Intent intent = new Intent(getActivity(), MainActivity.class);
+                  /*  Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);*/
                 }
                 onBackPressed();
             }
         });
-/*        ((EaseEmojiconMenu)inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());*/
+        /*((EaseEmojiconMenu)inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());*/
         if(chatType == EaseConstant.CHATTYPE_GROUP){
             inputMenu.getPrimaryMenu().getEditText().addTextChangedListener(new TextWatcher() {
 
@@ -125,12 +125,11 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
     }
 
     @Override
-    //音视频会议
     protected void registerExtendMenuItem() {
- /*       //use the menu in base class
+        //use the menu in base class
         super.registerExtendMenuItem();
         //extend menu items
-        inputMenu.registerExtendMenuItem(R.string.attach_video, R.drawable.em_chat_video_selector, ITEM_VIDEO, extendMenuItemClickListener);
+ /*       inputMenu.registerExtendMenuItem(R.string.attach_video, R.drawable.em_chat_video_selector, ITEM_VIDEO, extendMenuItemClickListener);
         inputMenu.registerExtendMenuItem(R.string.attach_file, R.drawable.em_chat_file_selector, ITEM_FILE, extendMenuItemClickListener);
         if(chatType == Constant.CHATTYPE_SINGLE){
             inputMenu.registerExtendMenuItem(R.string.attach_voice_call, R.drawable.em_chat_voice_call_selector, ITEM_VOICE_CALL, extendMenuItemClickListener);
@@ -146,51 +145,51 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CONTEXT_MENU) {
             switch (resultCode) {
-             /*   case ContextMenuActivity.RESULT_CODE_COPY: // copy
-                    clipboard.setPrimaryClip(ClipData.newPlainText(null,
-                            ((EMTextMessageBody) contextMenuMessage.getBody()).getMessage()));*/
-                   /* break;*/
-          /*      case ContextMenuActivity.RESULT_CODE_DELETE: // delete
-                    conversation.removeMessage(contextMenuMessage.getMsgId());
-                    messageList.refresh();
-                    // To delete the ding-type message native stored acked users.
-                    EaseDingMessageHelper.get().delete(contextMenuMessage);
-                    break;*/
+         /*   case ContextMenuActivity.RESULT_CODE_COPY: // copy
+                clipboard.setPrimaryClip(ClipData.newPlainText(null,
+                        ((EMTextMessageBody) contextMenuMessage.getBody()).getMessage()));
+                break;
+            case ContextMenuActivity.RESULT_CODE_DELETE: // delete
+                conversation.removeMessage(contextMenuMessage.getMsgId());
+                messageList.refresh();
+                // To delete the ding-type message native stored acked users.
+                EaseDingMessageHelper.get().delete(contextMenuMessage);
+                break;
 
-      /*          case ContextMenuActivity.RESULT_CODE_FORWARD: // forward
-                    Intent intent = new Intent(getActivity(), ForwardMessageActivity.class);
-                    intent.putExtra("forward_msg_id", contextMenuMessage.getMsgId());
-                    startActivity(intent);
-                    break;
-                case ContextMenuActivity.RESULT_CODE_RECALL://recall
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                EMMessage msgNotification = EMMessage.createTxtSendMessage(" ",contextMenuMessage.getTo());
-                                EMTextMessageBody txtBody = new EMTextMessageBody(getResources().getString(R.string.msg_recall_by_self));
-                                msgNotification.addBody(txtBody);
-                                msgNotification.setMsgTime(contextMenuMessage.getMsgTime());
-                                msgNotification.setLocalTime(contextMenuMessage.getMsgTime());
-                                msgNotification.setAttribute(Constant.MESSAGE_TYPE_RECALL, true);
-                                msgNotification.setStatus(EMMessage.Status.SUCCESS);
-                                EMClient.getInstance().chatManager().recallMessage(contextMenuMessage);
-                                EMClient.getInstance().chatManager().saveMessage(msgNotification);
-                                messageList.refresh();
-                            } catch (final HyphenateException e) {
-                                e.printStackTrace();
-                                getActivity().runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
+            case ContextMenuActivity.RESULT_CODE_FORWARD: // forward
+                Intent intent = new Intent(getActivity(), ForwardMessageActivity.class);
+                intent.putExtra("forward_msg_id", contextMenuMessage.getMsgId());
+                startActivity(intent);
+                break;
+            case ContextMenuActivity.RESULT_CODE_RECALL://recall
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            EMMessage msgNotification = EMMessage.createTxtSendMessage(" ",contextMenuMessage.getTo());
+                            EMTextMessageBody txtBody = new EMTextMessageBody(getResources().getString(R.string.msg_recall_by_self));
+                            msgNotification.addBody(txtBody);
+                            msgNotification.setMsgTime(contextMenuMessage.getMsgTime());
+                            msgNotification.setLocalTime(contextMenuMessage.getMsgTime());
+                            msgNotification.setAttribute(Constant.MESSAGE_TYPE_RECALL, true);
+                            msgNotification.setStatus(EMMessage.Status.SUCCESS);
+                            EMClient.getInstance().chatManager().recallMessage(contextMenuMessage);
+                            EMClient.getInstance().chatManager().saveMessage(msgNotification);
+                            messageList.refresh();
+                        } catch (final HyphenateException e) {
+                            e.printStackTrace();
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    }).start();
+                    }
+                }).start();
 
-                    // Delete group-ack data according to this message.
-                    EaseDingMessageHelper.get().delete(contextMenuMessage);
-                    break;*/
+                // Delete group-ack data according to this message.
+                EaseDingMessageHelper.get().delete(contextMenuMessage);
+                break;*/
 
                 default:
                     break;
@@ -218,7 +217,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
                     if (data != null) {
                         Uri uri = data.getData();
                         if (uri != null) {
-                           /* sendFileByUri(uri);*/
+                      /*      sendFileByUri(uri);*/
                         }
                     }
                     break;
@@ -233,7 +232,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
             }
         }
         if (requestCode == REQUEST_CODE_GROUP_DETAIL) {
-            switch (resultCode) {//显示群成员信息
+            switch (resultCode) {
                 case GroupDetailsActivity.RESULT_CODE_SEND_GROUP_NOTIFICATION:
                     // Start the ding-type msg send ui.
                     EMLog.i(TAG, "Intent to the ding-msg send activity.");
@@ -261,7 +260,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
 
     @Override
     public void onEnterToChatDetails() {
-        if (chatType == Constant.CHATTYPE_GROUP) {//群聊
+        if (chatType == Constant.CHATTYPE_GROUP) {
             EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
             if (group == null) {
                 Toast.makeText(getActivity(), R.string.gorup_not_found, Toast.LENGTH_SHORT).show();
@@ -270,8 +269,8 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
             startActivityForResult(
                     (new Intent(getActivity(), GroupDetailsActivity.class).putExtra("groupId", toChatUsername)),
                     REQUEST_CODE_GROUP_DETAIL);
-        }else if(chatType == Constant.CHATTYPE_CHATROOM){//聊天室
-/*            startActivityForResult(new Intent(getActivity(), ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername), REQUEST_CODE_GROUP_DETAIL);*/
+        }else if(chatType == Constant.CHATTYPE_CHATROOM){
+           /* startActivityForResult(new Intent(getActivity(), ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername), REQUEST_CODE_GROUP_DETAIL);*/
         }
     }
 
@@ -302,36 +301,36 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
     @Override
     public void onMessageBubbleLongClick(EMMessage message) {
         // no message forward when in chat room
-     /*   startActivityForResult((new Intent(getActivity(), ContextMenuActivity.class)).putExtra("message",message)
-                        .putExtra("ischatroom", chatType == EaseConstant.CHATTYPE_CHATROOM),
+ /*       startActivityForResult((new Intent(getActivity(), ContextMenuActivity.class)).putExtra("message",message)
+                .putExtra("ischatroom", chatType == EaseConstant.CHATTYPE_CHATROOM),
                 REQUEST_CODE_CONTEXT_MENU);*/
     }
 
     @Override
     public boolean onExtendMenuItemClick(int itemId, View view) {
-        switch (itemId) {
-     /*       case ITEM_VIDEO:
-                Intent intent = new Intent(getActivity(), ImageGridActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
-                break;
-            case ITEM_FILE: //file
-                selectFileFromLocal();
-                break;
-            case ITEM_VOICE_CALL:
-                startVoiceCall();
-                break;
-            case ITEM_VIDEO_CALL:
-                startVideoCall();
-                break;
-            case ITEM_CONFERENCE_CALL:
-                ConferenceActivity.startConferenceCall(getActivity(), toChatUsername);
-                break;
-            case ITEM_LIVE:
-                LiveActivity.startLive(getContext(), toChatUsername);
-                break;*/
-            default:
-                break;
-        }
+      /*  switch (itemId) {
+        case ITEM_VIDEO:
+            Intent intent = new Intent(getActivity(), ImageGridActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
+            break;
+        case ITEM_FILE: //file
+            selectFileFromLocal();
+            break;
+        case ITEM_VOICE_CALL:
+            startVoiceCall();
+            break;
+        case ITEM_VIDEO_CALL:
+            startVideoCall();
+            break;
+        case ITEM_CONFERENCE_CALL:
+            ConferenceActivity.startConferenceCall(getActivity(), toChatUsername);
+            break;
+        case ITEM_LIVE:
+            LiveActivity.startLive(getContext(), toChatUsername);
+            break;
+        default:
+            break;
+        }*/
         //keep exist extend menu
         return false;
     }
@@ -365,7 +364,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
      * make a video call
      */
     protected void startVideoCall() {
-    /*    if (!EMClient.getInstance().isConnected())
+     /*   if (!EMClient.getInstance().isConnected())
             Toast.makeText(getActivity(), R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();
         else {
             startActivity(new Intent(getActivity(), VideoCallActivity.class).putExtra("username", toChatUsername)
@@ -411,10 +410,10 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
 
         @Override
         public EaseChatRowPresenter getCustomChatRow(EMMessage message, int position, BaseAdapter adapter) {
-          /*  if(message.getType() == EMMessage.Type.TXT){
+           /* if(message.getType() == EMMessage.Type.TXT){
                 // voice call or video call
                 if (message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL, false) ||
-                        message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
+                    message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
                     EaseChatRowPresenter presenter = new EaseChatVoiceCallPresenter();
                     return presenter;
                 }
