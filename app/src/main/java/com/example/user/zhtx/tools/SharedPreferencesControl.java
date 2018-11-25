@@ -5,10 +5,9 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.pojo.User;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,8 +30,8 @@ public class SharedPreferencesControl {
         editor.putInt("id",user.getId());
         editor.putString("name",user.getName());
         editor.putString("password",user.getPassword());
-        editor.putString("phonenum",user.getPhonenum());
         editor.putString("address",user.getAddress());
+        editor.putString("phonenum",user.getPhonenum());
         editor.putInt("gender",user.getGender());
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

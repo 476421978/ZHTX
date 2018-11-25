@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.user.zhtx">
 
-    <!-- 普通权限 -->
-    //相机
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <!-- 短信验证权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,6 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -47,10 +44,35 @@
     <uses-permission android:name="android.permission.CAMERA" />
     //使用步行AR导航，配置Camera权限
 
+    <!-- 环信权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="com.zhongjh.phone.ui.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true" />
+
     <!-- 地图验证权限 -->
     <application
+        android:name="com.UI.EaseUI.DemoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:installLocation="preferExternal"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -68,41 +90,55 @@
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.MainPageActivity" />
+
         <activity android:name=".activity.SeeAreaActivity" />
         <activity android:name=".activity.ChangePasswordByPwd" />
         <activity android:name=".activity.ChangePasswordByVeri" />
         <activity android:name=".activity.CareListActivity" />
         <activity android:name=".activity.SelfInfoActivity" />
         <activity android:name=".activity.ModifyInfoActivity" />
-        <activity android:name=".Map.BNaviGuideActivity" />
-
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
-        <service
-            android:name=".Map.LocationService"
-            android:enabled="true"
-            android:permission="com.example.user.zhtx.Map.LocationService"></service>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ORyB60KnAffainhYs98pK7i1d58GBIzs" />
+            android:value="zBzB0E7LOM8NzG5bGIFGYycnU7pViVIu" />
 
         <activity android:name=".activity.AddFriendActivity" />
         <activity android:name=".activity.FriendInfoActivity" />
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.user.zhtx.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaht" />
-        </provider>
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="1139180705099236#hx-1" />
+        <!-- 声明SDK所需的service SDK核心功能 -->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <!-- 声明SDK所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
-        <activity android:name=".activity.FriendsManagementActivity"></activity>
+                <data android:scheme="package" />
+            </intent-filter>
+            <!-- 可选filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name="com.UI.EaseUI.ECChatActivity" />
+        <activity android:name="com.UI.change.AddContactActivity" />
+        <activity android:name="com.UI.change.BaseActivity" />
+        <activity android:name="com.UI.change.NewFriendsMsgActivity" />
+        <activity android:name="com.UI.change.GroupsActivity" />
+        <activity android:name="com.UI.change.NewGroupActivity" />
+        <activity android:name="com.UI.change.GroupPickContactsActivity" />
+        <activity android:name="com.UI.change.PublicGroupsActivity" />
+        <activity android:name="com.UI.change.PublicGroupsSeachActivity" />
+        <activity android:name="com.UI.change.GroupSimpleDetailActivity" />
+        <activity android:name="com.UI.EaseUI.ChatActivity" />
+        <activity android:name="com.UI.change.GroupDetailsActivity" />
+        <activity android:name="com.UI.change.UserProfileActivity"></activity>
     </application>
 
 </manifest>

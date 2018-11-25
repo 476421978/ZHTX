@@ -2,6 +2,7 @@ package com.example.user.zhtx.activity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.DocumentsContract;
@@ -19,7 +21,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,9 @@ import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
 import com.google.gson.Gson;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -48,7 +52,6 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -58,6 +61,8 @@ import okhttp3.Response;
 
 
 public class RegisterInfoActivity extends AppCompatActivity implements View.OnClickListener {
+    // 弹出框
+    private ProgressDialog mDialog;
 
     private boolean isClickCamera =false;//判断是否使用了相机拍照
     private Button btn_birthday,btn_commit,btn_changeHead;
@@ -442,8 +447,8 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
       public void handleMessage(Message msg){
           if (msg.what == REGISTER_SUCCESS){
               ShowToast.show(RegisterInfoActivity.this,"注册成功");
-              Intent intent = new Intent(RegisterInfoActivity.this, LoginActivity.class);
-              startActivity(intent);
+              //志鹏注册成功 轮到我了
+              signUp();
           }else if(msg.what == REGISTER_ERROR){
               ShowToast.show(RegisterInfoActivity.this,"出现未知错误");
           }
@@ -481,5 +486,94 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());//输出图片格式
         intent.putExtra("noFaceDetection", true);//取消人脸识别
         startActivityForResult(intent, PICTURE_CUT);
+    }
+
+
+    /**
+     * 注册方法
+     */
+    private void signUp() {
+        // 注册是耗时过程，所以要显示一个dialog来提示下用户
+        mDialog = new ProgressDialog(this);
+        mDialog.setMessage("注册中，请稍后...");
+        mDialog.show();
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    String username = getIntent().getStringExtra("phone").trim();
+                    String password = getIntent().getStringExtra("password").trim();
+                    EMClient.getInstance().createAccount(username, password);
+                    runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            if (!RegisterInfoActivity.this.isFinishing()) {
+                                mDialog.dismiss();
+                            }
+                            Toast.makeText(RegisterInfoActivity.this, "注册成功", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(RegisterInfoActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                } catch (final HyphenateException e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            if (!RegisterInfoActivity.this.isFinishing()) {
+                                mDialog.dismiss();
+                            }
+                            /**
+                             * 关于错误码可以参考官方api详细说明
+                             * http://www.easemob.com/apidoc/android/chat3.0/classcom_1_1hyphenate_1_1_e_m_error.html
+                             */
+                            int errorCode = e.getErrorCode();
+                            String message = e.getMessage();
+                            Log.d("lzan13",
+                                    String.format("sign up - errorCode:%d, errorMsg:%s", errorCode,
+                                            e.getMessage()));
+                            switch (errorCode) {
+                                // 网络错误
+                                case EMError.NETWORK_ERROR:
+                                    Toast.makeText(RegisterInfoActivity.this,
+                                            "网络错误 code: " + errorCode + ", message:" + message,
+                                            Toast.LENGTH_LONG).show();
+                                    break;
+                                // 用户已存在
+                                case EMError.USER_ALREADY_EXIST:
+                                    Toast.makeText(RegisterInfoActivity.this,
+                                            "用户已存在 code: " + errorCode + ", message:" + message,
+                                            Toast.LENGTH_LONG).show();
+                                    break;
+                                // 参数不合法，一般情况是username 使用了uuid导致，不能使用uuid注册
+                                case EMError.USER_ILLEGAL_ARGUMENT:
+                                    Toast.makeText(RegisterInfoActivity.this,
+                                            "参数不合法，一般情况是username 使用了uuid导致，不能使用uuid注册 code: "
+                                                    + errorCode
+                                                    + ", message:"
+                                                    + message, Toast.LENGTH_LONG).show();
+                                    break;
+                                // 服务器未知错误
+                                case EMError.SERVER_UNKNOWN_ERROR:
+                                    Toast.makeText(RegisterInfoActivity.this,
+                                            "服务器未知错误 code: " + errorCode + ", message:" + message,
+                                            Toast.LENGTH_LONG).show();
+                                    break;
+                                case EMError.USER_REG_FAILED:
+                                    Toast.makeText(RegisterInfoActivity.this,
+                                            "账户注册失败 code: " + errorCode + ", message:" + message,
+                                            Toast.LENGTH_LONG).show();
+                                    break;
+                                default:
+                                    Toast.makeText(RegisterInfoActivity.this,
+                                            "ml_sign_up_failed code: " + errorCode + ", message:" + message,
+                                            Toast.LENGTH_LONG).show();
+                                    break;
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

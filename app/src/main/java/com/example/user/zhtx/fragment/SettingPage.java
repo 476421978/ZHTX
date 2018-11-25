@@ -7,11 +7,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +23,8 @@ import com.example.user.zhtx.activity.SeeAreaActivity;
 import com.example.user.zhtx.activity.SelfInfoActivity;
 import com.example.user.zhtx.tools.SharedPreferencesControl;
 import com.example.user.zhtx.tools.ShowToast;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.loopj.android.image.SmartImageView;
 
 public class SettingPage extends Fragment implements View.OnClickListener {
@@ -87,6 +89,7 @@ public class SettingPage extends Fragment implements View.OnClickListener {
                 break;
             case R.id.activity_setting_btn_loginOut:
                 ShowToast.show(getActivity(),"注销");
+                signOut();
                 SharedPreferencesControl control = new SharedPreferencesControl(getActivity());
                 control.loginOut();
                 Intent intent4 = new Intent(getActivity(), LoginActivity.class);
@@ -99,4 +102,26 @@ public class SettingPage extends Fragment implements View.OnClickListener {
 
         }
     }
+
+    /**
+     * 退出登录
+     */
+    private void signOut() {
+        // 调用sdk的退出登录方法，第一个参数表示是否解绑推送的token，没有使用推送或者被踢都要传false
+        EMClient.getInstance().logout(false, new EMCallBack() {
+            @Override public void onSuccess() {
+                Log.i("用户退出", "logout success");
+                // 调用退出成功，结束app
+            }
+
+            @Override public void onError(int i, String s) {
+                Log.i("用户退出", "logout error " + i + " - " + s);
+            }
+
+            @Override public void onProgress(int i, String s) {
+                Log.i("用户退出", "logout error " + i + " - " + s);
+            }
+        });
+    }
+
 }

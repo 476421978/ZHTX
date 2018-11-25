@@ -19,10 +19,14 @@
             android:textColor="@color/white"
             android:layout_marginRight="20dp"/>
     </android.support.v7.widget.Toolbar>
-    <TextView
+
+
+    <Button
+        android:id="@+id/bt_out"
+        android:onClick="out"
+        android:text="退出登陆"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fragment"/>
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
