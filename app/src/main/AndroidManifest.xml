@@ -101,7 +101,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="zBzB0E7LOM8NzG5bGIFGYycnU7pViVIu" />
+            android:value="KQMVHI7GAqZme83WvSRNUR6bmG9yK6Rj" />
 
         <service
             android:name=".Map.LocationService"
@@ -120,9 +120,11 @@
             android:name="EASEMOB_APPKEY"
             android:value="1139180705099236#hx-1" />
         <!-- 声明SDK所需的service SDK核心功能 -->
+
         <service
             android:name="com.hyphenate.chat.EMChatService"
             android:exported="true" />
+
         <!-- 声明SDK所需的receiver -->
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
@@ -151,6 +153,10 @@
         <activity android:name="com.UI.change.GroupDetailsActivity" />
         <activity android:name="com.UI.change.UserProfileActivity"></activity>
         <activity android:name=".activity.FriendsManagementActivity"></activity>
+
+        <service android:name=".service.UpdateGpsService"
+            android:enabled="true"
+            android:exported="true"/>
 
     </application>
 

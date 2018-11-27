@@ -1,6 +1,7 @@
 package com.example.user.zhtx.tools;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -21,9 +22,14 @@ import okhttp3.Response;
 public class GetGroupMemberGps {
     private Context context;
     private static final int SUCCESS=1;
-    private String data;
+    private String data = "";
+    private Handler handler;
     public GetGroupMemberGps(Context context){
         this.context=context;
+    }
+    public GetGroupMemberGps(Context context, Handler handler){
+        this.context=context;
+        this.handler=handler;
     }
 
     public void get(){
@@ -53,29 +59,17 @@ public class GetGroupMemberGps {
                         public void onResponse(Call call, Response response) throws IOException {
                             String result = response.body().string();
                             if (result.length()>0){
-                                Message m = new Message();
-                                m.what=SUCCESS;
-                                m.obj=result;
+                                Message m = handler.obtainMessage();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("data",result);
+                                m.setData(bundle);
+                                m.arg1=SUCCESS;
                                 handler.sendMessage(m);
                             }
-
                         }
                     });
                 }
             }
         ).start();
-    }
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            if (msg.what==SUCCESS){
-                data = msg.obj+"";
-            }
-        }
-    };
-
-    public String getData() {
-        return data;
     }
 }

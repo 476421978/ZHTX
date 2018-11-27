@@ -2,6 +2,8 @@ package com.example.user.zhtx.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,9 +15,12 @@ import com.example.user.zhtx.fragment.FriendsPage;
 import com.example.user.zhtx.fragment.SettingPage;
 import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
+import com.example.user.zhtx.pojo.GroupMember;
 import com.example.user.zhtx.service.UpdateGpsService;
 import com.example.user.zhtx.tools.GetGroupMemberGps;
 import com.example.user.zhtx.tools.GroupMemberList;
+
+import java.util.ArrayList;
 
 public class MainPageActivity extends AppCompatActivity implements View.OnClickListener{
     private RelativeLayout map,message,friends,group;
@@ -25,6 +30,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     private FriendsPage friendsPage;
     private MessagePage messagePage;
     private SettingPage settingPage;
+
+    private Handler handler;
+    private GetGroupMemberGps g;
 
 
     @Override
@@ -41,12 +49,33 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         FriendsList friendsList = new FriendsList(MainPageActivity.this);
         ArrayList<Friend> list1 = friendsList.get();
         */
+
+        handler = new Handler(){
+            public void handleMessage(Message message){
+                switch (message.what){
+                    case 1:
+                        String data = (String)message.obj;
+                        break;
+                }
+            }
+        };
+
+        g = new GetGroupMemberGps(MainPageActivity.this, handler);
+        g.get();
+
+        GroupMemberList g = new GroupMemberList(MainPageActivity.this);
+        ArrayList<GroupMember> list = g.get();
+
         Intent intent = new Intent(MainPageActivity.this, UpdateGpsService.class);
         startService(intent);
 
-        GroupMemberList g = new GroupMemberList(MainPageActivity.this);
-        g.get();
 
+
+
+    }
+
+    public Handler getHandler(){
+        return handler;
     }
 
     private void initView(){
@@ -95,7 +124,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         imageMap.setImageResource(R.drawable.map_black);
         imageMessage.setImageResource(R.drawable.messages_black);
         imageFriends.setImageResource(R.drawable.person_black);
-        imageGroup.setImageResource(R.drawable.group_black);
+        imageGroup.setImageResource(R.drawable.setting_back);
 
         switch (i){
             case 1:
@@ -108,7 +137,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
                 imageFriends.setImageResource(R.drawable.person_blue);
                 break;
             case 4:
-                imageGroup.setImageResource(R.drawable.group_blue);
+                imageGroup.setImageResource(R.drawable.setting_blue);
                 break;
         }
     }

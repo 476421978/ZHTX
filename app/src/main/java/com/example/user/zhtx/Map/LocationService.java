@@ -87,8 +87,6 @@ public class LocationService extends Service {
             }
         };
         timer.schedule(task, 0, 5000);
-
-        Log.e("查看：", "123456.5");
     }
 
     public void addMarkers() {

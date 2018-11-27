@@ -54,15 +54,10 @@ import com.example.user.zhtx.R;
 import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.GetGeoCoderResult;
 import com.example.user.zhtx.tools.GetLocation;
-import com.example.user.zhtx.tools.MyWalkingRouteResult;
-import com.example.user.zhtx.tools.PerssionControl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -458,9 +453,6 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
                         .add("longatitude",new GetLocation().getLongitude()+"")
                         .build();
 
-                Log.i("gps",new GetLocation().getLatitude()+"------------------------");
-                Log.i("gps",new GetLocation().getLongitude()+"------------------------");
-
                 Request request = new Request.Builder()
                         .url(Address.SendSelfGPS)
                         .post(body)
@@ -476,10 +468,6 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
-
-                        Log.i("map",result+"------------------------------");
-
-
                     }
                 });
 

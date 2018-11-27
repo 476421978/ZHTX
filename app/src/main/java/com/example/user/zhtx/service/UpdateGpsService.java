@@ -15,6 +15,7 @@ import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.GetGPS;
 import com.example.user.zhtx.tools.SharedPreferencesControl;
 import com.example.user.zhtx.tools.ShowToast;
+import com.example.user.zhtx.tools.UpdateSelfGps;
 
 import java.io.IOException;
 
@@ -43,49 +44,22 @@ public class UpdateGpsService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-            /*    OkHttpClient client = new OkHttpClient();
 
-                SharedPreferences sp = getBaseContext().getSharedPreferences("user",Context.MODE_PRIVATE);
-
-                FormBody body = new FormBody.Builder()
-                        .add("userid",28+"")
-                        .build();
-
-                final Request request = new Request.Builder()
-                        .url(Address.GetFirendsGPS)
-                        .post(body)
-                        .build();
-
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
-                        return;
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String result = response.body().string();
-                        Log.i("service",result);
-                        if (result.length()>0){
-                            SharedPreferencesControl control = new SharedPreferencesControl(getBaseContext());
-                            control.saveFriendsGPS(result);
-                        }else {
-                            ShowToast.show(getBaseContext(),"请求好友GPS出错");
-                            return;
-                        }
-                    }
-                });*/
+                UpdateSelfGps updateSelfGps = new UpdateSelfGps(getBaseContext());
+                updateSelfGps.sendSelfGPS();
 
                 GetGPS getGPS = new GetGPS(getBaseContext());
                 getGPS.getFriendsGps();
+
+
+                Log.i("service","service工作");
             }
         }).start();
 
 
 
         AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        int time = 1000*5;
+        int time = 1000*300;
         long startTime = SystemClock.elapsedRealtime()+time;
 
         Intent intent1 = new Intent(this,UpdateGpsService.class);
