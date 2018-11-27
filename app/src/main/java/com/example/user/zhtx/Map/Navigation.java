@@ -53,7 +53,7 @@ public class Navigation {
      */
     @SuppressLint("ResourceType")
     public void routePlanWithParam(final Context context, LatLng startPt, LatLng endPt) {
-        Bikeparam = new BikeNaviLaunchParam().stPt(startPt).endPt(endPt).vehicle(1);
+        Bikeparam = new BikeNaviLaunchParam().stPt(startPt).endPt(endPt).vehicle(0);
         BikeNavigateHelper.getInstance().routePlanWithParams(Bikeparam, new IBRoutePlanListener() {
             @Override
             public void onRoutePlanStart() {

@@ -11,11 +11,14 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.example.user.zhtx.tools.Address;
+import com.example.user.zhtx.tools.GetGeoCoderResult;
 
 public class GeoCoderManager {
 
     private static GeoCoderManager geoCoderManager;
     private Context context;
+    private GeoCoder geoCoder;
 
     public GeoCoderManager(Context context) {
         this.context = context;
@@ -30,7 +33,7 @@ public class GeoCoderManager {
 
     public void PositionChange(LatLng latLng) {
         // 创建地理编码检索实例
-        GeoCoder geoCoder = GeoCoder.newInstance();
+        geoCoder = GeoCoder.newInstance();
 
         OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
             // 反地理编码查询结果回调函数
@@ -40,10 +43,34 @@ public class GeoCoderManager {
                         || result.error != SearchResult.ERRORNO.NO_ERROR) {
                     // 没有检测到结果
                 }
+
+                GetGeoCoderResult getGeoCoderResult = GetGeoCoderResult.newInstance();
+
+//                getGeoCoderResult.setProvince(result.getAddressDetail().province);
+//                getGeoCoderResult.setCity(result.getAddressDetail().city);
+//                getGeoCoderResult.setDistrict(result.getAddressDetail().district);
+//                getGeoCoderResult.setTown(result.getAddressDetail().town);
+//                getGeoCoderResult.setStreet(result.getAddressDetail().street);
+//                getGeoCoderResult.setStreetNumber(result.getAddressDetail().streetNumber);
+
                 String addressText = result.getAddress();//这里的addressText就是我们要的地址
+
+                String address = result.getAddressDetail().province + result.getAddressDetail().city
+                        + result.getAddressDetail().district + result.getAddressDetail().town
+                        + result.getAddressDetail().street + result.getAddressDetail().streetNumber;
+
+                String addressSematic = result.getSematicDescription();
+
+                getGeoCoderResult.setAddress(address);
+                getGeoCoderResult.setAddressSematic(addressSematic);
+
+                addressListner.getGetGeoCoderResult(getGeoCoderResult);
+
+                Log.e("", result.getPoiList().get(0).getAddress());
+
             //    showAddress = addressText;
-                Log.e("address","地址详细细信息"+addressText);
-                Toast.makeText(context,"地址："+addressText, Toast.LENGTH_SHORT).show();
+                Log.e("address","地址详细细信息"+result.getAddressDetail().district);
+                Toast.makeText(context,"地址："+result.getSematicDescription(), Toast.LENGTH_SHORT).show();
             }
 
             // 地理编码查询结果回调函
@@ -60,8 +87,22 @@ public class GeoCoderManager {
         geoCoder.setOnGetGeoCodeResultListener(listener);
         //
         geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
-        // 释放地理编码检索实例
-        // geoCoder.destroy();
+    }
 
+    public void GeoCoderDestroy() {
+        // 释放地理编码检索实例
+        if(geoCoder != null) {
+            geoCoder.destroy();
+        }
+    }
+
+    private AddressListner addressListner;
+
+    public void setAddressListner(AddressListner addressListner) {
+        this.addressListner = addressListner;
+    }
+
+    public interface AddressListner {
+        void getGetGeoCoderResult(GetGeoCoderResult getGeoCoderResult);
     }
 }

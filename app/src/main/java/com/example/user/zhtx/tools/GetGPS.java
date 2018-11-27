@@ -2,13 +2,9 @@ package com.example.user.zhtx.tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
-import com.example.user.zhtx.pojo.FriendsGPS;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -25,10 +21,6 @@ import okhttp3.Response;
 
 public class GetGPS {
     private Context context;
-    private String result;
-    private ArrayList<FriendsGPS> list;
-    public static final int GPS_SUCCESS = 1;
-    public static final int GPS_FAIL = 2;
 
     public GetGPS(Context context){
         this.context=context;

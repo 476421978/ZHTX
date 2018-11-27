@@ -36,7 +36,6 @@ import com.example.user.zhtx.LoginActivity;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.pojo.MessageInfo;
 import com.example.user.zhtx.tools.Address;
-import com.example.user.zhtx.tools.ImageFormat;
 import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
@@ -348,8 +347,6 @@ public class RegisterInfoActivity extends AppCompatActivity implements View.OnCl
         ByteArrayOutputStream byteArrayOutputStream =new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
 
-        ImageFormat format = ImageFormat.getInstance();
-        pic = format.bitmapToBase64(bitmap);
 
     }
 

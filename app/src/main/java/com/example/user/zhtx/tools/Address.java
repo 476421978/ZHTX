@@ -47,4 +47,9 @@ public class Address {
     /*---------------------好友信息----------------------------*/
         //得到所有好友信息
     public static final String GetFriends = address+"/txzh/getFriendsList";
+
+    /*---------------------群组信息----------------------------*/
+        //得到群成员
+    public static final String GetGroupMemberGps = address+"/txzh/groupMemberGps";
+
 }

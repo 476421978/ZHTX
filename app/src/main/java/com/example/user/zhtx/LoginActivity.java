@@ -91,6 +91,7 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
 
         ed_phoneNum.setEnabled(true);
         ed_pwd.setEnabled(true);
+
     }
 
     @Override

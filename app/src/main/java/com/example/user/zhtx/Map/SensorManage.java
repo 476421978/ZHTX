@@ -46,26 +46,28 @@ public class SensorManage {
         mSensorManager.unregisterListener(orientationSensorListener);
     }
 
-    public float getLux1() {
-        if (orientationSensorListener != null) {
-            return orientationSensorListener.lux1;
-        }
-        return -1.0f;
-    }
-
     private class OrientationSensorListener implements SensorEventListener {
-
-        private float lux1;
 
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
-            lux1 = sensorEvent.values[0];
-        //    Log.i("方向0：", String.valueOf(lux1));
+            if (orientationSensorListener != null && mOnOrientationListener != null) {
+                mOnOrientationListener.onOrientationListener(sensorEvent.values[0]);
+            }
         }
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int i) {
 
         }
+    }
+
+    private OnOrientationListener mOnOrientationListener;
+
+    public void setOrientationSensorListener(OnOrientationListener mOnOrientationListener) {
+        this.mOnOrientationListener = mOnOrientationListener;
+    }
+
+    public interface OnOrientationListener {
+        void onOrientationListener(float x);
     }
 }

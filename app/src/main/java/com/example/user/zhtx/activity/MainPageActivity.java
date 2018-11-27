@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,13 +13,9 @@ import com.example.user.zhtx.fragment.FriendsPage;
 import com.example.user.zhtx.fragment.SettingPage;
 import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
-import com.example.user.zhtx.pojo.Friend;
-import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.service.UpdateGpsService;
-import com.example.user.zhtx.tools.FriendsGPSList;
-import com.example.user.zhtx.tools.FriendsList;
-
-import java.util.ArrayList;
+import com.example.user.zhtx.tools.GetGroupMemberGps;
+import com.example.user.zhtx.tools.GroupMemberList;
 
 public class MainPageActivity extends AppCompatActivity implements View.OnClickListener{
     private RelativeLayout map,message,friends,group;
@@ -46,6 +43,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         */
         Intent intent = new Intent(MainPageActivity.this, UpdateGpsService.class);
         startService(intent);
+
+        GroupMemberList g = new GroupMemberList(MainPageActivity.this);
+        g.get();
 
     }
 

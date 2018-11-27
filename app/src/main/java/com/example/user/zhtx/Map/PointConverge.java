@@ -1,6 +1,8 @@
 package com.example.user.zhtx.Map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.baidu.mapapi.clusterutil.clustering.Cluster;
@@ -13,12 +15,13 @@ import java.util.List;
 
 public class PointConverge {
 
-    private List<MyItem> items1;
+    private List<MyItem> items;
     private static PointConverge pointConverge;
     private ClusterManager<MyItem> clusterManager;
 
     private Context context;
     private BaiduMap baiduMap;
+    private int count = 0;
 
     public PointConverge(Context context, BaiduMap baiduMap) {
         this.context = context;
@@ -33,11 +36,18 @@ public class PointConverge {
         return new PointConverge(context, baiduMap);
     }
 
-    public void addMarkers(LatLng latLng) {
-        items1 = new ArrayList<MyItem>();
-        items1.add(new MyItem(context, latLng));
+    public void clearMarkers() {
+        clusterManager.clearItems();
+        clusterManager.getMarkerCollection().clear();
+        clusterManager.getClusterMarkerCollection().clear();
+    }
 
-        clusterManager.addItems(items1);
+    public void addMarkers(LatLng latLng, Drawable drawable) {
+        items = new ArrayList<MyItem>();
+        items.add(new MyItem(context, latLng, drawable));
+
+        clusterManager.addItems(items);
+        clusterManager.cluster();
     }
 
     public void pointConverge() {

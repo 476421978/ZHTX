@@ -31,7 +31,6 @@ public class FriendsGPSList {
         }else {
             Gson gson = new Gson();
             list = gson.fromJson(data, new TypeToken<ArrayList<FriendsGPS>>() {}.getType());
-            Log.i("getFriendGPS",data+"------------------");
         }
         return  list;
     }

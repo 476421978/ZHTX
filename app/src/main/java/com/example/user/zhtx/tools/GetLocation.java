@@ -4,25 +4,34 @@ import com.baidu.mapapi.model.LatLng;
 
 public class GetLocation {
 
-    public double latitude;
-    public double longitude;
+    private LatLng myLL;
+    private double latitude;
+    private double longitude;
 
-    public static  GetLocation instance = new GetLocation();
-    public static   GetLocation getInstance(){return instance; }
+    private static GetLocation getLocation;
+
+    public static GetLocation newInstance() {
+        if(getLocation == null) {
+            getLocation = new GetLocation();
+        }
+        return getLocation;
+    }
+
+    public LatLng getMyLL() {
+        return myLL;
+    }
+
+    public void setMyLLs(LatLng myLL) {
+        this.latitude = myLL.latitude;
+        this.longitude = myLL.longitude;
+        this.myLL = myLL;
+    }
 
     public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(LatLng myLL) {
-        this.latitude = myLL.latitude;
-    }
-
     public double getLongitude() {
         return longitude;
-    }
-
-    public void setLongitude(LatLng myLL) {
-        this.longitude = myLL.longitude;
     }
 }
