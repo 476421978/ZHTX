@@ -100,7 +100,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="KQMVHI7GAqZme83WvSRNUR6bmG9yK6Rj" />
+            android:value="zBzB0E7LOM8NzG5bGIFGYycnU7pViVIu" />
 
         <activity android:name=".activity.AddFriendActivity" />
         <activity android:name=".activity.FriendInfoActivity" />
@@ -141,19 +141,6 @@
         <activity android:name="com.UI.change.UserProfileActivity"></activity>
         <activity android:name=".activity.FriendsManagementActivity"></activity>
 
-        <service
-            android:name=".service.UpdateGpsService"
-            android:enabled="true"
-            android:exported="true"></service>
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.user.zhtx.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaht" />
-        </provider>
     </application>
 
 </manifest>
