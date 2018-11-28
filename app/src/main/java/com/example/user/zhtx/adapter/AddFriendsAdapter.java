@@ -119,7 +119,8 @@ public class AddFriendsAdapter  extends BaseAdapter {
                         break;
 
                     case 2:
-                        /*Toast.makeText(mContext,"拒绝添加好友请求",Toast.LENGTH_SHORT).show();*/
+                        //删除该好友申请
+                        notifyDataSetChanged();
                         break;
                     default:
                         break;

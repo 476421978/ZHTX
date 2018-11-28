@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.user.zhtx.R;
@@ -58,14 +57,6 @@ public class NewFriendsMsgActivity extends BaseActivity implements View.OnClickL
                         AddFriendsAdapter adapter = new AddFriendsAdapter(adds,mContext);
 
                         listView.setAdapter(adapter);
-
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                System.out.println(parent+"--"+view+"---"+position+"+"+id);
-
-                            }
-                        });
 
                         break;
                     default:

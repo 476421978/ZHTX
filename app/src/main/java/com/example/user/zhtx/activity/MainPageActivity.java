@@ -4,23 +4,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.UI.EaseUI.DemoApplication;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.fragment.FriendsPage;
-import com.example.user.zhtx.fragment.SettingPage;
 import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
+import com.example.user.zhtx.fragment.SettingPage;
+import com.example.user.zhtx.pojo.Friend;
+import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.service.UpdateGpsService;
-import com.example.user.zhtx.tools.GetGroupMemberGps;
+import com.example.user.zhtx.tools.FriendsGPSList;
+import com.example.user.zhtx.tools.FriendsList;
 import com.example.user.zhtx.tools.GroupMemberList;
+
+import java.util.ArrayList;
 
 public class MainPageActivity extends AppCompatActivity implements View.OnClickListener{
     private RelativeLayout map,message,friends,group;
     private ImageView imageMap,imageMessage,imageFriends,imageGroup;
-
+    private DemoApplication demoApplication = new DemoApplication();
     private MapPage mapPage;
     private FriendsPage friendsPage;
     private MessagePage messagePage;
@@ -34,13 +40,15 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         initView();
         initMap();
 
+
+        demoApplication.reSet();
         // 拿到GPS信息与好友信息的例子
-        /*
+
         FriendsGPSList getFriendsGPS = new FriendsGPSList(MainPageActivity.this);
-        ArrayList<FriendsGPS> list =  getFriendsGPS.get();
+        ArrayList<FriendsGPS> list =  getFriendsGPS.getAll();
         FriendsList friendsList = new FriendsList(MainPageActivity.this);
-        ArrayList<Friend> list1 = friendsList.get();
-        */
+        ArrayList<Friend> list1 = friendsList.getAll();
+
         Intent intent = new Intent(MainPageActivity.this, UpdateGpsService.class);
         startService(intent);
 
