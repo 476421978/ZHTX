@@ -139,7 +139,6 @@ public class LocationService extends Service {
         String name,id,phonenum;
         LatLng[] latLng1 = new LatLng[list.size()];
         Bitmap[] bitmaps = new Bitmap[list.size()];
-        Bundle Friendbuns = new Bundle();
         for (int i=0; i<list.size(); i++) {
 
             //坐标信息

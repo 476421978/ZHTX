@@ -191,6 +191,9 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
 
         explicitStop();
 
+        baiduMap = null;
+        mMapView = null;
+
         Log.e("onDestroy:", "执行onDestroy");
     }
 
