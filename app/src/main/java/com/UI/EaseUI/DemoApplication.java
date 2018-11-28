@@ -49,7 +49,7 @@ public class DemoApplication extends Application {
     private static Handler handler;
     private static List<User> jsonListObject;
     private static EaseUI easeUI;
-    private Map<String, EaseUser> contactList = new HashMap<>();
+    private static Map<String, EaseUser> contactList = new HashMap<>();
 
     //用户 昵称 头像
     private String own_name;
@@ -76,12 +76,11 @@ public class DemoApplication extends Application {
 
      public void reSet(){
         //重置头像 昵称
-           /* setEaseUIProviders();*/
-           System.out.println("进来设置头像");
+       System.out.println("进来设置头像");
+
         //用户
         Thread th_own = new MyThread();
         th_own.start();
-
         handler = new Handler(){
              @Override
              public void handleMessage(Message msg) {
@@ -192,8 +191,10 @@ public class DemoApplication extends Application {
     }
 
 
+
+
     //获取环信好友体系
-    private Map<String, EaseUser> getContact() {
+    private static Map<String, EaseUser> getContact() {
         Map<String, EaseUser> map = new HashMap<>();
         try {
             List<String> userNames = EMClient.getInstance().contactManager().getAllContactsFromServer();
@@ -206,6 +207,8 @@ public class DemoApplication extends Application {
         } catch (HyphenateException e) {
             e.printStackTrace();
         }
+
+
         return map;
     }
 
@@ -265,6 +268,7 @@ public class DemoApplication extends Application {
     /*根据登陆用户 获取好友的昵称 头像*/
     static class MyThread2 extends Thread{
         public void run(){
+
             String url = "http://172.17.146.102:8080/txzh/getFriendsList";
             OkHttpClient okHttpClient = new OkHttpClient();
 
@@ -297,6 +301,7 @@ public class DemoApplication extends Application {
                     Gson gson = new Gson();
 
                     List<User> jsonListObject = gson.fromJson(response.body().string(), new TypeToken<List<User>>(){}.getType());//把JSON格式的字
+
 
                     Message msg = new Message();
                     msg.what=2;

@@ -143,7 +143,7 @@ public class RoutePlan {
 
                 MyWalkingRouteResult myWalkingRouteResult = new MyWalkingRouteResult();
 
-                int distance = 0;
+                long distance = 0;
                 int duration = 0;
 
                 for(int i=0; i<walkingRouteResult.getRouteLines().size(); i++) {
@@ -160,9 +160,11 @@ public class RoutePlan {
                         distance += walkingRouteResult.getRouteLines().get(i).getAllStep().get(j).getDistance();
                         duration += walkingRouteResult.getRouteLines().get(i).getAllStep().get(j).getDuration();
 
+                        if (distance >= 1000) {
+                            distance = Math.round((distance / 100d) / 10d);
+                        }
 
-                        myWalkingRouteResult.setDistance(distance);
-                        myWalkingRouteResult.setDuration(duration);
+
                     }
                 }
                 Log.e("步行总长度", String.valueOf(distance));
@@ -291,7 +293,6 @@ public class RoutePlan {
             }
         }
     }
-
 
     public void SearchDestory() {
         mSearch.destroy();

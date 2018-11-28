@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.user.zhtx.pojo.Friend;
 import com.example.user.zhtx.pojo.FriendsGPS;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,6 +22,8 @@ public class FriendsGPSList {
     }
 
     public ArrayList<FriendsGPS> getAll(){
+        GetGPS getGPS = new GetGPS(context);
+        getGPS.getFriendsGps();
         SharedPreferences sp = context.getSharedPreferences("user",Context.MODE_PRIVATE);
         String data = sp.getString("friendsGPS","未找到");
         ArrayList<FriendsGPS> list = null;

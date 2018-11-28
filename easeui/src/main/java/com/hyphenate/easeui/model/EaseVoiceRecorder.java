@@ -41,9 +41,11 @@ public class EaseVoiceRecorder {
             // need to create recorder every time, otherwise, will got exception
             // from setOutputFile when try to reuse
             if (recorder != null) {
+                System.out.println("释放录音");
                 recorder.release();
                 recorder = null;
             }
+
             recorder = new MediaRecorder();
 
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);

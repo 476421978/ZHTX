@@ -31,7 +31,7 @@ import java.util.Map;
 
 
 /*
-* 设置页面
+* 好友页面
 * */
 
 public class FriendsPage extends EaseContactListFragment {
@@ -47,18 +47,16 @@ public class FriendsPage extends EaseContactListFragment {
     @Override
     protected void initView() {
         super.initView();
-
-
+        System.out.println("initView");
     }
 
     protected void setUpView() {
         super.setUpView();
-
+        System.out.println("setUpView");
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-
                 switch (msg.what){
                     case 1:
                         //设置
@@ -122,10 +120,6 @@ public class FriendsPage extends EaseContactListFragment {
                     public void run() {
                         setContactsMap(getContact());
                         refresh();
-
-                        Message msg = new Message();
-                        msg.what=1;
-                        handler.sendMessage(msg);
                     }
                 }).start();
             } @Override
@@ -138,8 +132,6 @@ public class FriendsPage extends EaseContactListFragment {
             public void onFriendRequestAccepted(String s) { }
             @Override public void onFriendRequestDeclined(String s) { }
         });
-
-
 
 
          /*点击好友 打开聊天界面*/
@@ -190,6 +182,11 @@ public class FriendsPage extends EaseContactListFragment {
         } catch (HyphenateException e) {
             e.printStackTrace();
         }
+
+        Message msg = new Message();
+        msg.what=1;
+        handler.sendMessage(msg);
+
         return map;
     }
 
