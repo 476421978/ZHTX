@@ -62,6 +62,7 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
             Manifest.permission.WRITE_SETTINGS,
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.RECORD_AUDIO,
             Manifest.permission.ACCESS_FINE_LOCATION};
 
     @Override

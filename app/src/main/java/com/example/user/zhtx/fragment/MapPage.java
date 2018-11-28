@@ -66,7 +66,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.OnMapClickListener, BaiduMap.OnMapLongClickListener, BaiduMap.OnMarkerClickListener {
+public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.OnMapClickListener, BaiduMap.OnMapLongClickListener,BaiduMap.OnMarkerClickListener{
     private boolean pressed = false;
     private MapView mMapView = null;
     private BaiduMap baiduMap;
@@ -74,8 +74,8 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
     private BitmapDescriptor marking;
     public Double latitude,longitude;
     private PlanNode stNode,enNode;
-    private Button Route_btn, Bike_Guide_btn, walking_btn, driving_btn, biking_btn, self_info_btn;
-    private TextView address_txt, addressSematic_txt, distance_txt, duration_txt;
+    private Button Route_btn, Bike_Guide_btn, walking_btn, driving_btn, biking_btn;
+    private TextView address_txt, addressSematic_txt, distance_txt, duration_txt,name_txt,phone_text;
     private Marker markered;
     private ImageButton ShowGps_btn;
     private LatLng endPt ;
@@ -92,7 +92,7 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
     private boolean isFirstLoc = false;
     public LocationService locationService;
     private LocationConn locationConn;
-    private LinearLayout linearLayout;
+    private LinearLayout linearLayout,self_info_ll,ll_info;
     private RelativeLayout relativeLayout;
 
     /*-----------导航的声明---------------*/
@@ -114,19 +114,15 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         baiduMap.setOnMarkerClickListener(this);
         baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(baiduMap.getMapStatus()));
 
-        //点聚合
-        pointConverge = PointConverge.newInstance(getContext(), baiduMap);
-        pointConverge.pointConverge();
-        pointConverge.setListener();
+
 
         linearLayout = (LinearLayout) v.findViewById(R.id.ll_info);
         relativeLayout = (RelativeLayout) v.findViewById(R.id.ll_info_1);
 
-        self_info_btn = (Button)v.findViewById(R.id.self_info_btn);
-        self_info_btn.setOnClickListener(this);
+        self_info_ll = (LinearLayout)v.findViewById(R.id.self_info_ll);
+
         Route_btn = (Button)v.findViewById(R.id.route_btn);
         Route_btn.setOnClickListener(this);
-        //    Route_btn.setVisibility(View.GONE);
         ShowGps_btn =(ImageButton)v.findViewById(R.id.showgps_btn);
         ShowGps_btn.setOnClickListener(this);
         Bike_Guide_btn = (Button)v.findViewById(R.id.bike_guide_btn);
@@ -134,8 +130,8 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
 
         address_txt = (TextView) v.findViewById(R.id.address_txt);
         addressSematic_txt = (TextView) v.findViewById(R.id.addressSematic_txt);
-        distance_txt = (TextView) v.findViewById(R.id.distance_txt);;
-        duration_txt = (TextView) v.findViewById(R.id.duration_txt);
+        name_txt = (TextView)v.findViewById(R.id.name_txt);
+        phone_text =(TextView) v.findViewById(R.id.phonenum_txt);
 
         walking_btn = (Button)v.findViewById(R.id.walking_btn);
         walking_btn.setOnClickListener(this);
@@ -150,6 +146,11 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         //定位
         myLocationListener = MyLocationListener.newInstance(getContext(), baiduMap);
 
+
+        //点聚合
+        pointConverge = PointConverge.newInstance(getContext(), baiduMap,name_txt,phone_text);
+        pointConverge.pointConverge();
+        pointConverge.setListener();
 
         /**可用*/
 
@@ -185,6 +186,9 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
 
         explicitStop();
 
+        baiduMap = null;
+        mMapView = null;
+
         Log.e("onDestroy:", "执行onDestroy");
     }
 
@@ -219,9 +223,7 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         stNode = PlanNode.withLocation(GetLocation.newInstance().getMyLL());
 
         switch (v.getId()){
-            case R.id.self_info_btn:
 
-                break;
             case R.id.route_btn:
                 if(showRoute == true){
                     routePlan.RemoveRoute(showRoute);
@@ -244,9 +246,7 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
             case R.id.walking_btn:
 
                 routePlan.searchRoute(stNode, enNode, RoutePlan.WALKING);
-//                MyWalkingRouteResult myWalkingRouteResult = new MyWalkingRouteResult();
-//                distance_txt.setText(myWalkingRouteResult.getDistance());
-//                duration_txt.setText(myWalkingRouteResult.getDuration());
+
                 linearLayout.setVisibility(View.GONE);
                 relativeLayout.setVisibility(View.VISIBLE);
                 if(showRoute == true){
@@ -292,8 +292,6 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         if(showRoute == true){
             routePlan.RemoveRoute(showRoute);
         }
-        Route_btn.setVisibility(View.GONE);
-        //baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));
     }
 
     private void MarkerRemove() {
@@ -316,99 +314,51 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         MarkerRemove();
         if (latLng != null) {
             linearLayout.setVisibility(View.VISIBLE);
-            relativeLayout.setVisibility(View.GONE);
-
-            //    Route_btn.setVisibility(View.VISIBLE);
+            self_info_ll.setVisibility(View.GONE);
             latitude = latLng.latitude;
             longitude = latLng.longitude;
 
             marking = BitmapDescriptorFactory.fromResource(R.drawable.point);
             option = new MarkerOptions().position(latLng).icon(marking);
             markered = (Marker)baiduMap.addOverlay(option);
-
-//            View view = View.inflate(getContext(), R.layout.head_mark, null);
-//
-//            Drawable drawable = getContext().getResources().getDrawable(R.drawable.touxiang);
-//            CircleImageView circleImageView = view.findViewById(R.id.shape);
-//            circleImageView.setImageDrawable(drawable);
-//
-//            marking = BitmapDescriptorFactory.fromView(view);
-//
-//            option = new MarkerOptions().position(latLng).icon(marking);
-
-
-
             Log.e("adsfasdf",latLng.latitude+";"+latLng.longitude);
+
             enNode = PlanNode.withLocation(latLng);
             endPt = latLng;
-//            markered = (Marker)baiduMap.addOverlay(option);
 
             isFirstLoc = true;
+
+            showAddress(latLng);
+            Toast.makeText(getActivity(), "获取经度："+longitude+"获取纬度："+latitude, Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(getActivity(), "对不起，并未获取到经纬度数据", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
+
     public boolean onMarkerClick(Marker marker) {
 
         linearLayout.setVisibility(View.VISIBLE);
-
         Route_btn.setVisibility(View.VISIBLE);
         LatLng clickMarker = marker.getPosition();
         enNode = PlanNode.withLocation(clickMarker);
         endPt = clickMarker;
+        showAddress(clickMarker);
+        return false;
+    }
 
-        geoCoderManager.PositionChange(clickMarker);
-
+    public void showAddress(LatLng latLng) {
+        geoCoderManager.PositionChange(latLng);
         geoCoderManager.setAddressListner(new GeoCoderManager.AddressListner() {
 
             @Override
             public void getGetGeoCoderResult(GetGeoCoderResult getGeoCoderResult) {
                 address_txt.setText(getGeoCoderResult.getAddress());
                 addressSematic_txt.setText(getGeoCoderResult.getAddressSematic());
+
+
             }
         });
-
-    //    address_txt.setText(address);
-        return false;
-    }
-
-    public void addMarkers() {
-        LatLng llB = new LatLng(39.942821, 116.369199);
-        LatLng llC = new LatLng(39.939723, 116.425541);
-        LatLng llD = new LatLng(39.906965, 116.401394);
-        LatLng llE = new LatLng(39.956965, 116.331394);
-        LatLng llF = new LatLng(39.886965, 116.441394);
-        LatLng llG = new LatLng(39.996965, 116.411394);
-
-        LatLng[] latLng1 = new LatLng[6];
-        latLng1[0] = llB;
-        latLng1[1] = llC;
-        latLng1[2] = llD;
-        latLng1[3] = llE;
-        latLng1[4] = llF;
-        latLng1[5] = llG;
-
-        Drawable drawable1 = getContext().getResources().getDrawable(R.drawable.touxiang);
-        Drawable drawable2 = getContext().getResources().getDrawable(R.drawable.wenhao);
-        Drawable drawable3 = getContext().getResources().getDrawable(R.drawable.see_area);
-        Drawable drawable4 = getContext().getResources().getDrawable(R.drawable.round);
-        Drawable drawable5 = getContext().getResources().getDrawable(R.drawable.route);
-        Drawable drawable6 = getContext().getResources().getDrawable(R.drawable.pic_head);
-
-        Drawable[] drawables = new Drawable[6];
-        drawables[0] = drawable1;
-        drawables[1] = drawable2;
-        drawables[2] = drawable3;
-        drawables[3] = drawable4;
-        drawables[4] = drawable5;
-        drawables[5] = drawable6;
-
-        for (int i=0; i<latLng1.length; i++) {
-            pointConverge.addMarkers(latLng1[i], drawables[i]);
-            System.out.println(i+"111111111111111111");
-        }
     }
 
     private class LocationConn implements ServiceConnection {
@@ -416,6 +366,7 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             locationService = ((LocationService.LocationBinder)service).getService();
+            locationService.initPointConverge(getContext(), baiduMap, name_txt, phone_text);
             locationService.initLocation(getContext(), baiduMap);
             sendSelfGPS();
         }

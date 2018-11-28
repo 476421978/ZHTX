@@ -46,15 +46,6 @@ public class GeoCoderManager {
 
                 GetGeoCoderResult getGeoCoderResult = GetGeoCoderResult.newInstance();
 
-//                getGeoCoderResult.setProvince(result.getAddressDetail().province);
-//                getGeoCoderResult.setCity(result.getAddressDetail().city);
-//                getGeoCoderResult.setDistrict(result.getAddressDetail().district);
-//                getGeoCoderResult.setTown(result.getAddressDetail().town);
-//                getGeoCoderResult.setStreet(result.getAddressDetail().street);
-//                getGeoCoderResult.setStreetNumber(result.getAddressDetail().streetNumber);
-
-                String addressText = result.getAddress();//这里的addressText就是我们要的地址
-
                 String address = result.getAddressDetail().province + result.getAddressDetail().city
                         + result.getAddressDetail().district + result.getAddressDetail().town
                         + result.getAddressDetail().street + result.getAddressDetail().streetNumber;

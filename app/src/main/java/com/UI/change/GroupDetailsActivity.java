@@ -431,8 +431,7 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
      * @param view
      */
     public void exitGroup(View view) {
-       /* startActivityForResult(new Intent(this, ExitGroupDialog.class), REQUEST_CODE_EXIT);*/
-
+     /* startActivityForResult(new Intent(this, ExitGroupDialog.class), REQUEST_CODE_EXIT);*/
     }
 
     /**

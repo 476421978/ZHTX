@@ -37,6 +37,8 @@ public class Address {
     /*----------------------修改个人信息----------------------------*/
         //普通信息
     public static final String ChangeMessage=address+"/txzh/ChangeMessage";
+        //个人头像
+        public static final String ChangeHead=address+"/txzh/ChangePicture";
 
      /*----------------------GPS----------------------------*/
         //上传个人gps位置
