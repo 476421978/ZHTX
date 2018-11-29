@@ -6,6 +6,7 @@ package com.example.user.zhtx.pojo;
 
 public class FriendsGPS {
 
+
     /**
      * name : 测试0001
      * phonenum : 13692824048
@@ -13,9 +14,10 @@ public class FriendsGPS {
      * gender : 1
      * birthday : 1543420800000
      * pic : 13692824048
-     * atitude : 0.0
-     * longatitude : 0.0
+     * atitude : 39.939723
+     * longatitude : 116.425541
      * attention : 1
+     * isView : 0
      */
 
     private String name;
@@ -27,6 +29,7 @@ public class FriendsGPS {
     private double atitude;
     private double longatitude;
     private int attention;
+    private int isView;
 
     public String getName() {
         return name;
@@ -98,5 +101,13 @@ public class FriendsGPS {
 
     public void setAttention(int attention) {
         this.attention = attention;
+    }
+
+    public int getIsView() {
+        return isView;
+    }
+
+    public void setIsView(int isView) {
+        this.isView = isView;
     }
 }

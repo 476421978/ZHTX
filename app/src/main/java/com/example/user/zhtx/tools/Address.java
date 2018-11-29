@@ -17,8 +17,7 @@ public class Address {
         //得到用户信息
     public static final String getUser=address+"/txzh/getUser";
 
-    //测试
-    public static final String Test="http://172.17.146.163:8080/SpringMvcTest1/getUser";
+
 
     /*----------------------注册----------------------------*/
         //检查用户是否已注册
@@ -53,5 +52,9 @@ public class Address {
     /*---------------------群组信息----------------------------*/
         //得到群成员
     public static final String GetGroupMemberGps = address+"/txzh/groupMemberGps";
+
+    /*---------------------可见范围----------------------------*/
+        //改变看见范围
+    public static final String ChangeSeeArea = address+"/txzh/groupMemberGps";
 
 }

@@ -1,8 +1,10 @@
 package com.example.user.zhtx.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class FriendsManagementActivity extends AppCompatActivity implements View.OnClickListener {
     private ListView listView;
     private ImageView iv_back;
+    private Button btn_myCare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +32,22 @@ public class FriendsManagementActivity extends AppCompatActivity implements View
 
         iv_back = (ImageView)findViewById(R.id.activity_friends_management_iv_back);
         iv_back.setOnClickListener(this);
+
+        btn_myCare = (Button)findViewById(R.id.activity_friends_management_btn_myCare);
+        btn_myCare.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        finish();
+        switch (view.getId()){
+            case R.id.activity_friends_management_btn_myCare:
+                Intent intent = new Intent(FriendsManagementActivity.this,CareListActivity.class);
+                startActivity(intent);
+                break;
+            case  R.id.activity_friends_management_iv_back:
+                finish();
+                break;
+        }
+
     }
 }

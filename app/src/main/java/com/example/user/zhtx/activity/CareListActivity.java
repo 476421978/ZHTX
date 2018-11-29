@@ -7,10 +7,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.adapter.CareListAdapter;
-import com.example.user.zhtx.pojo.Friend;
 import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.tools.FriendsGPSList;
-import com.example.user.zhtx.tools.FriendsList;
 
 import java.util.ArrayList;
 

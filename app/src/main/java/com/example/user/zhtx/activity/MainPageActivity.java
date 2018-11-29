@@ -1,9 +1,13 @@
 package com.example.user.zhtx.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,14 +18,29 @@ import com.example.user.zhtx.fragment.FriendsPage;
 import com.example.user.zhtx.fragment.MapPage;
 import com.example.user.zhtx.fragment.MessagePage;
 import com.example.user.zhtx.fragment.SettingPage;
+import com.example.user.zhtx.internet.CheckNetwork;
 import com.example.user.zhtx.pojo.Friend;
 import com.example.user.zhtx.pojo.FriendsGPS;
+import com.example.user.zhtx.pojo.GroupMember;
+import com.example.user.zhtx.pojo.GroupMemberMessage;
+import com.example.user.zhtx.pojo.MessageInfo;
 import com.example.user.zhtx.service.UpdateGpsService;
+import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.FriendsGPSList;
 import com.example.user.zhtx.tools.FriendsList;
-import com.example.user.zhtx.tools.GroupMemberList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainPageActivity extends AppCompatActivity implements View.OnClickListener{
     private RelativeLayout map,message,friends,group;
@@ -38,6 +57,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
         initView();
+
         initMap();
 
 
@@ -76,6 +96,10 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
+        if (!CheckNetwork.NetworkState(MainPageActivity.this)){
+            return;
+        }
+
         switch (view.getId()){
             case R.id.activity_main_page_rl_map:
                 initMap();
@@ -187,6 +211,5 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
             transaction.hide(settingPage);
         }
     }
-
 
 }

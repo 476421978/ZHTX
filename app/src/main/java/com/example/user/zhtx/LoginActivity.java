@@ -3,6 +3,7 @@ package com.example.user.zhtx;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,19 +20,25 @@ import com.example.user.zhtx.activity.FindPasswordActivity;
 import com.example.user.zhtx.activity.MainPageActivity;
 import com.example.user.zhtx.activity.RegisterActivity;
 import com.example.user.zhtx.internet.CheckNetwork;
+import com.example.user.zhtx.pojo.FriendsGPS;
+import com.example.user.zhtx.pojo.GroupMember;
 import com.example.user.zhtx.pojo.MessageInfo;
+import com.example.user.zhtx.pojo.UUIDMessage;
 import com.example.user.zhtx.pojo.User;
+import com.example.user.zhtx.pojo.UserMessage;
 import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.PerssionControl;
 import com.example.user.zhtx.tools.SharedPreferencesControl;
 import com.example.user.zhtx.tools.ShowToast;
 import com.example.user.zhtx.tools.SingleErrDiaog;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -48,6 +55,8 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
     private final static int LOGIN_FAIL = 2;
     // 弹出框
     private ProgressDialog mDialog;
+
+    private SharedPreferences sp;
 
 
 
@@ -74,7 +83,6 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
         control.getPermission(LoginActivity.this,permissions);
 
         initView();
-
 
     }
 
@@ -158,13 +166,16 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
 
-                        Log.i("result",result);
-
                         Gson gson = new Gson();
-                        MessageInfo m = gson.fromJson(result,MessageInfo.class);
+                        UUIDMessage m = gson.fromJson(result,UUIDMessage.class);
+                        String uuid = m.getUuid();
 
-                        Log.i("login",result);
                         if ("true".equals(m.getSuccess())){
+                            sp = getSharedPreferences("user",MODE_PRIVATE);
+                            SharedPreferences.Editor editor= sp.edit();
+                            editor.putString("uuid",m.getUuid());
+                            editor.commit();
+
                             Message message1 = new Message();
                             message1.what=LOGIN_SUCCESS;
                             handler.sendMessage(message1);
@@ -323,6 +334,7 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
 
                 FormBody body = new FormBody.Builder()
                     .add("phonenum",ed_phoneNum.getText().toString())
+                    .add("uuid",sp.getString("uuid",""))
                     .build();
 
                 Request request = new Request.Builder()
@@ -342,7 +354,9 @@ public class  LoginActivity extends AppCompatActivity implements View.OnClickLis
                         String result = response.body().string();
 
                         Gson gson = new Gson();
-                        User user = gson.fromJson(result,User.class);
+                        UserMessage message = gson.fromJson(result,UserMessage.class);
+
+                        User user = message.getData();
                         SharedPreferencesControl control = new SharedPreferencesControl(LoginActivity.this);
                         control.saveUser(user);
                         User user2 = control.getUser();

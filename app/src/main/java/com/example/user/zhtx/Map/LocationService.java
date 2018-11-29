@@ -50,7 +50,7 @@ public class LocationService extends Service {
     private URL urls;
     private String Fphonenum;
     private String address ="http://172.17.146.102:8080/txzh/pic/";
-    private String FPicAddress;
+    private String FPicAddress=null;
     private String jpeg=".jpeg";
     private Bitmap FriendPic;
 
@@ -139,6 +139,9 @@ public class LocationService extends Service {
         String name,id,phonenum;
         LatLng[] latLng1 = new LatLng[list.size()];
         Bitmap[] bitmaps = new Bitmap[list.size()];
+        if (list.size()==0){
+            return;
+        }
         for (int i=0; i<list.size(); i++) {
 
             //坐标信息
@@ -178,6 +181,9 @@ public class LocationService extends Service {
         super.onDestroy();
     }
     private void downloadingImageAndShow() {
+        if (FPicAddress==null){
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {

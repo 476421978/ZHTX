@@ -37,6 +37,7 @@ public class GetFriends {
 
                     FormBody body = new FormBody.Builder()
                             .add("userid",sp.getInt("id",0)+"")
+                            .add("uuid",sp.getString("uuid",""))
                             .build();
 
                     Request request = new Request.Builder()

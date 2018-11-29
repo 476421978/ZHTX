@@ -142,6 +142,7 @@ public class ModifyInfoActivity extends AppCompatActivity implements View.OnClic
                         .add("name",ed_name.getText().toString())
                         .add("gender",gender+"")
                         .add("address",ed_address.getText().toString())
+                        .add("uuid",sp.getString("uuid",""))
                         .build();
 
                 Request request = new Request.Builder()

@@ -109,6 +109,7 @@ public class ChangePasswordByPwd extends AppCompatActivity implements View.OnCli
                         .add("id",sp.getInt("id",1)+"")
                         .add("oldpassword",ed_oldPwd.getText().toString())
                         .add("newpassword",ed_newPwd.getText().toString())
+                        .add("uuid",sp.getString("uuid",""))
                         .build();
 
                 final Request request = new Request.Builder()

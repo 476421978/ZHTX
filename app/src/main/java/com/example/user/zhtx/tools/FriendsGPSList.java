@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.user.zhtx.pojo.FriendsGPS;
+import com.example.user.zhtx.pojo.FriendsGPSMessage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,7 +32,8 @@ public class FriendsGPSList {
             ShowToast.show(context,"从sp获取信息出错");
         }else {
             Gson gson = new Gson();
-            list = gson.fromJson(data, new TypeToken<ArrayList<FriendsGPS>>() {}.getType());
+            FriendsGPSMessage message = gson.fromJson(sp.getString("friendsGPS",""),FriendsGPSMessage.class);
+            list = (ArrayList<FriendsGPS>) message.getData();
         }
         return  list;
     }
@@ -40,8 +42,10 @@ public class FriendsGPSList {
         ArrayList<FriendsGPS> allList = getAll();
         ArrayList<FriendsGPS> careList = new ArrayList<>();
         for (int i=0;i<allList.size();i++){
-            if (allList.get(i).getAttention() == 1){
-                careList.add(allList.get(i));
+            if (allList.get(i).getIsView()==1) {
+                if (allList.get(i).getAttention() == 1) {
+                    careList.add(allList.get(i));
+                }
             }
         }
         return careList;

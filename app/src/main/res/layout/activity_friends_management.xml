@@ -27,6 +27,16 @@
             android:textSize="17sp"
             android:layout_gravity="center"
             android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/activity_friends_management_btn_myCare"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginRight="20dp"
+            android:text="我关注的人"
+            android:textColor="@color/white"
+            android:background="@color/btnBlue"
+            android:layout_gravity="right"/>
     </android.support.v7.widget.Toolbar>
 
     <ListView

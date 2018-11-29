@@ -30,8 +30,17 @@ public class User {
     private long birthday;
     private int login;
     private int isban;
-    private int isview;
+    private int isview;  // 0所有人可见 1所有人不可见  2部分人可见
     private String pic;
+    private String uuid;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public int getId() {
         return id;

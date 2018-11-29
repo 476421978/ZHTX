@@ -170,6 +170,7 @@ public class SelfInfoActivity extends AppCompatActivity implements View.OnClickL
             case R.id.activity_self_info_btn_modify:
                 Intent intent = new Intent(SelfInfoActivity.this,ModifyInfoActivity.class);
                 startActivity(intent);
+                break;
             case R.id.activity_self_info_siv_head:
                 changePic = true;
                 choseWay();
@@ -177,6 +178,7 @@ public class SelfInfoActivity extends AppCompatActivity implements View.OnClickL
         }
     }
     private void choseWay(){
+        Log.i("iii","11111111111111111111111111111111111111111");
         final String items[] = {"相册","拍照"};
         AlertDialog.Builder builder = new AlertDialog.Builder(SelfInfoActivity.this);
         builder.setTitle("选择图片源");
@@ -367,6 +369,7 @@ public class SelfInfoActivity extends AppCompatActivity implements View.OnClickL
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("pictureName",sp.getString("phonenum",""))
                         .addFormDataPart("pic","pic",RequestBody.create(TYPE,new File(imagePath)))
+                        .addFormDataPart("uuid",sp.getString("uuid",""))
                         .build();
 
                 final Request request = new Request.Builder()

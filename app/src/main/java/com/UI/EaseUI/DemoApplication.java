@@ -21,6 +21,8 @@ import android.os.Message;
 import android.support.multidex.MultiDex;
 
 import com.example.user.zhtx.pojo.User;
+import com.example.user.zhtx.pojo.UserMessage;
+import com.example.user.zhtx.tools.Address;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hyphenate.chat.EMClient;
@@ -220,20 +222,20 @@ public class DemoApplication extends Application {
         }
         public void run(){
             //登陆用户ID
-            SharedPreferences user= applicationContext.getSharedPreferences("user", 0);
+            SharedPreferences user= applicationContext.getSharedPreferences("user", MODE_PRIVATE);
             String phone = user.getString("phonenum","");
 
 
             //获取用户自己的信息
-            String url = "http://172.17.146.102:8080/txzh/getUser";
             OkHttpClient okHttpClient = new OkHttpClient();
 
             RequestBody body = new FormBody.Builder()
                     .add("phonenum",phone)
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.getUser)
                     .post(body)
                     .build();
 
@@ -247,9 +249,12 @@ public class DemoApplication extends Application {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    String result = response.body().string();
 
                     Gson gson = new Gson();
-                    User own = gson.fromJson(response.body().string(),User.class);
+                    UserMessage message = gson.fromJson(result,UserMessage.class);
+
+                    User own = message.getData();
                     own_name = own.getName();
                     String pic = own.getPic();
                     own_avater = "http://172.17.146.102:8080/txzh/pic/"+ pic + ".jpeg";

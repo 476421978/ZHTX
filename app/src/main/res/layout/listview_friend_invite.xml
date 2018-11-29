@@ -59,7 +59,7 @@
             android:textSize="10sp"
             android:text="同意"
             android:textColor="@color/white"
-            android:background="@color/ThemeColor"/>
+            android:background="#00FF00"/>
 
         <Button
             android:id="@+id/activity_friend_invite_btn_refuse"
@@ -68,7 +68,7 @@
             android:textSize="10sp"
             android:text="拒绝"
             android:textColor="@color/white"
-            android:background="@color/ThemeColor"
+            android:background="#FF0000"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
 

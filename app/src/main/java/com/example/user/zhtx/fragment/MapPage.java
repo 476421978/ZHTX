@@ -402,6 +402,7 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
                         .add("userid",sp.getInt("id",0)+"")
                         .add("atitude", new GetLocation().getLatitude()+"")
                         .add("longatitude",new GetLocation().getLongitude()+"")
+                        .add("uuid",sp.getString("uuid",""))
                         .build();
 
                 Request request = new Request.Builder()

@@ -13,8 +13,8 @@ public class GroupMember {
      * phonenum : 15014635129
      * gender : 1
      * pic : 15014635129
-     * atitude : 39
-     * longatitude : 116
+     * atitude : 0
+     * longatitude : 0
      */
 
     private int userid;
@@ -23,8 +23,8 @@ public class GroupMember {
     private String phonenum;
     private int gender;
     private String pic;
-    private int atitude;
-    private int longatitude;
+    private double atitude;
+    private double longatitude;
 
     public int getUserid() {
         return userid;
@@ -74,19 +74,19 @@ public class GroupMember {
         this.pic = pic;
     }
 
-    public int getAtitude() {
+    public double getAtitude() {
         return atitude;
     }
 
-    public void setAtitude(int atitude) {
+    public void setAtitude(double atitude) {
         this.atitude = atitude;
     }
 
-    public int getLongatitude() {
+    public double getLongatitude() {
         return longatitude;
     }
 
-    public void setLongatitude(int longatitude) {
+    public void setLongatitude(double longatitude) {
         this.longatitude = longatitude;
     }
 }

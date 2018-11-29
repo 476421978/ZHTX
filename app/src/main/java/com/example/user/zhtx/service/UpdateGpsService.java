@@ -59,7 +59,7 @@ public class UpdateGpsService extends Service {
 
 
         AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        int time = 1000*300;
+        int time = 1000*5;
         long startTime = SystemClock.elapsedRealtime()+time;
 
         Intent intent1 = new Intent(this,UpdateGpsService.class);

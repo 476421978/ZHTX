@@ -36,13 +36,26 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:id="@+id/listview_setting_care_btn_quxiao"
+        <!--<Button-->
+            <!--android:id="@+id/listview_setting_care_btn_quxiao"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:text="已关注"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:background="@color/btnRed"/>-->
+
+        <Switch
+            android:id="@+id/listvew_setting_care_switch"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="已关注"
-            android:textColor="@color/white"
-            android:background="@color/btnRed"/>
+            android:layout_height="wrap_content"
+            android:textOn="on"
+            android:textOff="off"
+            android:textSize="10dp"
+            android:switchMinWidth="20dp"
+            android:thumb="@drawable/thumb"
+            android:track="@drawable/track"
+            android:switchTextAppearance="@style/s_true"
+            android:checked="true" />
 
     </LinearLayout>
 

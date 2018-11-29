@@ -81,30 +81,6 @@
             android:layout_height="4dp"
             android:background="@color/bg_gray"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="left">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我关注的人可见"
-                android:textColor="@color/textBack"
-                android:layout_gravity="center"
-                android:textSize="15sp"
-                android:layout_marginLeft="30dp" />
-
-            <Button
-                android:id="@+id/activity_see_area_btn_myCare"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="我关注的人"
-                android:textColor="@color/white"
-                android:layout_marginLeft="30dp"
-                android:background="@color/btnBlue"
-                android:layout_gravity="center"/>
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -113,6 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
         <RadioGroup
+            android:id="@+id/activity_see_area_rg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -130,14 +107,6 @@
                 android:background="@color/bg_gray"/>
             <RadioButton
                 android:id="@+id/activity_see_area_rb_allNot"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/bg_gray"/>
-            <RadioButton
-                android:id="@+id/activity_see_area_rb_care"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"/>
         </RadioGroup>
