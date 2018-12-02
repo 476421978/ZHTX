@@ -789,6 +789,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 case ITEM_LOCATION://百度地图
                     switch (chatType){
                         case 1://单聊
+                            System.out.println("点击"+ chatType);
+                            startActivityForResult(new Intent(getActivity(),sendMyLocation.class), REQUEST_CODE_MAP);
                             break;
                         case 2://群聊
                             break;
@@ -796,8 +798,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                             break;
                     }
 
-                    System.out.println("点击"+ chatType);
-                /*    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);*/
                     break;
 
                 default:

@@ -1,8 +1,6 @@
 package com.example.user.zhtx.Map;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -11,7 +9,6 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.GetGeoCoderResult;
 
 public class GeoCoderManager {
@@ -57,11 +54,11 @@ public class GeoCoderManager {
 
                 addressListner.getGetGeoCoderResult(getGeoCoderResult);
 
-                Log.e("", result.getPoiList().get(0).getAddress());
+                /*Log.e("", result.getPoiList().get(0).getAddress());*/
 
             //    showAddress = addressText;
-                Log.e("address","地址详细细信息"+result.getAddressDetail().district);
-                Toast.makeText(context,"地址："+result.getSematicDescription(), Toast.LENGTH_SHORT).show();
+/*                Log.e("address","地址详细细信息"+result.getAddressDetail().district);
+                Toast.makeText(context,"地址："+result.getSematicDescription(), Toast.LENGTH_SHORT).show();*/
             }
 
             // 地理编码查询结果回调函

@@ -105,10 +105,13 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
         loadingPB = (ProgressBar) findViewById(R.id.progressBar);
         exitBtn = (Button) findViewById(R.id.btn_exit_grp);
         deleteBtn = (Button) findViewById(R.id.btn_exitdel_grp);
-        RelativeLayout changeGroupNameLayout = (RelativeLayout) findViewById(R.id.rl_change_group_name);
+
+/*        RelativeLayout changeGroupNameLayout = (RelativeLayout) findViewById(R.id.rl_change_group_name);
         RelativeLayout changeGroupDescriptionLayout = (RelativeLayout) findViewById(R.id.rl_change_group_description);
-        RelativeLayout changeGroupExtension = (RelativeLayout) findViewById(R.id.rl_change_group_extension);
+        RelativeLayout changeGroupExtension = (RelativeLayout) findViewById(R.id.rl_change_group_extension);*/
+
         RelativeLayout idLayout = (RelativeLayout) findViewById(R.id.rl_group_id);
+
         idLayout.setVisibility(View.VISIBLE);
         TextView idText = (TextView) findViewById(R.id.tv_group_id_value);
 
@@ -123,9 +126,9 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
         announcementText = (TextView) findViewById(R.id.tv_group_announcement_value);
 
         // Group notification
-        RelativeLayout groupNotiLayout = (RelativeLayout) findViewById(R.id.layout_group_notification);
+       /* RelativeLayout groupNotiLayout = (RelativeLayout) findViewById(R.id.layout_group_notification);
 
-        RelativeLayout sharedFilesLayout = (RelativeLayout) findViewById(R.id.layout_share_files);
+        RelativeLayout sharedFilesLayout = (RelativeLayout) findViewById(R.id.layout_share_files);*/
 
         idText.setText(groupId);
         if (group.getOwner() == null || "".equals(group.getOwner())
@@ -159,15 +162,15 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
         updateGroup();
 
         clearAllHistory.setOnClickListener(this);
-        changeGroupNameLayout.setOnClickListener(this);
+/*        changeGroupNameLayout.setOnClickListener(this);
         changeGroupDescriptionLayout.setOnClickListener(this);
-        changeGroupExtension.setOnClickListener(this);
+        changeGroupExtension.setOnClickListener(this);*/
         rl_switch_block_groupmsg.setOnClickListener(this);
         searchLayout.setOnClickListener(this);
         blockOfflineLayout.setOnClickListener(this);
         announcementLayout.setOnClickListener(this);
-        groupNotiLayout.setOnClickListener(this);
-        sharedFilesLayout.setOnClickListener(this);
+/*        groupNotiLayout.setOnClickListener(this);
+        sharedFilesLayout.setOnClickListener(this);*/
     }
 
 
@@ -281,11 +284,10 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
                     break;
 
                 case REQUEST_CODE_EDIT_GROUPNAME: //修改群名称
-                    final String returnData = data.getStringExtra("data");
+            /*        final String returnData = data.getStringExtra("data");
                     if(!TextUtils.isEmpty(returnData)){
                         progressDialog.setMessage(st5);
                         progressDialog.show();
-
                         new Thread(new Runnable() {
                             public void run() {
                                 try {
@@ -309,7 +311,7 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
                                 }
                             }
                         }).start();
-                    }
+                    }*/
                     break;
                 case REQUEST_CODE_EDIT_GROUP_DESCRIPTION:
                     final String returnData1 = data.getStringExtra("data");
@@ -578,36 +580,12 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
 
                 break;
 
-            case R.id.rl_change_group_name:
-           /*     startActivityForResult(new Intent(this, EditActivity.class).putExtra("data", group.getGroupName()).putExtra("editable", isCurrentOwner(group)),
-                        REQUEST_CODE_EDIT_GROUPNAME);*/
-                break;
-            case R.id.rl_change_group_description:
-          /*      startActivityForResult(new Intent(this, EditActivity.class).putExtra("data", group.getDescription()).
-                                putExtra("title", getString(R.string.change_the_group_description)).putExtra("editable", isCurrentOwner(group)),
-                        REQUEST_CODE_EDIT_GROUP_DESCRIPTION);*/
-                break;
-            case R.id.rl_search:
-               /* startActivity(new Intent(this, GroupSearchMessageActivity.class).putExtra("groupId", groupId));*/
 
-                break;
             case R.id.rl_switch_block_offline_message:
                 toggleBlockOfflineMsg();
                 break;
             case R.id.layout_group_announcement:
                 showAnnouncementDialog();
-                break;
-            // To send group ack message.
-            case R.id.layout_group_notification:
-                setResult(RESULT_CODE_SEND_GROUP_NOTIFICATION);
-                finish();
-                break;
-            case R.id.layout_share_files:
-              /*  startActivity(new Intent(this, SharedFilesActivity.class).putExtra("groupId", groupId));*/
-                break;
-            case R.id.rl_change_group_extension:
-                /*startActivityForResult(new Intent(this, EditActivity.class).putExtra("data", group.getExtension()).
-                        putExtra("title", getString(R.string.change_the_group_extension)).putExtra("editable", isCurrentOwner(group)), REQUEST_CODE_EDIT_GROUP_EXTENSION);*/
                 break;
             default:
                 break;
@@ -1205,8 +1183,7 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
 
                             announcementText.setText(group.getAnnouncement());
 
-                            RelativeLayout changeGroupNameLayout = (RelativeLayout) findViewById(R.id.rl_change_group_name);
-                            RelativeLayout changeGroupDescriptionLayout = (RelativeLayout) findViewById(R.id.rl_change_group_description);
+
                             boolean isOwner = isCurrentOwner(group);
                             exitBtn.setVisibility(isOwner ? View.GONE : View.VISIBLE);
                             deleteBtn.setVisibility(isOwner ? View.VISIBLE : View.GONE);
