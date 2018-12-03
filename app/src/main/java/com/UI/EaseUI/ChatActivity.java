@@ -8,10 +8,9 @@ import android.support.annotation.NonNull;
 import com.UI.change.BaseActivity;
 import com.example.user.zhtx.R;
 import com.hyphenate.util.EasyUtils;
-import com.hyphenate.easeui.ui.EaseChatFragment;
 public class ChatActivity extends BaseActivity {
     public static ChatActivity activityInstance;
-    private EaseChatFragment chatFragment;
+    private ChatFragment chatFragment;
     String toChatUsername;
 
 

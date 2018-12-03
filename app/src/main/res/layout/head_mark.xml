@@ -16,13 +16,14 @@
         android:elevation="20dp"/>
 
     <ImageView
+        android:layout_marginTop="-10dp"
         android:paddingTop="3dp"
         android:layout_below="@+id/shape"
         android:layout_centerHorizontal="true"
         android:scaleType="center"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/popup_down"
+        android:src="@drawable/marker"
         android:elevation="15dp"/>
 
 </RelativeLayout>

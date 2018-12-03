@@ -212,7 +212,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
                 return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
-
                     @Override
                     public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
                         sendVoiceMessage(voiceFilePath, voiceTimeLength);
@@ -787,8 +786,18 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 case ITEM_PICTURE:
                     selectPicFromLocal();
                     break;
-                case ITEM_LOCATION:
-                /*    startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);*/
+                case ITEM_LOCATION://百度地图
+                    switch (chatType){
+                        case 1://单聊
+                            System.out.println("点击"+ chatType);
+                            startActivityForResult(new Intent(getActivity(),sendMyLocation.class), REQUEST_CODE_MAP);
+                            break;
+                        case 2://群聊
+                            break;
+                        default:
+                            break;
+                    }
+
                     break;
 
                 default:
