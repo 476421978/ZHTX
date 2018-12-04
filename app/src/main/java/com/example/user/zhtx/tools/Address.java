@@ -36,8 +36,8 @@ public class Address {
     /*----------------------修改个人信息----------------------------*/
         //普通信息
     public static final String ChangeMessage=address+"/txzh/ChangeMessage";
-        //个人头像
-        public static final String ChangeHead=address+"/txzh/ChangePicture";
+    //个人头像
+    public static final String ChangeHead=address+"/txzh/ChangePicture";
 
      /*----------------------GPS----------------------------*/
         //上传个人gps位置
@@ -56,5 +56,37 @@ public class Address {
     /*---------------------可见范围----------------------------*/
         //改变看见范围
     public static final String ChangeSeeArea = address+"/txzh/groupMemberGps";
+
+
+    /*---------------------发送邀请信息----------------------------*/
+    public static final String setInvitation = address + "/txzh/insertInvitation";
+
+    /*---------------------获取邀请信息----------------------------*/
+    public static final String getInvitation = address + "/txzh/selectInvitation";
+
+    /*---------------------添加好友邀请信息----------------------------*/
+    public static final String deleteInvitation = address + "/txzh/deleteInvitation";
+
+    /*---------------------创建群聊----------------------------*/
+    public static final String createdGroup = address + "/txzh/insertGroup";
+
+    /*---------------------删除群聊----------------------------*/
+    public static final String deletedGroup = address + "/txzh/deleteGroup";
+
+    /*---------------------加入群聊----------------------------*/
+    public static final String joinGroup = address + "/txzh/joinGroup";
+
+    /*---------------------查找群聊----------------------------*/
+    public static final String serachGroup = address + "/txzh/searchGroup";
+
+    /*---------------------退出群聊----------------------------*/
+    public static final String exitGroup = address + "/txzh/exitGroup";
+
+    /*---------------------添加好友----------------------------*/
+    public static final String addFriends = address + "/txzh/addFriends";
+
+
+
+
 
 }

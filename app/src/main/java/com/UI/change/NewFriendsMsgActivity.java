@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.adapter.AddFriendsAdapter;
 import com.example.user.zhtx.pojo.add;
+import com.example.user.zhtx.tools.Address;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -100,16 +101,17 @@ public class NewFriendsMsgActivity extends BaseActivity implements View.OnClickL
 
 
             //获取用户自己的信息
-            String url = "http://172.17.146.102:8080/txzh/selectInvitation";
+            /*String url = "http://172.17.146.102:8080/txzh/selectInvitation";*/
             OkHttpClient okHttpClient = new OkHttpClient();
 
 
             RequestBody body = new FormBody.Builder()
                     .add("userid",userID+"")
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             final Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.getInvitation)
                     .post(body)
                     .build();
 

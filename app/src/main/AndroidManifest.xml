@@ -108,7 +108,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="KQMVHI7GAqZme83WvSRNUR6bmG9yK6Rj" />
+            android:value="zBzB0E7LOM8NzG5bGIFGYycnU7pViVIu" />
 
         <service
             android:name=".Map.LocationService"
@@ -143,7 +143,6 @@
             </intent-filter>
         </receiver>
 
-
         <activity android:name="com.UI.change.AddContactActivity" />
         <activity android:name="com.UI.change.BaseActivity" />
         <activity android:name="com.UI.change.NewFriendsMsgActivity" />
@@ -158,7 +157,8 @@
         <activity android:name="com.UI.change.UserProfileActivity" />
         <activity android:name=".activity.FriendsManagementActivity" />
         <activity android:name=".Map.BNaviGuideActivity" />
-        <activity android:name="com.UI.EaseUI.sendMyLocation"></activity>
+        <activity android:name="com.UI.EaseUI.sendMyLocation" />
+        <activity android:name="com.UI.change.ExitGroupDialog"></activity>
     </application>
 
 </manifest>

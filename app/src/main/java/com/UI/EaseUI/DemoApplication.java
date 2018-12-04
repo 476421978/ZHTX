@@ -21,7 +21,6 @@ import android.os.Message;
 import android.support.multidex.MultiDex;
 
 import com.example.user.zhtx.pojo.User;
-import com.example.user.zhtx.pojo.UserMessage;
 import com.example.user.zhtx.tools.Address;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -60,6 +59,8 @@ public class DemoApplication extends Application {
     //好友 昵称 头像
     private int i=0;
 
+    private Context mcontext;
+
     public DemoApplication(){
 
     }
@@ -76,13 +77,15 @@ public class DemoApplication extends Application {
         return instance;
     }
 
-     public void reSet(){
+     public void reSet(Context context){
+        this.mcontext = context;
         //重置头像 昵称
        System.out.println("进来设置头像");
+      /*  Thread th_own = new MyThread();
+        th_own.start();*/
+        Thread th_friends = new MyThread2();
+        th_friends.start();
 
-        //用户
-        Thread th_own = new MyThread();
-        th_own.start();
         handler = new Handler(){
              @Override
              public void handleMessage(Message msg) {
@@ -90,11 +93,12 @@ public class DemoApplication extends Application {
                  switch (msg.what){
                      case 1:
                          //好友
-                         Thread th_friends = new MyThread2();
-                         th_friends.start();
                          break;
                      case 2:
                          jsonListObject = (List<User>) msg.obj;
+
+                         System.out.println("123");
+
                          setEaseUIProviders();
                          break;
                      default:
@@ -145,12 +149,14 @@ public class DemoApplication extends Application {
     //设置头像
     private EaseUser getUserInfo(String username){
         EaseUser user = null;
-        System.out.println("进来设置界面");
+        //用户
+        SharedPreferences userM= mcontext.getSharedPreferences("user", 0);
+
         //如果用户是本人，就设置自己的头像
         if(username.equals(EMClient.getInstance().getCurrentUser())){
             user=new EaseUser(username);
-            user.setAvatar(own_avater);
-            user.setNick(own_name);
+            user.setAvatar(Address.title + userM.getString("phonenum","") + ".jpeg");
+            user.setNick(userM.getString("name",""));
             return user;
         }
 
@@ -171,7 +177,7 @@ public class DemoApplication extends Application {
                 String Id = p.getPhonenum();
                 if(username.equals(Id)){
                     String pic = p.getPic();
-                    String f_pic = "http://172.17.146.102:8080/txzh/pic/"+ pic + ".jpeg";
+                    String f_pic = Address.title + pic + ".jpeg";
                     user.setNick(p.getName());
                     user.setAvatar(f_pic);
                 }
@@ -215,85 +221,26 @@ public class DemoApplication extends Application {
     }
 
 
-
-    /*根据登陆用户 得到对应的昵称和头像信息*/
-    class MyThread extends Thread{
-        public MyThread(){
-        }
+    /*根据登陆用户 获取好友的昵称 头像*/
+    static class MyThread2 extends Thread{
         public void run(){
-            //登陆用户ID
-            SharedPreferences user= applicationContext.getSharedPreferences("user", MODE_PRIVATE);
-            String phone = user.getString("phonenum","");
-
-
-            //获取用户自己的信息
+     /*       String url = "http://172.17.146.102:8080/txzh/getFriendsList";*/
             OkHttpClient okHttpClient = new OkHttpClient();
-
+            //登陆用户ID
+            SharedPreferences user= applicationContext.getSharedPreferences("user", 0);
+            int id = user.getInt("id",0);
+            //3, 发起新的请求,获取返回信息
             RequestBody body = new FormBody.Builder()
-                    .add("phonenum",phone)
+                    .add("userid",id+"")//添加键值对
                     .add("uuid",user.getString("uuid",""))
                     .build();
 
             Request request = new Request.Builder()
-                    .url(Address.getUser)
+                    .url(Address.GetFriends)
                     .post(body)
                     .build();
 
             Call call = okHttpClient.newCall(request);
-
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    System.out.println("失败");
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String result = response.body().string();
-
-                    Gson gson = new Gson();
-                    UserMessage message = gson.fromJson(result,UserMessage.class);
-
-                    User own = message.getData();
-                    own_name = own.getName();
-                    String pic = own.getPic();
-                    own_avater = "http://172.17.146.102:8080/txzh/pic/"+ pic + ".jpeg";
-
-                    Message msg = new Message();
-                    msg.what=1;
-                    msg.obj="完成";
-                    handler.sendMessage(msg);
-                }
-            });
-        }
-    }
-
-
-
-    /*根据登陆用户 获取好友的昵称 头像*/
-    static class MyThread2 extends Thread{
-        public void run(){
-
-            String url = "http://172.17.146.102:8080/txzh/getFriendsList";
-            OkHttpClient okHttpClient = new OkHttpClient();
-
-            //登陆用户ID
-            SharedPreferences user= applicationContext.getSharedPreferences("user", 0);
-            int id = user.getInt("id",0);
-
-
-            //3, 发起新的请求,获取返回信息
-            RequestBody body = new FormBody.Builder()
-                    .add("userid",id+"")//添加键值对
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-
-            Call call = okHttpClient.newCall(request);
-
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -304,10 +251,7 @@ public class DemoApplication extends Application {
                 public void onResponse(Call call, Response response) throws IOException {
                  /*   System.out.println("返回:"+response.body().string());*/
                     Gson gson = new Gson();
-
                     List<User> jsonListObject = gson.fromJson(response.body().string(), new TypeToken<List<User>>(){}.getType());//把JSON格式的字
-
-
                     Message msg = new Message();
                     msg.what=2;
                     msg.obj=jsonListObject;

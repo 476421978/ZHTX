@@ -1,6 +1,7 @@
 package com.UI.change;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.tools.Address;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 
@@ -113,8 +115,6 @@ public class AddContactActivity extends BaseActivity{
                             progressDialog.dismiss();
                             String s1 = getResources().getString(R.string.send_successful);
                             /*Toast.makeText(getApplicationContext(), s1, Toast.LENGTH_LONG).show();*/
-
-
                             //发送好友申请
                             Thread th = new MyThread();
                             th.start();
@@ -142,6 +142,8 @@ public class AddContactActivity extends BaseActivity{
         public void run() {
             super.run();
 
+            SharedPreferences user= getSharedPreferences("user", 0);
+
             //登陆用户I
             String userName = EMClient.getInstance().getCurrentUser();
 
@@ -153,10 +155,11 @@ public class AddContactActivity extends BaseActivity{
             RequestBody body = new FormBody.Builder()
                     .add("myphone",userName)
                     .add("friendsphone",editText.getText().toString().trim())
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.setInvitation)
                     .post(body)
                     .build();
 

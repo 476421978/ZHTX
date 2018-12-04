@@ -7,6 +7,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -21,7 +22,12 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.example.user.zhtx.R;
 import com.hyphenate.easeui.ui.EaseBaseActivity;
 
@@ -48,7 +54,9 @@ public class sendMyLocation extends EaseBaseActivity{
 
     private Handler handler;
 
-    private GeoCoder geoCoder;
+    private GeoCoder mSearch;
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +95,8 @@ public class sendMyLocation extends EaseBaseActivity{
         if (!mLocationClient.isStarted()){
             mLocationClient.start();
         }
+
+
     }
 
     public void sendLocation(View view) {
@@ -94,7 +104,7 @@ public class sendMyLocation extends EaseBaseActivity{
         Intent intent = this.getIntent();
         intent.putExtra("latitude",mLatitude);
         intent.putExtra("longitude",mLongtitude);
-        intent.putExtra("address","北京");
+        intent.putExtra("address","广东轻工职业技术学院");
         this.setResult(RESULT_OK, intent);
         finish();
         overridePendingTransition(com.hyphenate.easeui.R.anim.slide_in_from_left, com.hyphenate.easeui.R.anim.slide_out_to_right);
@@ -161,9 +171,14 @@ public class sendMyLocation extends EaseBaseActivity{
                 isFirstIn = false;
      /*           Toast.makeText(MainActivity.this,"第一次定位",Toast.LENGTH_SHORT).show();*/
             }
-
-
-         /*   LatLng latlng = new LatLng(mLatitude, mLongtitude);
+            //反向编码 获取地址
+            LatLng latlng = new LatLng(mLatitude, mLongtitude);
+            mSearch = GeoCoder.newInstance();
+            mSearch.setOnGetGeoCodeResultListener(listener);
+            mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+                    .location(latlng));
+            System.out.println(latlng);
+         /*
             GeoCoderManager geoCoderManager = GeoCoderManager.newInstance(sendMyLocation.this);
             geoCoderManager.PositionChange(latlng);
             geoCoderManager.setAddressListner(new GeoCoderManager.AddressListner() {
@@ -176,12 +191,35 @@ public class sendMyLocation extends EaseBaseActivity{
         }
     }
 
+    OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
+        public void onGetGeoCodeResult(GeoCodeResult result) {
+            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                //没有检索到结果
+                Toast.makeText(getApplicationContext(),"找不到位置1",Toast.LENGTH_SHORT).show();
+            }
+            //获取地理编码结果
+        }
+        @Override
+
+        public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                //没有找到检索结果
+                Toast.makeText(getApplicationContext(),"找不到位置2",Toast.LENGTH_SHORT).show();
+            }
+            //获取反向地理编码结果
+            System.out.println(result+"-----");
+        }
+    };
+
+
+
 
 
 
     @Override
     protected void onDestroy() {
         mBaiduMap.setMyLocationEnabled(false);
+
         super.onDestroy();
     }
 }

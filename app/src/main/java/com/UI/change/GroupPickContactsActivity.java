@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.tools.Address;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
@@ -183,7 +184,7 @@ public class GroupPickContactsActivity extends BaseActivity {
             String g_deatil = getIntent().getStringExtra("g_deatil");
 
             //保存群聊
-            String url = "http://172.17.146.102:8080/txzh/insertGroup";
+            /*String url = "http://172.17.146.102:8080/txzh/insertGroup";*/
             OkHttpClient okHttpClient = new OkHttpClient();
 
 
@@ -191,10 +192,11 @@ public class GroupPickContactsActivity extends BaseActivity {
                     .add("name",name)
                     .add("ownerid",userID+"")
                     .add("detail",g_deatil)
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             final Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.createdGroup)
                     .post(body)
                     .build();
 
