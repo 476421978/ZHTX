@@ -12,8 +12,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.pojo.MessageInfo;
 import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.ShowToast;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -29,6 +31,7 @@ public class SeeAreaActivity extends AppCompatActivity implements View.OnClickLi
     private RadioGroup radioGroup;
     private ImageView iv_back;
     private SharedPreferences sp;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,21 +78,27 @@ public class SeeAreaActivity extends AppCompatActivity implements View.OnClickLi
         public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
             if(rb_all.getId() == checkedId ){
                 ShowToast.show(SeeAreaActivity.this,"全部可见");
+                i=1;
+                changeIsView(i);
             }else {
+                i=0;
                 ShowToast.show(SeeAreaActivity.this,"全部不可见");
+                changeIsView(i);
             }
+
         }
     }
 
-    private void changeIsView(int i){
+    private void changeIsView(final int i){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
 
                 FormBody body = new FormBody.Builder()
-                        .add("userid",sp.getInt("userid",0)+"")
-                        .add("isView",sp.getInt("isView",2)+"")
+                        .add("userid",sp.getInt("id",0)+"")
+                        .add("isview",i+"")
+                        .add("uuid",sp.getString("uuid",""))
                         .build();
 
                 Request request = new Request.Builder()
@@ -100,13 +109,21 @@ public class SeeAreaActivity extends AppCompatActivity implements View.OnClickLi
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
+                        e.printStackTrace();
+                        return;
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String result = response.body().string();
-
+                        Gson gson = new Gson();
+                        MessageInfo m = gson.fromJson(result,MessageInfo.class);
+                        if ("true".equals(m.getSuccess())){
+                            SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putInt("isView",i);
+                            editor.commit();
+                        }
                     }
                 });
             }

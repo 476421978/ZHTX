@@ -1,6 +1,7 @@
 package com.example.user.zhtx.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.user.zhtx.R;
 import com.example.user.zhtx.pojo.add;
+import com.example.user.zhtx.tools.Address;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.exceptions.HyphenateException;
@@ -143,16 +145,19 @@ public class AddFriendsAdapter  extends BaseAdapter {
             super.run();
             System.out.println(position+"位置");
             //获取用户自己的信息
-            String url = "http://172.17.146.102:8080/txzh/addFriends";
+           /* String url = "http://172.17.146.102:8080/txzh/addFriends";*/
             OkHttpClient okHttpClient = new OkHttpClient();
+
+            SharedPreferences user= mContext.getSharedPreferences("user", 0);
 
             RequestBody body = new FormBody.Builder()
                     .add("inviterid",adds.get(position).getInviterid()+"")
                     .add("inviteeid",adds.get(position).getInviteeid()+"")
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.addFriends)
                     .post(body)
                     .build();
 
@@ -186,15 +191,17 @@ public class AddFriendsAdapter  extends BaseAdapter {
         @Override
         public void run() {
             super.run();
-            String url = "http://172.17.146.102:8080/txzh/deleteInvitation";
+      /*      String url = "http://172.17.146.102:8080/txzh/deleteInvitation";*/
+            SharedPreferences user= mContext.getSharedPreferences("user", 0);
             OkHttpClient okHttpClient = new OkHttpClient();
 
             RequestBody body = new FormBody.Builder()
                     .add("invitationid",adds.get(position).getId()+"")
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.deleteInvitation)
                     .post(body)
                     .build();
 

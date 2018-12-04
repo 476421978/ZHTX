@@ -6,7 +6,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,6 +27,8 @@ import android.widget.Toast;
 
 import com.UI.EaseUI.ChatActivity;
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.tools.Address;
+import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -39,9 +44,18 @@ import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class GroupDetailsActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "GroupDetailsActivity";
@@ -84,12 +98,38 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
 
     GroupChangeListener groupChangeListener;
 
+    private Handler handler;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case 1:
+                        //删除群
+                        deleteGrop();
+                        break;
+                    case 2:
+                        //退出群
+                        exitGrop();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
         groupId = getIntent().getStringExtra("groupId");
+
         group = EMClient.getInstance().groupManager().getGroup(groupId);
+
 
         // we are not supposed to show the group if we don't find the group
         if(group == null){
@@ -162,15 +202,12 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
         updateGroup();
 
         clearAllHistory.setOnClickListener(this);
-/*        changeGroupNameLayout.setOnClickListener(this);
-        changeGroupDescriptionLayout.setOnClickListener(this);
-        changeGroupExtension.setOnClickListener(this);*/
         rl_switch_block_groupmsg.setOnClickListener(this);
         searchLayout.setOnClickListener(this);
         blockOfflineLayout.setOnClickListener(this);
         announcementLayout.setOnClickListener(this);
-/*        groupNotiLayout.setOnClickListener(this);
-        sharedFilesLayout.setOnClickListener(this);*/
+
+
     }
 
 
@@ -244,6 +281,8 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        System.out.println(resultCode+"-----");
         String st1 = getResources().getString(R.string.being_added);
         String st2 = getResources().getString(R.string.is_quit_the_group_chat);
         String st3 = getResources().getString(R.string.chatting_is_dissolution);
@@ -267,51 +306,27 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
             switch (requestCode) {
                 case REQUEST_CODE_ADD_USER:// 添加群成员
                     System.out.println("添加群成员");
-                    final String[] newmembers = data.getStringArrayExtra("newmembers");
+                  /*  final String[] newmembers = data.getStringArrayExtra("newmembers");
                     progressDialog.setMessage(st1);
                     progressDialog.show();
-                    addMembersToGroup(newmembers);
+                    addMembersToGroup(newmembers);*/
                     break;
                 case REQUEST_CODE_EXIT: // 退出群
                     progressDialog.setMessage(st2);
                     progressDialog.show();
-                    exitGrop();
+                   /* exitGrop();*/
+                    Thread th2 = new MyThread2();
+                    th2.start();
                     break;
                 case REQUEST_CODE_EXIT_DELETE: // 解散群
                     progressDialog.setMessage(st3);
                     progressDialog.show();
-                    deleteGrop();
+                    /*deleteGrop();*/
+                    Thread th = new MyThread();
+                    th.start();
                     break;
 
                 case REQUEST_CODE_EDIT_GROUPNAME: //修改群名称
-            /*        final String returnData = data.getStringExtra("data");
-                    if(!TextUtils.isEmpty(returnData)){
-                        progressDialog.setMessage(st5);
-                        progressDialog.show();
-                        new Thread(new Runnable() {
-                            public void run() {
-                                try {
-                                    EMClient.getInstance().groupManager().changeGroupName(groupId, returnData);
-                                    runOnUiThread(new Runnable() {
-                                        public void run() {
-                                            ((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "(" + group.getMemberCount() + ")");
-                                            progressDialog.dismiss();
-                                            Toast.makeText(getApplicationContext(), st6, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-
-                                } catch (HyphenateException e) {
-                                    e.printStackTrace();
-                                    runOnUiThread(new Runnable() {
-                                        public void run() {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(getApplicationContext(), st7, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            }
-                        }).start();
-                    }*/
                     break;
                 case REQUEST_CODE_EDIT_GROUP_DESCRIPTION:
                     final String returnData1 = data.getStringExtra("data");
@@ -433,7 +448,7 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
      * @param view
      */
     public void exitGroup(View view) {
-     /* startActivityForResult(new Intent(this, ExitGroupDialog.class), REQUEST_CODE_EXIT);*/
+        startActivityForResult(new Intent(this, ExitGroupDialog.class), REQUEST_CODE_EXIT);
     }
 
     /**
@@ -442,10 +457,11 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
      * @param view
      */
     public void exitDeleteGroup(View view) {
-/*        startActivityForResult(new Intent(this, ExitGroupDialog.class).putExtra("deleteToast", getString(R.string.dissolution_group_hint)),
-                REQUEST_CODE_EXIT_DELETE);*/
-
+        startActivityForResult(new Intent(this, ExitGroupDialog.class).putExtra("deleteToast", getString(R.string.dissolution_group_hint)),
+                REQUEST_CODE_EXIT_DELETE);
     }
+
+
 
     /**
      * 清空群聊天记录
@@ -521,12 +537,109 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
         }).start();
     }
 
+    /*
+    * 删除群聊
+    * */
+    class MyThread extends Thread{
+        public void run(){
+            //登陆用户ID
+          /*  SharedPreferences user= getApplication().getSharedPreferences("user", MODE_PRIVATE);
+            String phone = user.getString("phonenum","");*/
+            SharedPreferences user= getSharedPreferences("uuid", MODE_PRIVATE);
+
+            //获取用户自己的信息
+            /*String url = "http://172.17.146.102:8080/txzh/deleteGroup";*/
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            RequestBody body = new FormBody.Builder()
+                    .add("name",getIntent().getStringExtra("group_name"))
+                    .add("uuid",user.getString("uuid",""))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(Address.deletedGroup)
+                    .post(body)
+                    .build();
+
+            Call call = okHttpClient.newCall(request);
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("失败");
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String result = response.body().string();
+                    Gson gson = new Gson();
+
+                    Message msg = new Message();
+                    msg.what=1;
+                    msg.obj="完成";
+                    handler.sendMessage(msg);
+                }
+            });
+        }
+    }
+
+    /*
+    * 退出群聊
+    * */
+    class MyThread2 extends Thread{
+        public void run(){
+            //登陆用户ID
+          /*  SharedPreferences user= getApplication().getSharedPreferences("user", MODE_PRIVATE);
+            String phone = user.getString("phonenum","");*/
+            SharedPreferences user= getSharedPreferences("uuid", MODE_PRIVATE);
+
+            //获取用户自己的信息
+            /*String url = "http://172.17.146.102:8080/txzh/deleteGroup";*/
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            RequestBody body = new FormBody.Builder()
+                    .add("groupname",getIntent().getStringExtra("group_name"))
+                    .add("userid",user.getString("id",""))
+                    .add("uuid",user.getString("uuid",""))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(Address.exitGroup)
+                    .post(body)
+                    .build();
+
+            Call call = okHttpClient.newCall(request);
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    System.out.println("失败");
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String result = response.body().string();
+                    Gson gson = new Gson();
+
+                    System.out.println(result+"-----");
+
+                    Message msg = new Message();
+                    msg.what=2;
+                    msg.obj="完成";
+                    handler.sendMessage(msg);
+                }
+            });
+        }
+    }
+
+
     /**
      * 增加群成员
      *
      * @param newmembers
      */
     private void addMembersToGroup(final String[] newmembers) {
+
         final String st6 = getResources().getString(R.string.Add_group_members_fail);
         new Thread(new Runnable() {
             public void run() {
@@ -557,6 +670,7 @@ public class GroupDetailsActivity extends BaseActivity implements View.OnClickLi
                 }
             }
         }).start();
+
     }
 
     @Override

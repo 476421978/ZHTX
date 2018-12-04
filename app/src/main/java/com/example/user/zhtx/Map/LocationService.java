@@ -84,7 +84,7 @@ public class LocationService extends Service {
 
 
         FriendsGPSList getFriendsGPS = new FriendsGPSList(getApplication());
-        list =  getFriendsGPS.getAll();
+        list =  getFriendsGPS.getShow();
         if(!checkNetworkState()){
             Toast.makeText(getApplication(),"网络没有打开啊，请打开网络后再试",Toast.LENGTH_LONG).show();
         }

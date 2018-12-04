@@ -60,13 +60,13 @@ public class FriendsPage extends EaseContactListFragment {
                 switch (msg.what){
                     case 1:
                         //设置
-                        demoApplication.reSet();
+                        demoApplication.reSet(getActivity());
                         break;
                 }
             }
         };
         //设置
-        demoApplication.reSet();
+        /*demoApplication.reSet();*/
         //好友列表的头部
         @SuppressLint("InflateParams") View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.em_contacts_header, null);
         HeaderItemClickListener clickListener = new HeaderItemClickListener();

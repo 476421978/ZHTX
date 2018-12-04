@@ -72,8 +72,7 @@ public class ChangePasswordByPwd extends AppCompatActivity implements View.OnCli
 
                 break;
             case R.id.activity_change_passwordByPwd_iv_back:
-                Intent intent3 = new Intent(ChangePasswordByPwd.this,MainPageActivity.class);
-                startActivity(intent3);
+                finish();
                 break;
         }
     }

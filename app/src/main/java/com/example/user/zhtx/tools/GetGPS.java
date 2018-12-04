@@ -35,7 +35,7 @@ public class GetGPS {
                 SharedPreferences sp = context.getSharedPreferences("user",Context.MODE_PRIVATE);
 
                 FormBody body = new FormBody.Builder()
-                        .add("userid",sp.getInt("userid",28)+"")
+                        .add("userid",sp.getInt("id",0)+"")
                         .add("uuid",sp.getString("uuid",""))
                         .build();
 

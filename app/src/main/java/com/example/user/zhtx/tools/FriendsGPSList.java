@@ -42,9 +42,22 @@ public class FriendsGPSList {
         ArrayList<FriendsGPS> allList = getAll();
         ArrayList<FriendsGPS> careList = new ArrayList<>();
         for (int i=0;i<allList.size();i++){
+            if (allList.get(i).getAttention() == 1) {
+                careList.add(allList.get(i));
+                Log.i("care",allList.get(i).getName());
+            }
+        }
+        return careList;
+    }
+
+    public ArrayList<FriendsGPS> getShow(){
+        ArrayList<FriendsGPS> allList = getAll();
+        ArrayList<FriendsGPS> careList = new ArrayList<>();
+        for (int i=0;i<allList.size();i++){
             if (allList.get(i).getIsView()==1) {
                 if (allList.get(i).getAttention() == 1) {
                     careList.add(allList.get(i));
+                    Log.i("care", allList.get(i).getName());
                 }
             }
         }

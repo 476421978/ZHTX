@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.UI.db.g_add;
 import com.example.user.zhtx.R;
+import com.example.user.zhtx.tools.Address;
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
@@ -32,7 +33,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class GroupSimpleDetailActivity extends BaseActivity {
+public class GroupSimpleDetailActivity extends BaseActivity{
     private Button btn_add_group;
     private TextView tv_admin;
     private TextView tv_name;
@@ -53,6 +54,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
         tv_introduction = (TextView) findViewById(R.id.tv_introduction);
         progressBar = (ProgressBar) findViewById(R.id.loading);
         etReason = (EditText) findViewById(R.id.et_reason);
+
 
         handler = new Handler(){
             @Override
@@ -168,6 +170,9 @@ public class GroupSimpleDetailActivity extends BaseActivity {
         }).start();
     }
 
+    //点击加入群聊 数据库添加成功后调用环信添加用户
+
+
 
     //根据群ID 添加群成员 到 群聊
     class MyThread extends Thread{
@@ -178,16 +183,16 @@ public class GroupSimpleDetailActivity extends BaseActivity {
             int userID = user.getInt("id",0);
 
             //查询群聊
-            String url = "http://172.17.146.102:8080/txzh/joinGroup";
+           /* String url = "http://172.17.146.102:8080/txzh/joinGroup";*/
             OkHttpClient okHttpClient = new OkHttpClient();
-
             RequestBody body = new FormBody.Builder()
                     .add("groupid",g.getId()+"")
                     .add("memberid",userID+"")
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             final Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.joinGroup)
                     .post(body)
                     .build();
 
@@ -217,15 +222,17 @@ public class GroupSimpleDetailActivity extends BaseActivity {
         public void run() {
             super.run();
             //保存群聊
-            String url = "http://172.17.146.102:8080/txzh/searchGroup";
+            /*String url = "http://172.17.146.102:8080/txzh/searchGroup";*/
+            SharedPreferences user= getSharedPreferences("user", 0);
             OkHttpClient okHttpClient = new OkHttpClient();
 
             RequestBody body = new FormBody.Builder()
                     .add("name",tv_name.getText().toString().trim())
+                    .add("uuid",user.getString("uuid",""))
                     .build();
 
             final Request request = new Request.Builder()
-                    .url(url)
+                    .url(Address.serachGroup)
                     .post(body)
                     .build();
 
@@ -239,8 +246,6 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-
-
                     Gson gson = new Gson();
                     g = gson.fromJson(response.body().string(),g_add.class);
 
