@@ -177,7 +177,9 @@ public class sendMyLocation extends EaseBaseActivity{
             mSearch.setOnGetGeoCodeResultListener(listener);
             mSearch.reverseGeoCode(new ReverseGeoCodeOption()
                     .location(latlng));
+
             System.out.println(latlng);
+
          /*
             GeoCoderManager geoCoderManager = GeoCoderManager.newInstance(sendMyLocation.this);
             geoCoderManager.PositionChange(latlng);
@@ -200,7 +202,6 @@ public class sendMyLocation extends EaseBaseActivity{
             //获取地理编码结果
         }
         @Override
-
         public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
             if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
                 //没有找到检索结果

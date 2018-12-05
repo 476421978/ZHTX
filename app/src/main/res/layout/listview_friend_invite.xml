@@ -58,19 +58,17 @@
             android:layout_height="35dp"
             android:textSize="10sp"
             android:text="同意"
-            android:gravity="center"
             android:textColor="@color/white"
-            android:background="#3CB371"/>
+            android:background="#526270"/>
 
         <Button
             android:id="@+id/activity_friend_invite_btn_refuse"
             android:layout_width="45dp"
             android:layout_height="35dp"
             android:textSize="10sp"
-            android:gravity="center"
             android:text="拒绝"
             android:textColor="@color/white"
-            android:background="#CD5C5C"
+            android:background="#526270"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
 

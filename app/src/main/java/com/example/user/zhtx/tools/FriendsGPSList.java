@@ -7,7 +7,6 @@ import android.util.Log;
 import com.example.user.zhtx.pojo.FriendsGPS;
 import com.example.user.zhtx.pojo.FriendsGPSMessage;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class FriendsGPSList {
         String data = sp.getString("friendsGPS","未找到");
         ArrayList<FriendsGPS> list = null;
         if ("未找到".equals(data)){
-            ShowToast.show(context,"从sp获取信息出错");
+
         }else {
             Gson gson = new Gson();
             FriendsGPSMessage message = gson.fromJson(sp.getString("friendsGPS",""),FriendsGPSMessage.class);

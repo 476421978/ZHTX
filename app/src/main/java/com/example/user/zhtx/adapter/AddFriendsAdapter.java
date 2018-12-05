@@ -42,6 +42,7 @@ public class AddFriendsAdapter  extends BaseAdapter {
     private Handler handler;
     private LinkedList<add> adds;
     byte[] Picture_bt;
+
     public AddFriendsAdapter(LinkedList<add> data,Context mContext) {
         this.adds = data;
         this.mContext = mContext;
@@ -69,8 +70,8 @@ public class AddFriendsAdapter  extends BaseAdapter {
 
 
         TextView txt_aName = (TextView) convertView.findViewById(R.id.activity_friend_invite_tv_inviter);
-        Button btn_arr = (Button) convertView.findViewById(R.id.activity_friend_invite_btn_agree);
-        Button btn_rej = (Button) convertView.findViewById(R.id.activity_friend_invite_btn_refuse);
+        final Button btn_arr = (Button) convertView.findViewById(R.id.activity_friend_invite_btn_agree);
+        final Button btn_rej = (Button) convertView.findViewById(R.id.activity_friend_invite_btn_refuse);
 
         //设置申请人头像
         String pic = adds.get(position).getPic();
@@ -105,6 +106,7 @@ public class AddFriendsAdapter  extends BaseAdapter {
                 switch (msg.what){
                     case 1:
                         Toast.makeText(mContext,"同意添加好友",Toast.LENGTH_SHORT).show();
+                        btn_arr.setText("已同意");
                         //好友请求被同意
                         try {
                             EMClient.getInstance().contactManager().acceptInvitation(adds.get(position).getInviterPhone());
@@ -122,7 +124,9 @@ public class AddFriendsAdapter  extends BaseAdapter {
 
                     case 2:
                         //删除该好友申请
-                        notifyDataSetChanged();
+                        btn_arr.setEnabled(false);
+                        btn_rej.setEnabled(false);
+                        remove(position);
                         break;
                     default:
                         break;
@@ -143,7 +147,6 @@ public class AddFriendsAdapter  extends BaseAdapter {
         @Override
         public void run() {
             super.run();
-            System.out.println(position+"位置");
             //获取用户自己的信息
            /* String url = "http://172.17.146.102:8080/txzh/addFriends";*/
             OkHttpClient okHttpClient = new OkHttpClient();
@@ -225,5 +228,10 @@ public class AddFriendsAdapter  extends BaseAdapter {
         }
     }
 
-
+    public void remove(int position) {
+        if(adds != null) {
+            adds.remove(position);
+        }
+        notifyDataSetChanged();
+    }
 }
