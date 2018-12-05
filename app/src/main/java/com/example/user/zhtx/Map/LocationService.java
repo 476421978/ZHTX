@@ -107,7 +107,7 @@ public class LocationService extends Service {
                 addMarkers();
             }
         };
-        timer.schedule(task, 0, 30000);
+        timer.schedule(task, 0, 5000);
     }
     private boolean checkNetworkState(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(getApplication().CONNECTIVITY_SERVICE);

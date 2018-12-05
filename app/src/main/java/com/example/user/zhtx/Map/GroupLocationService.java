@@ -121,7 +121,7 @@ public class GroupLocationService extends Service {
                             addMarkers(context);
                         }
                     };
-                    timer.schedule(task, 0, 30000);
+                    timer.schedule(task, 0, 5000);
                 }
             }
         };
