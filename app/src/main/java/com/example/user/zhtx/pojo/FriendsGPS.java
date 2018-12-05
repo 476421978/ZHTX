@@ -30,6 +30,15 @@ public class FriendsGPS {
     private double longatitude;
     private int attention;
     private int isView;
+    private int userid;
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
 
     public String getName() {
         return name;

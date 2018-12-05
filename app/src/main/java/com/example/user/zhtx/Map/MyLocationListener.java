@@ -67,11 +67,6 @@ public class MyLocationListener implements BDLocationListener {
 
         mLocationClient.setLocOption(option);
 
-        Log.e("start:", "执行start");
-
-        if (mLocationClient.isStarted()) {
-            mLocationClient.stop();
-        }
         mLocationClient.start();
         mLocationClient.requestLocation();
     }
@@ -86,12 +81,7 @@ public class MyLocationListener implements BDLocationListener {
         if (isFirstLoc) {
             myLocation.getMyLocation(myLL);
             isFirstLoc = false;
-
-//            MyLocation(myLL);
         }
-
-        //    Log.e("经度：", String.valueOf(GetLocation.newInstance().getLatitude()));
-        //    Log.e("纬度：", String.valueOf(GetLocation.newInstance().getLongitude()));
     }
 
     public void setLocationConfig(BDLocation bdLocation) {
@@ -126,11 +116,7 @@ public class MyLocationListener implements BDLocationListener {
         void getMyLocation(LatLng latLng);
     }
 
-//    public void MyLocation(LatLng myLL) {
-//        MapStatus.Builder builder = new MapStatus.Builder()
-//                .target(myLL)//地图缩放中心点
-//                .zoom(18f);//缩放倍数 百度地图支持缩放21级 部分特殊图层为20级
-//        //改变地图状态
-//        baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-//    }
+    public void LocationClientStop() {
+        mLocationClient.stop();
+    }
 }

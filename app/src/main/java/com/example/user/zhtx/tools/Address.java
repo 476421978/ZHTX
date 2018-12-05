@@ -57,6 +57,13 @@ public class Address {
         //改变看见范围
     public static final String ChangeSeeArea = address+"/txzh/setIsView";
 
+    /*---------------------关注更改----------------------------*/
+    public static final String ChangeAttention = address+"/txzh/setAttention";
+
+
+
+
+
 
     /*---------------------发送邀请信息----------------------------*/
     public static final String setInvitation = address + "/txzh/insertInvitation";
@@ -84,8 +91,5 @@ public class Address {
 
     /*---------------------添加好友----------------------------*/
     public static final String addFriends = address + "/txzh/addFriends";
-
-
-
 
 }

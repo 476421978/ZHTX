@@ -45,8 +45,8 @@ public class LocationService extends Service {
     private Timer timer;
     private ArrayList<FriendsGPS> list;
     private String Fphonenum;
-    private String address ="http://172.17.146.102:8080/txzh/pic/";
-    private String FPicAddress=null;
+    private String address ="http://172.17.144.246:8080/txzh/pic/";
+//    private String FPicAddress=null;
     private String jpeg=".jpeg";
     private Bitmap FriendPic;
     private FriendsGPSList getFriendsGPS;
@@ -86,8 +86,7 @@ public class LocationService extends Service {
 
         getFriendsGPS = new FriendsGPSList(getApplication());
 
-        downloadingImageAndShow();
-        addMarkers();
+        timer = new Timer();
         startTimer();
     }
 
@@ -100,18 +99,15 @@ public class LocationService extends Service {
     }
 
     public void startTimer() {
-        timer = new Timer();
         TimerTask task = new TimerTask() {
 
             @Override
             public void run() {
-                downloadingImageAndShow();
                 pointConverge.clearMarkers();
                 addMarkers();
             }
         };
-        long triggerAtTime = SystemClock.elapsedRealtime();
-        timer.schedule(task, triggerAtTime, 30000);
+        timer.schedule(task, 0, 30000);
     }
     private boolean checkNetworkState(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(getApplication().CONNECTIVITY_SERVICE);
@@ -144,8 +140,8 @@ public class LocationService extends Service {
 
             //存放图片信息
             Fphonenum = list.get(i).getPhonenum();
-            FPicAddress = address+Fphonenum+jpeg;
-            bitmaps[i] = FriendPic;
+//            FPicAddress = address+Fphonenum+jpeg;
+            bitmaps[i] = downloadingImageAndShow(address+Fphonenum+jpeg);
 
             //存放额外信息
             name = list.get(i).getName();
@@ -161,10 +157,10 @@ public class LocationService extends Service {
         }
     }
 
-    private void downloadingImageAndShow() {
-        if (FPicAddress==null){
-            return;
-        }
+    private Bitmap downloadingImageAndShow(final String FPicAddress) {
+//        if (FPicAddress == null){
+//            return null;
+//        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -201,5 +197,6 @@ public class LocationService extends Service {
                 });
             }
         }).start();
+        return FriendPic;
     }
 }

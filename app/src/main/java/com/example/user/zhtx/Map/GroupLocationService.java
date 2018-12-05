@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -94,9 +95,8 @@ public class GroupLocationService extends Service {
             Toast.makeText(getApplication(),"网络没有打开啊，请打开网络后再试",Toast.LENGTH_LONG).show();
         }
 
-        getDatas(context);
-        downloadingImageAndShow();
-        startTimer();
+        timer = new Timer();
+        startTimer(context);
     }
 
     public void initPointConverge(Context context, BaiduMap baiduMap, TextView name_txt, TextView phone_txt) {
@@ -107,21 +107,18 @@ public class GroupLocationService extends Service {
         pointConverge.clearMarkers();
     }
 
-    public void startTimer() {
+    public void startTimer(final Context context) {
         mhandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 100) {
-                    list = (List<GroupMemberMessage.DataBean>)msg.obj;
 
-                    timer = new Timer();
                     TimerTask task = new TimerTask() {
 
                         @Override
                         public void run() {
-                            downloadingImageAndShow();
                             pointConverge.clearMarkers();
-                            addMarkers(list);
+                            addMarkers(context);
                         }
                     };
                     timer.schedule(task, 0, 30000);
@@ -138,30 +135,53 @@ public class GroupLocationService extends Service {
         return  true;
     }
 
-    public void addMarkers(List<GroupMemberMessage.DataBean> list) {
-
+    public void addMarkers(Context context) {
         String name, phonenum;
-        latLng1 = new LatLng[list.size()];
-        //    }
-        Bitmap[] bitmaps = new Bitmap[list.size()];
-        for (int i = 0; i< list.size(); i++) {
-            Flatitude = list.get(i).getAtitude();
-            Flongittude = list.get(i).getLongatitude();
+        latLng1 = new LatLng[getDatas(context).size()];
+
+        Bitmap[] bitmaps = new Bitmap[getDatas(context).size()];
+        for (int i = 0; i< getDatas(context).size(); i++) {
+            Flatitude = getDatas(context).get(i).getAtitude();
+            Flongittude = getDatas(context).get(i).getLongatitude();
             friends = new LatLng(Flatitude, Flongittude);
             latLng1[i] = friends;
-            //        }
+
             //存放图片信息
-            Fphonenum = list.get(i).getPhonenum();
+            Fphonenum = getDatas(context).get(i).getPhonenum();
             FPicAddress = address+Fphonenum+jpeg;
-            bitmaps[i] = FriendPic;
+            bitmaps[i] = downloadingImageAndShow();
 
             //存放额外信息
-            name = list.get(i).getName();
-            phonenum = list.get(i).getPhonenum();
+            name = getDatas(context).get(i).getName();
+            phonenum = getDatas(context).get(i).getPhonenum();
 
             pointConverge.addMarkers(latLng1[i], bitmaps[i],name,phonenum);
         }
     }
+
+//    public void addMarkers(List<GroupMemberMessage.DataBean> list) {
+//        String name, phonenum;
+//        latLng1 = new LatLng[list.size()];
+//
+//        Bitmap[] bitmaps = new Bitmap[list.size()];
+//        for (int i = 0; i< list.size(); i++) {
+//            Flatitude = list.get(i).getAtitude();
+//            Flongittude = list.get(i).getLongatitude();
+//            friends = new LatLng(Flatitude, Flongittude);
+//            latLng1[i] = friends;
+//
+//            //存放图片信息
+//            Fphonenum = list.get(i).getPhonenum();
+//            FPicAddress = address+Fphonenum+jpeg;
+//            bitmaps[i] = downloadingImageAndShow();
+//
+//            //存放额外信息
+//            name = list.get(i).getName();
+//            phonenum = list.get(i).getPhonenum();
+//
+//            pointConverge.addMarkers(latLng1[i], bitmaps[i],name,phonenum);
+//        }
+//    }
 
     public class GroupLocationBinder extends Binder {
         public GroupLocationService getService() {
@@ -169,7 +189,7 @@ public class GroupLocationService extends Service {
         }
     }
 
-    public void getDatas(final Context context) {
+    public List<GroupMemberMessage.DataBean> getDatas(final Context context) {
         new Thread(
                 new Runnable() {
                     @Override
@@ -203,6 +223,7 @@ public class GroupLocationService extends Service {
                                     Message message = new Message();
                                     message.what = 100;
                                     message.obj = m.getData();
+                                    list = m.getData();
                                     mhandler.sendMessage(message);
                                 }
                             }
@@ -210,10 +231,11 @@ public class GroupLocationService extends Service {
                     }
                 }
         ).start();
+        return list;
     }
-    private void downloadingImageAndShow() {
+    private Bitmap downloadingImageAndShow() {
         if (FPicAddress==null){
-            return;
+            return null;
         }
         new Thread(new Runnable() {
             @Override
@@ -250,5 +272,6 @@ public class GroupLocationService extends Service {
                 });
             }
         }).start();
+        return FriendPic;
     }
 }
