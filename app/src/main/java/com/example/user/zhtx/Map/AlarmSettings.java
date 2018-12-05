@@ -36,8 +36,7 @@ public class AlarmSettings {
 
         Log.i("查看：", "123");
 
-        alarmManager.setRepeating(AlarmManager.RTC, triggerAtTime,
-                seconds*1000, alarmIntent);
+        alarmManager.set(AlarmManager.RTC, seconds*1000, alarmIntent);
     }
 
     public void stopLocationService() {

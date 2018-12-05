@@ -3,6 +3,7 @@ package com.example.user.zhtx.Map;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -10,21 +11,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
+import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.model.LatLng;
-import com.example.user.zhtx.R;
 import com.example.user.zhtx.pojo.FriendsGPS;
+import com.example.user.zhtx.pojo.GroupMemberMessage;
+import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.FriendsGPSList;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,20 +41,21 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LocationService extends Service {
+public class GroupLocationService extends Service {
 
+    private Bitmap FriendPic;
     private Double Flatitude , Flongittude;
     private LatLng friends;
-    public final IBinder binder = new LocationBinder();
+    public final IBinder binder = new GroupLocationBinder();
     private PointConverge pointConverge;
     private Timer timer;
-    private ArrayList<FriendsGPS> list;
+    private List<GroupMemberMessage.DataBean> list;
     private String Fphonenum;
     private String address ="http://172.17.146.102:8080/txzh/pic/";
-    private String FPicAddress=null;
+    private String FPicAddress;
     private String jpeg=".jpeg";
-    private Bitmap FriendPic;
-    private FriendsGPSList getFriendsGPS;
+    private LatLng[] latLng1;
+    private Handler mhandler;
 
     @Override
     public void onCreate() {
@@ -62,6 +68,10 @@ public class LocationService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
+        if(timer != null) {
+            timer.cancel();
+            timer = null;
+        }
         return super.onUnbind(intent);
     }
 
@@ -79,15 +89,13 @@ public class LocationService extends Service {
         super.onDestroy();
     }
 
-    public void initLocation() {
+    public void initLocation(Context context) {
         if(!checkNetworkState()){
             Toast.makeText(getApplication(),"网络没有打开啊，请打开网络后再试",Toast.LENGTH_LONG).show();
         }
 
-        getFriendsGPS = new FriendsGPSList(getApplication());
-
+        getDatas(context);
         downloadingImageAndShow();
-        addMarkers();
         startTimer();
     }
 
@@ -100,18 +108,26 @@ public class LocationService extends Service {
     }
 
     public void startTimer() {
-        timer = new Timer();
-        TimerTask task = new TimerTask() {
-
+        mhandler = new Handler() {
             @Override
-            public void run() {
-                downloadingImageAndShow();
-                pointConverge.clearMarkers();
-                addMarkers();
+            public void handleMessage(Message msg) {
+                if (msg.what == 100) {
+                    list = (List<GroupMemberMessage.DataBean>)msg.obj;
+
+                    timer = new Timer();
+                    TimerTask task = new TimerTask() {
+
+                        @Override
+                        public void run() {
+                            downloadingImageAndShow();
+                            pointConverge.clearMarkers();
+                            addMarkers(list);
+                        }
+                    };
+                    timer.schedule(task, 0, 30000);
+                }
             }
         };
-        long triggerAtTime = SystemClock.elapsedRealtime();
-        timer.schedule(task, triggerAtTime, 30000);
     }
     private boolean checkNetworkState(){
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(getApplication().CONNECTIVITY_SERVICE);
@@ -122,26 +138,18 @@ public class LocationService extends Service {
         return  true;
     }
 
-    public void addMarkers() {
-        list =  getFriendsGPS.getAll();
-        if (list == null){
-            return;
-        }
+    public void addMarkers(List<GroupMemberMessage.DataBean> list) {
 
-        if (list.size()==0){
-            return;
-        }
         String name, phonenum;
-        LatLng[] latLng1 = new LatLng[list.size()];
+        latLng1 = new LatLng[list.size()];
+        //    }
         Bitmap[] bitmaps = new Bitmap[list.size()];
-
-        for (int i=0; i<list.size(); i++) {
-            //坐标信息
+        for (int i = 0; i< list.size(); i++) {
             Flatitude = list.get(i).getAtitude();
             Flongittude = list.get(i).getLongatitude();
-            friends = new LatLng(Flatitude,Flongittude);
+            friends = new LatLng(Flatitude, Flongittude);
             latLng1[i] = friends;
-
+            //        }
             //存放图片信息
             Fphonenum = list.get(i).getPhonenum();
             FPicAddress = address+Fphonenum+jpeg;
@@ -155,12 +163,54 @@ public class LocationService extends Service {
         }
     }
 
-    public class LocationBinder extends Binder {
-        public LocationService getService() {
-            return LocationService.this;
+    public class GroupLocationBinder extends Binder {
+        public GroupLocationService getService() {
+            return GroupLocationService.this;
         }
     }
 
+    public void getDatas(final Context context) {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+
+
+                        SharedPreferences sp = context.getSharedPreferences("user", context.MODE_PRIVATE);
+                        FormBody body = new FormBody.Builder()
+                                .add("groupname", "test2")
+                                .add("uuid",sp.getString("uuid",""))
+                                .build();
+                        final Request request = new Request.Builder()
+                                .url(Address.GetGroupMemberGps)
+                                .post(body)
+                                .build();
+
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String result = response.body().string();
+                                Gson gson = new Gson();
+                                GroupMemberMessage m = gson.fromJson(result, GroupMemberMessage.class);
+                                if ("true".equals(m.getSuccess())) {
+                                    Message message = new Message();
+                                    message.what = 100;
+                                    message.obj = m.getData();
+                                    mhandler.sendMessage(message);
+                                }
+                            }
+                        });
+                    }
+                }
+        ).start();
+    }
     private void downloadingImageAndShow() {
         if (FPicAddress==null){
             return;
@@ -170,7 +220,6 @@ public class LocationService extends Service {
             public void run() {
                 OkHttpClient client = new OkHttpClient();
                 RequestBody formBody = new FormBody.Builder().build();
-
                 Request request = new Request.Builder()
                         .url(FPicAddress)
                         .post(formBody)

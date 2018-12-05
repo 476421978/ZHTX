@@ -3,5 +3,6 @@
     <item><shape>
         <!-- 边框 -->
         <stroke android:width="0.5dp" android:color="#CDC5BF" />
+        <solid android:color="@color/white" />
     </shape></item>
 </selector>

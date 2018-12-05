@@ -1,53 +1,34 @@
 package com.example.user.zhtx.Map;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.text.SpannableString;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.baidu.mapapi.clusterutil.clustering.Cluster;
 import com.baidu.mapapi.clusterutil.clustering.ClusterManager;
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.InfoWindow;
-import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
-import com.example.user.zhtx.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class PointConverge {
-
-    private TextView name_txt,phone_text;
     private List<MyItem> items;
     private static PointConverge pointConverge;
     private ClusterManager<MyItem> clusterManager;
-
     private Context context;
     private BaiduMap baiduMap;
-    private int count = 0;
-    private Bitmap bitmap;
 
-    public PointConverge(Context context, BaiduMap baiduMap,TextView name_txt, TextView phone_text) {
+    public PointConverge(Context context, BaiduMap baiduMap) {
         this.context = context;
         this.baiduMap = baiduMap;
-        this.name_txt =name_txt;
-        this.phone_text = phone_text;
+        clusterManager = new ClusterManager<MyItem>(context, baiduMap);
     }
 
-    public static PointConverge newInstance(Context context, BaiduMap baiduMap, TextView name_txt, TextView phone_text) {
+    public static PointConverge newInstance(Context context, BaiduMap baiduMap) {
         if(pointConverge == null) {
-            pointConverge = new PointConverge(context, baiduMap,name_txt,phone_text);
+            pointConverge = new PointConverge(context, baiduMap);
         }
-        return new PointConverge(context, baiduMap,name_txt,phone_text);
+        return new PointConverge(context, baiduMap);
     }
 
     public void clearMarkers() {
@@ -64,17 +45,15 @@ public class PointConverge {
         clusterManager.cluster();
     }
 
-    public void pointConverge() {
-        clusterManager = new ClusterManager<MyItem>(context, baiduMap);
-
+    public void pointConverge(final TextView name_txt, final TextView phone_text) {
         clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MyItem>() {
 
             @Override
             public boolean onClusterClick(Cluster<MyItem> cluster) {
-                Toast.makeText(context,"有" + cluster.getSize() + "个点", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
+
         clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>() {
 
             @Override
@@ -84,8 +63,6 @@ public class PointConverge {
                     name_txt.setText(item.getName());
                     phone_text.setText(item.getPhonenum());
                 }
-                Toast.makeText(context, "点击单个Item"+String.valueOf(item.getName()), Toast.LENGTH_SHORT).show();
-                System.out.println("点击单个Item"+String.valueOf(item.getName()));
                 return false;
             }
         });

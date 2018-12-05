@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.user.zhtx.activity.MapActivity;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMValueCallBack;
@@ -793,6 +794,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                             startActivityForResult(new Intent(getActivity(),sendMyLocation.class), REQUEST_CODE_MAP);
                             break;
                         case 2://群聊
+                            Intent intent = new Intent(getActivity(),MapActivity.class);
+                            startActivity(intent);
                             break;
                         default:
                             break;

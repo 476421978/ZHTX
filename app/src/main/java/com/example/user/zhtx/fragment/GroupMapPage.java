@@ -1,22 +1,13 @@
 package com.example.user.zhtx.fragment;
 
-import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,42 +30,24 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.overlayutil.OverlayManager;
 import com.baidu.mapapi.search.route.PlanNode;
-import com.example.user.zhtx.LoginActivity;
-import com.example.user.zhtx.Map.AlarmSettings;
-import com.example.user.zhtx.Map.CircleImageView;
 import com.example.user.zhtx.Map.GeoCoderManager;
-import com.example.user.zhtx.Map.LocationService;
-import com.example.user.zhtx.Map.MyLocationListener;
+import com.example.user.zhtx.Map.GroupLocationListener;
+import com.example.user.zhtx.Map.GroupLocationService;
 import com.example.user.zhtx.Map.Navigation;
 import com.example.user.zhtx.Map.PointConverge;
 import com.example.user.zhtx.Map.RoutePlan;
 import com.example.user.zhtx.Map.SensorManage;
 import com.example.user.zhtx.R;
-import com.example.user.zhtx.tools.Address;
 import com.example.user.zhtx.tools.GetGeoCoderResult;
 import com.example.user.zhtx.tools.GetLocation;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.OnMapClickListener,
-        BaiduMap.OnMapLongClickListener, BaiduMap.OnMarkerClickListener, BaiduMap.OnMapLoadedCallback {
-    private boolean pressed = false;
+@SuppressLint("ValidFragment")
+public class GroupMapPage extends Fragment implements View.OnClickListener, BaiduMap.OnMapClickListener,
+        BaiduMap.OnMapLongClickListener,BaiduMap.OnMarkerClickListener, BaiduMap.OnMapLoadedCallback{
     private MapView mMapView = null;
     private BaiduMap baiduMap;
-    private List<OverlayOptions> options = new ArrayList<OverlayOptions>();
     private BitmapDescriptor marking;
-    public Double latitude,longitude;
     private PlanNode stNode,enNode;
     private Button Route_btn, Bike_Guide_btn, walking_btn, driving_btn, biking_btn;
     private TextView address_txt, addressSematic_txt, name_txt, phone_text;
@@ -85,20 +58,25 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
     //可用
     private SensorManage sensorManage;
     private GeoCoderManager geoCoderManager;
-    public MyLocationListener myLocationListener;
+    public GroupLocationListener groupLocationListener;
     private Navigation navigation;
     private RoutePlan routePlan;
     private PointConverge pointConverge;
-    public OverlayManager overlay;
     private boolean showRoute = false;
     private boolean isFirstLoc = false;
-    public LocationService locationService;
-    private LocationConn locationConn;
+    public GroupLocationService groupLocationService;
+    private GroupLocationConn groupLocationConn;
     private LinearLayout linearLayout,self_info_ll;
     private RelativeLayout relativeLayout;
     private MapStatus ms;
 
+    @SuppressLint("ValidFragment")
+    public GroupMapPage(LinearLayout activity_main_page_ll_map) {
+        activity_main_page_ll_map.setVisibility(View.GONE);
+    }
+
     /*-----------导航的声明---------------*/
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
 
         //Location.initLocation(getBaseContext());  //放在main java文件中，初始化sdk
@@ -117,11 +95,8 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         baiduMap.setOnMarkerClickListener(this);
         baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(baiduMap.getMapStatus()));
 
-
-
         linearLayout = (LinearLayout) v.findViewById(R.id.ll_info);
         relativeLayout = (RelativeLayout) v.findViewById(R.id.ll_info_1);
-
         self_info_ll = (LinearLayout)v.findViewById(R.id.self_info_ll);
 
         Route_btn = (Button)v.findViewById(R.id.route_btn);
@@ -147,12 +122,14 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
 
         /*---------------定位设置---------------------------*/
         //定位
-        myLocationListener = MyLocationListener.newInstance(getContext(), baiduMap);
-        myLocationListener.initLocation();
-        myLocationListener.setMyLocationListener(new MyLocationListener.MyLocation() {
+        groupLocationListener = GroupLocationListener.newInstance(getContext(), baiduMap);
+        groupLocationListener.initLocation();
+        groupLocationListener.setMyLocationListener(new GroupLocationListener.MyLocation() {
+
             @Override
             public void getMyLocation(LatLng latLng) {
-                ms = new MapStatus.Builder().target(latLng).zoom(18).build();
+                ms = new MapStatus.Builder()
+                        .target(latLng).zoom(18).build();
                 baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
             }
         });
@@ -173,9 +150,6 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         //路线规划
         routePlan = RoutePlan.newInstance(getContext(), baiduMap);
         routePlan.showRoutePlan();
-
-    //    addMarkers();
-
         return v;
     }
 
@@ -186,19 +160,21 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
     }
 
     public void Destroy() {
-        geoCoderManager.GeoCoderDestroy();
+        if (mMapView != null) {
+            geoCoderManager.GeoCoderDestroy();
 
-        routePlan.SearchDestory();
+            routePlan.SearchDestory();
 
-        baiduMap.setMyLocationEnabled(false);
+            baiduMap.setMyLocationEnabled(false);
 
-        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        mMapView.onDestroy();
+            //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+            mMapView.onDestroy();
 
-        explicitStop();
+            explicitStop();
 
-        baiduMap = null;
-        mMapView = null;
+            baiduMap = null;
+            mMapView = null;
+        }
     }
 
     @Override
@@ -212,10 +188,8 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
 
         sensorManage.starts(getContext());
 
-        Log.e("onResume:", "执行onResume");
-
-//        AlarmSettings.newInstance().startLocationService(getContext(), 300,
-//                LocationService.class, "ALARM_ACTION");
+//        AlarmSettings.newInstance().startLocationService(getContext(), 5,
+//                GroupLocationService.class, "ALARM_ACTION");
     }
 
     @Override
@@ -245,8 +219,8 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
                 showRoute = true;
                 break;
             case R.id.showgps_btn:
-                myLocationListener.isFirstLoc = true;
-                myLocationListener.initLocation();
+                groupLocationListener.isFirstLoc = true;
+                groupLocationListener.initLocation();
                 break;
             case R.id.bike_guide_btn:
                 navigation.Bike_initNavi(GetLocation.newInstance().getMyLL(), endPt);
@@ -288,12 +262,10 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
                 MarkerRemove();
                 break;
         }
-
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        Toast.makeText(getActivity(),"点击了地图",Toast.LENGTH_SHORT).show();
         MarkerRemove();
         linearLayout.setVisibility(View.GONE);
         relativeLayout.setVisibility(View.GONE);
@@ -324,13 +296,10 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         if (latLng != null) {
             linearLayout.setVisibility(View.VISIBLE);
             self_info_ll.setVisibility(View.GONE);
-            latitude = latLng.latitude;
-            longitude = latLng.longitude;
 
             marking = BitmapDescriptorFactory.fromResource(R.drawable.point);
             option = new MarkerOptions().position(latLng).icon(marking);
             markered = (Marker)baiduMap.addOverlay(option);
-            Log.e("adsfasdf",latLng.latitude+";"+latLng.longitude);
 
             enNode = PlanNode.withLocation(latLng);
             endPt = latLng;
@@ -338,7 +307,6 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
             isFirstLoc = true;
 
             showAddress(latLng);
-            Toast.makeText(getActivity(), "获取经度："+longitude+"获取纬度："+latitude, Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(getActivity(), "对不起，并未获取到经纬度数据", Toast.LENGTH_SHORT).show();
         }
@@ -376,14 +344,13 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
         baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
     }
 
-    private class LocationConn implements ServiceConnection {
+    private class GroupLocationConn implements ServiceConnection {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            locationService = ((LocationService.LocationBinder)service).getService();
-            locationService.initPointConverge(getContext(), baiduMap, name_txt, phone_text);
-            locationService.initLocation();
-            sendSelfGPS();
+            groupLocationService = ((GroupLocationService.GroupLocationBinder)service).getService();
+            groupLocationService.initPointConverge(getContext(), baiduMap, name_txt, phone_text);
+            groupLocationService.initLocation(getContext());
         }
 
         @Override
@@ -393,53 +360,17 @@ public class MapPage extends Fragment implements View.OnClickListener, BaiduMap.
     }
 
     public void explicitStart() {
-        if (locationConn == null) {
-            locationConn = new LocationConn();
+        if (groupLocationConn == null) {
+            groupLocationConn = new GroupLocationConn();
         }
-        Intent bindIntent = new Intent(getContext(), LocationService.class);
+        Intent bindIntent = new Intent(getContext(), GroupLocationService.class);
 //        getContext().getApplicationContext().startService(bindIntent);
         getContext().getApplicationContext().bindService(bindIntent,
-                locationConn, Service.BIND_AUTO_CREATE);
+                groupLocationConn, Service.BIND_AUTO_CREATE);
     }
 
     public void explicitStop() {
 //        getContext().getApplicationContext().stopService(new Intent(getContext(), LocationService.class));
-        getContext().getApplicationContext().unbindService(locationConn);
-    }
-
-    private void sendSelfGPS(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
-
-                SharedPreferences sp = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
-                FormBody body = new FormBody.Builder()
-                        .add("userid",sp.getInt("id",0)+"")
-                        .add("atitude", new GetLocation().getLatitude()+"")
-                        .add("longatitude",new GetLocation().getLongitude()+"")
-                        .add("uuid",sp.getString("uuid",""))
-                        .build();
-
-                Request request = new Request.Builder()
-                        .url(Address.SendSelfGPS)
-                        .post(body)
-                        .build();
-
-                client.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
-                        return;
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String result = response.body().string();
-                    }
-                });
-
-            }
-        }).start();
+        getContext().getApplicationContext().unbindService(groupLocationConn);
     }
 }

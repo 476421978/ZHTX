@@ -17,9 +17,9 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.example.user.zhtx.tools.GetLocation;
 
-public class MyLocationListener implements BDLocationListener {
+public class GroupLocationListener implements BDLocationListener {
 
-    private static MyLocationListener myLocationListener;
+    private static GroupLocationListener groupLocationListener;
     private Context context;
     private BaiduMap baiduMap;
     public boolean isFirstLoc = true;
@@ -28,16 +28,16 @@ public class MyLocationListener implements BDLocationListener {
     private LocationClient mLocationClient = null;
     private LatLng myLL;
 
-    public MyLocationListener(Context context, BaiduMap baiduMap) {
+    public GroupLocationListener(Context context, BaiduMap baiduMap) {
         this.context = context;
         this.baiduMap = baiduMap;
     }
 
-    public static MyLocationListener newInstance(Context context, BaiduMap baiduMap) {
-        if (myLocationListener == null) {
-            myLocationListener = new MyLocationListener(context, baiduMap);
+    public static GroupLocationListener newInstance(Context context, BaiduMap baiduMap) {
+        if (groupLocationListener == null) {
+            groupLocationListener = new GroupLocationListener(context, baiduMap);
         }
-        return myLocationListener;
+        return groupLocationListener;
     }
 
     public void initLocation() {

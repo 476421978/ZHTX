@@ -51,7 +51,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -60,14 +61,6 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-    <user-permission android:name="android.permission.RECORD_AUdio" />
-    <user-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <user-permission android:name="android.permission.CAMERA" />
-    <user-permission android:name="android.permission.FLASHLIGHT" />
-    <user-permission android:name="android.permission.MOUNT_UNMOUNT_FILRSYSTEMS" />
-    <user-permission android:name="android.hardware.camera" />
-    <user-permission android:name="android.hardware.camera.autofocus" />
 
     <provider
         android:name="android.support.v4.content.FileProvider"
@@ -105,10 +98,14 @@
         <activity android:name=".activity.CareListActivity" />
         <activity android:name=".activity.SelfInfoActivity" />
         <activity android:name=".activity.ModifyInfoActivity" />
-
+        <activity android:name=".activity.MapActivity"/>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="zBzB0E7LOM8NzG5bGIFGYycnU7pViVIu" />
+            android:value="W5Z8FC2vApkToe4BsKIqvYtmFOGTclGd" />
+        <service
+            android:name=".Map.GroupLocationService"
+            android:enabled="true"
+            android:permission="com.example.user.zhtx.Map.GroupLocationService" />
 
         <service
             android:name=".Map.LocationService"
@@ -121,6 +118,16 @@
 
         <activity android:name=".activity.AddFriendActivity" />
         <activity android:name=".activity.FriendInfoActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.user.zhtx.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaht" />
+        </provider>
 
         <meta-data
             android:name="EASEMOB_APPKEY"
@@ -143,6 +150,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name="com.UI.EaseUI.ECChatActivity" />
         <activity android:name="com.UI.change.AddContactActivity" />
         <activity android:name="com.UI.change.BaseActivity" />
         <activity android:name="com.UI.change.NewFriendsMsgActivity" />
@@ -156,8 +164,6 @@
         <activity android:name="com.UI.change.GroupDetailsActivity" />
         <activity android:name="com.UI.change.UserProfileActivity" />
         <activity android:name=".activity.FriendsManagementActivity" />
-        <activity android:name=".Map.BNaviGuideActivity" />
-        <activity android:name="com.UI.EaseUI.sendMyLocation" />
         <activity android:name="com.UI.change.ExitGroupDialog"></activity>
     </application>
 
