@@ -5,3 +5,9 @@
 
 2.创建群聊
 ![image](https://github.com/476421978/ZHTX/blob/master/cdgroup.gif)
+
+3.聊天
+![image](https://github.com/476421978/ZHTX/blob/master/chat.gif)
+
+4.群聊
+![image](https://github.com/476421978/ZHTX/blob/master/groupChat.gif)
