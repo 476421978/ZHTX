@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.user.zhtx.activity.SelfInfoActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/ThemeColor">
+
+        <ImageView
+            android:id="@+id/activity_self_info_iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="个人资料"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"/>
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <ImageView
+            android:id="@+id/activity_self_info_iv_bg"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:background="@drawable/bg_self"/>
+
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/activity_self_info_siv_head"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/touxiang"
+            android:scaleType="fitXY"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/bg_gray"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="昵称："
+            android:textSize="16sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/activity_self_info_tv_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="left"
+            android:textSize="16sp"
+            android:text="zdz44"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="15dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="联系电话："
+            android:textSize="16sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/activity_self_info_tv_phone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="left"
+            android:textSize="16sp"
+            android:text="12345678910"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="15dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="联系地址："
+            android:textSize="16sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/activity_self_info_tv_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="left"
+            android:textSize="16sp"
+            android:text="广东省佛山市广东轻工职业技术学院"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="15dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="出生日期："
+            android:textSize="16sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/activity_self_info_tv_birthday"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="left"
+            android:textSize="16sp"
+            android:text="2018-11-04"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/activity_self_info_btn_modify"
+        android:layout_width="250dp"
+        android:layout_height="38dp"
+        android:textColor="@color/white"
+        android:text="修改资料"
+        android:textSize="15dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/bg_btn_theme"/>
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.user.zhtx.activity.FriendInviteActivity"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:layout_marginBottom="10dp"
+    android:layout_margin="15dp"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/activity_friend_invite_iv_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="15dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/activity_friend_invite_tv_inviter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:text="用户"
+            android:layout_marginRight="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginRight="10dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="3"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/activity_friend_invite_btn_agree"
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:textSize="10sp"
+            android:text="同意"
+            android:textColor="@color/white"
+            android:background="#526270"/>
+
+        <Button
+            android:id="@+id/activity_friend_invite_btn_refuse"
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:textSize="10sp"
+            android:text="拒绝"
+            android:textColor="@color/white"
+            android:background="#526270"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

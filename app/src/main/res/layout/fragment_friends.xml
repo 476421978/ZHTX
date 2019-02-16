@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#F2F2F2">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/ThemeColor">
+
+        <TextView
+            android:id="@+id/fragment_friends_tv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="好友"
+            android:textSize="19sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"/>
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/fragment_friends_rl_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bottom_border">
+        <Button
+            android:id="@+id/fragment_friends_bt_add"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/add"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/fragment_friends_bt_add"
+            android:layout_marginLeft="15dp"
+            android:textColor="@android:color/black"
+            android:text="添加好友"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="@drawable/bottom_border">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="55dp"
+            android:textColor="@android:color/black"
+            android:text="好友邀请"/>
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:text="1"
+            android:gravity="center"
+            android:background="@drawable/round"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_marginTop="30dp">
+        <TextView
+            android:id="@+id/fragment_friends_tv_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:padding="3dp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:text="好友分组"
+            android:background="@drawable/bottom_border"/>
+        <ExpandableListView
+            android:id="@+id/fragment_friends_expandableListview"
+            android:layout_below="@+id/fragment_friends_tv_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ExpandableListView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/include_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <include layout="@layout/activity_main_page_navi_bar"/>
+    </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

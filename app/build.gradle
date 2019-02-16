@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "26.0.2"
+    defaultConfig {
+        applicationId "com.example.user.zhtx"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            repositories { maven { url "https://maven.google.com" } }
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            //说明so的路径为该libs路径，关联所有地图SDK的so文件
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile files('libs/gson-2.7.jar')
+    compile files('libs/okhttp-3.10.0.jar')
+    compile files('libs/okio-1.14.0.jar')
+    compile project(':easeui')
+    compile files('libs/BaiduLBS_Android.jar')
+    dependencies { compile 'com.android.support:multidex:1.0.1' }
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:25.3.1'
+    testCompile 'junit:junit:4.12'
+}
+
+apply plugin: 'com.mob.sdk'
+
+MobSDK {
+    appKey "2867d6ad4dd7f"
+    appSecret "3f6c4b2a2f7e43b16ce920b91261cf1c"
+    SMSSDK {}
+}

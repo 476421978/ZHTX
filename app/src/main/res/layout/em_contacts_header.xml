@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.UI.widget.ContactItemView
+        android:id="@+id/application_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contactItemImage="@drawable/em_new_friends_icon"
+        app:contactItemName="申请与通知" />
+    
+
+    <com.UI.widget.ContactItemView
+        android:id="@+id/group_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contactItemImage="@drawable/em_groups_icon"
+        app:contactItemName="群聊" />
+
+</LinearLayout>
