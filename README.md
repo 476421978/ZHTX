@@ -4,4 +4,4 @@
 ![image](https://github.com/476421978/ZHTX/blob/master/addFriend.gif)
 
 2.创建群聊
-![image]()
+![image](https://github.com/476421978/ZHTX/blob/master/cdgroup.gif)
